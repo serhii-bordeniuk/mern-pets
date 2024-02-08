@@ -30,6 +30,16 @@ app.use(cors());
 
 app.use("/auth", authRoutes);
 
+/* errors handler */
+
+app.use((error, req, res, next) => {
+    console.log(error)
+    const status = error.statusCode || 500;
+    const message = error.message;
+    const data = error.data;
+    res.status(status).json({ message: message, data: data });
+});
+
 const fileFilter = (req, file, cb) => {
     if (
         file.mimetype === "image/png" ||
@@ -56,15 +66,7 @@ app.use("/images", express.static(path.join(__dirname, "images")));
 
 
 
-/* errors handler */
 
-app.use((error, req, res, next) => {
-    console.log(error);
-    const status = error.statusCode || 500;
-    const message = error.message;
-    const data = error.data;
-    res.status(status).json({ message: message, data: data });
-});
 
 /* mongoose setup */
 

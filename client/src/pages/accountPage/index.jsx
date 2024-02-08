@@ -1,4 +1,10 @@
+
+
+
+
 const AccountPage = () => {
-    return <div>AccountPage</div>;
+    return (
+        <div>Account page</div>
+    );
 };
 export default AccountPage;

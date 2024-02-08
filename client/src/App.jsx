@@ -3,9 +3,10 @@ import AuthPage from "pages/authPage";
 import NotFoundPage from "pages/notFound";
 import protectedRoutes from "utils";
 
-const isAuth = true;
-
 function App() {
+
+    const isAuth = false
+
     return (
         <div className="app">
             <BrowserRouter>

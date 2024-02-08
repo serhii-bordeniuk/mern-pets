@@ -1,7 +1,8 @@
-const { default: AccountPage } = require("pages/accountPage");
-const { default: ExpensesPage } = require("pages/expensesPage");
-const { default: HealthPage } = require("pages/healthPage");
-const { default: PetsPage } = require("pages/petsPage");
+import AccountPage from "pages/accountPage";
+import ExpensesPage from "pages/expensesPage";
+import HealthPage from "pages/healthPage";
+import PetsPage from "pages/petsPage";
+
 
 const protectedRoutes = [
     { path: "/account", element: <AccountPage /> },
