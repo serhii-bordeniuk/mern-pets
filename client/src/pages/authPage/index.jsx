@@ -19,7 +19,7 @@ const FormWrapper = styled(Box)`
     height: 100%;
 `;
 
-const AuthPage = () => {
+const AuthPage = ({setIsAuth}) => {
     const isNonMobile = useMediaQuery("(min-width: 1300px)");
     return isNonMobile ? (
         <AuthPageContainer>
@@ -31,7 +31,7 @@ const AuthPage = () => {
     ) : (
         <FormWrapper>
             <img src={mainLogo} alt="logo" />
-            <AuthForm />
+            <AuthForm setIsAuth={setIsAuth}/>
         </FormWrapper>
     );
 };

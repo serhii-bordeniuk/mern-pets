@@ -17,12 +17,13 @@ import {
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
-const AuthForm = () => {
+const AuthForm = ({setIsAuth}) => {
     const [isLogin, setIsLogin] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmedPassword, setShowConfirmedPassword] = useState(false);
     const [error, setError] = useState(null);
     const [requestStatus, setRequestStatus] = useState();
+
 
     const schema = yup
         .object({
@@ -73,9 +74,9 @@ const AuthForm = () => {
                 throw new Error("Could not authenticate you!");
             }
             const resData = await response.json();
-            localStorage.setItem("token", resData.token);
+            localStorage.setItem("token", resData.token)
             localStorage.setItem("userId", resData.userId);
-            console.log(resData);
+            setIsAuth(true)
             setRequestStatus("success");
             return resData;
         } catch (error) {

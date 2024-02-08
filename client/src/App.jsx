@@ -5,23 +5,33 @@ import AccountPage from "pages/accountPage";
 import HealthPage from "pages/healthPage";
 import ExpensesPage from "pages/expensesPage";
 import PetsPage from "pages/petsPage";
-
-const AuthGuard = ({ children }) => {
-    const isAuth = false;
-    return isAuth ? children : <Navigate to="/" />;
-};
+import AuthGuard from "components/AuthGuard";
+import { useEffect, useState } from "react";
 
 function App() {
+    const [isAuth, setIsAuth] = useState(false);
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (token) {
+            setIsAuth(true);
+        }
+    }, []);
+
     return (
         <div className="app">
             <BrowserRouter>
                 <Routes>
                     <Route path="*" element={<NotFoundPage />} />
-                    <Route path="/" element={<AuthPage />} />
+                    <Route
+                        path="/"
+                        element={
+                            isAuth ? <Navigate to="/account" /> : <AuthPage setIsAuth={setIsAuth} />
+                        }
+                    />
                     <Route
                         path="/account"
                         element={
-                            <AuthGuard>
+                            <AuthGuard auth={isAuth}>
                                 <AccountPage />
                             </AuthGuard>
                         }
@@ -29,7 +39,7 @@ function App() {
                     <Route
                         path="/health"
                         element={
-                            <AuthGuard>
+                            <AuthGuard auth={isAuth}>
                                 <HealthPage />
                             </AuthGuard>
                         }
@@ -37,7 +47,7 @@ function App() {
                     <Route
                         path="/expenses"
                         element={
-                            <AuthGuard>
+                            <AuthGuard auth={isAuth}>
                                 <ExpensesPage />
                             </AuthGuard>
                         }
@@ -45,7 +55,7 @@ function App() {
                     <Route
                         path="/pets"
                         element={
-                            <AuthGuard>
+                            <AuthGuard auth={isAuth}>
                                 <PetsPage />
                             </AuthGuard>
                         }
