@@ -11,3 +11,12 @@ body,
     width: 100%;
     font-family: "Nunito Sans", sans-serif;
 }
+
+ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+li a {
+    text-decoration: none;
+}

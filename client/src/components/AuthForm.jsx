@@ -16,14 +16,18 @@ import {
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { setLogin } from "state";
 
-const AuthForm = ({setIsAuth}) => {
+const AuthForm = () => {
     const [isLogin, setIsLogin] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmedPassword, setShowConfirmedPassword] = useState(false);
     const [error, setError] = useState(null);
     const [requestStatus, setRequestStatus] = useState();
-
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const schema = yup
         .object({
@@ -74,10 +78,15 @@ const AuthForm = ({setIsAuth}) => {
                 throw new Error("Could not authenticate you!");
             }
             const resData = await response.json();
-            localStorage.setItem("token", resData.token)
-            localStorage.setItem("userId", resData.userId);
-            setIsAuth(true)
+
             setRequestStatus("success");
+            dispatch(
+                setLogin({
+                    userId: resData.userId,
+                    token: resData.token,
+                })
+            );
+            navigate("/account");
             return resData;
         } catch (error) {
             setError(error);

@@ -1,63 +1,52 @@
 import { BrowserRouter, Navigate, Routes, Route } from "react-router-dom";
+import { useSelector } from "react-redux";
 import AuthPage from "pages/authPage";
 import NotFoundPage from "pages/notFound";
 import AccountPage from "pages/accountPage";
 import HealthPage from "pages/healthPage";
 import ExpensesPage from "pages/expensesPage";
 import PetsPage from "pages/petsPage";
-import AuthGuard from "components/AuthGuard";
-import { useEffect, useState } from "react";
+import Layout from "components/Layout";
 
 function App() {
-    const [isAuth, setIsAuth] = useState(false);
-    useEffect(() => {
-        const token = localStorage.getItem("token");
-        if (token) {
-            setIsAuth(true);
-        }
-    }, []);
+    const isAuth = Boolean(useSelector((state) => state.token));
 
     return (
         <div className="app">
             <BrowserRouter>
                 <Routes>
                     <Route path="*" element={<NotFoundPage />} />
-                    <Route
-                        path="/"
-                        element={
-                            isAuth ? <Navigate to="/account" /> : <AuthPage setIsAuth={setIsAuth} />
-                        }
-                    />
+                    <Route path="/" element={isAuth ? <Navigate to="/account" /> : <AuthPage />} />
                     <Route
                         path="/account"
                         element={
-                            <AuthGuard auth={isAuth}>
+                            <Layout pageTitle="Account Page" auth={isAuth}>
                                 <AccountPage />
-                            </AuthGuard>
+                            </Layout>
                         }
                     />
                     <Route
                         path="/health"
                         element={
-                            <AuthGuard auth={isAuth}>
+                            <Layout pageTitle="Health Page" auth={isAuth}>
                                 <HealthPage />
-                            </AuthGuard>
+                            </Layout>
                         }
                     />
                     <Route
                         path="/expenses"
                         element={
-                            <AuthGuard auth={isAuth}>
+                            <Layout pageTitle="Expenses Page" auth={isAuth}>
                                 <ExpensesPage />
-                            </AuthGuard>
+                            </Layout>
                         }
                     />
                     <Route
                         path="/pets"
                         element={
-                            <AuthGuard auth={isAuth}>
+                            <Layout pageTitle="Pets Page" auth={isAuth}>
                                 <PetsPage />
-                            </AuthGuard>
+                            </Layout>
                         }
                     />
                 </Routes>
