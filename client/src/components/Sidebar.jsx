@@ -13,6 +13,10 @@ const StyledSidebar = styled(Box)`
     justify-content: space-between;
     background-color: #ebe6e1;
     padding: 40px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
 `;
 
 const Sidebar = () => {

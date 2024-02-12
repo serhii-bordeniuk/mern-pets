@@ -3,20 +3,25 @@ import { Box } from "@mui/material";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
 import { Navigate } from "react-router-dom";
+import { LayoutContainer } from "styles/styles";
 
-const PageContainer = styled(Box)`
+const LayoutWrapper = styled(Box)`
     width: 100%;
-    margin: 57px 100px 125px 100px;
+    margin-left: 352px;
+    margin-top: 57px;
+    position: relative;
 `;
 
 const Layout = ({ children, auth, pageTitle }) => {
     return auth ? (
         <Box sx={{ display: "flex", height: "100vh" }}>
             <Sidebar />
-            <PageContainer>
-                <Header pageTitle={pageTitle}/>
-                {children}
-            </PageContainer>
+            <LayoutWrapper>
+                <LayoutContainer>
+                    <Header pageTitle={pageTitle} />
+                    {children}
+                </LayoutContainer>
+            </LayoutWrapper>
         </Box>
     ) : (
         <Navigate to="/" />

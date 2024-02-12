@@ -53,3 +53,9 @@ export const buttonStyles = css`
         background-color: #403128;
     }
 `;
+
+export const LayoutContainer = styled.div`
+    max-width: 1371px;
+    margin: 0 auto;
+    padding: 0 15px;
+`;

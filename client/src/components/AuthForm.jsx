@@ -5,6 +5,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { inputStyles, buttonStyles } from "styles/styles";
 
+
 import {
     TextField,
     InputAdornment,
@@ -230,7 +231,8 @@ const AuthForm = () => {
                     variant="contained"
                     fullWidth
                 >
-                    {isLogin ? "Log In" : "Register"}
+                    {isLogin ? "Log In" : "Register" }
+                    
                 </Button>
             </form>
 
