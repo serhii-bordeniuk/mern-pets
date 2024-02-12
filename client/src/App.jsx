@@ -9,7 +9,7 @@ import PetsPage from "pages/petsPage";
 import Layout from "components/Layout";
 
 function App() {
-    const isAuth = Boolean(useSelector((state) => state.token));
+    const isAuth = Boolean(useSelector((state) => state.auth.token));
 
     return (
         <div className="app">

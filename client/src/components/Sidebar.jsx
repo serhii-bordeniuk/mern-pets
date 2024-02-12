@@ -1,7 +1,7 @@
 import { Box, Divider } from "@mui/material";
 import NavLinks from "./NavLinks";
 import styled from "@emotion/styled";
-import { setLogout } from "state";
+import { setLogout } from "slices/authSlice";
 import { useDispatch } from "react-redux";
 import mainLogo from "../resources/images/logo.svg";
 import LogoutIcon from "@mui/icons-material/Logout";

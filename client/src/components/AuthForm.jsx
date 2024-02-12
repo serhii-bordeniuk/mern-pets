@@ -5,30 +5,22 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { inputStyles, buttonStyles } from "styles/styles";
 
-
-import {
-    TextField,
-    InputAdornment,
-    IconButton,
-    FormControl,
-    Button,
-    Snackbar,
-    Alert,
-} from "@mui/material";
+import { TextField, InputAdornment, IconButton, FormControl, Button } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { setLogin } from "state";
+import { setLogin } from "slices/authSlice";
+import Notification from "./ui/Notification";
+import { setNotification } from "slices/notificationSlice";
 
 const AuthForm = () => {
     const [isLogin, setIsLogin] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmedPassword, setShowConfirmedPassword] = useState(false);
-    const [error, setError] = useState(null);
-    const [requestStatus, setRequestStatus] = useState();
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { requestStatus } = useSelector((state) => state.notification);
 
     const schema = yup
         .object({
@@ -60,7 +52,7 @@ const AuthForm = () => {
     });
 
     const login = async (formData) => {
-        setRequestStatus("pending");
+        dispatch(setNotification({ requestStatus: "pending" }));
         try {
             const response = await fetch(`http://localhost:3001/auth/login`, {
                 method: "POST",
@@ -80,7 +72,7 @@ const AuthForm = () => {
             }
             const resData = await response.json();
 
-            setRequestStatus("success");
+            dispatch(setNotification({ requestStatus: "success" }));
             dispatch(
                 setLogin({
                     userId: resData.userId,
@@ -90,12 +82,11 @@ const AuthForm = () => {
             navigate("/account");
             return resData;
         } catch (error) {
-            setError(error);
-            setRequestStatus("error");
+            dispatch(setNotification({ requestStatus: "error", error: error }));
         }
     };
     const signup = async (formData) => {
-        setRequestStatus("pending");
+        dispatch(setNotification({ requestStatus: "pending" }));
         try {
             const response = await fetch(`http://localhost:3001/auth/signup`, {
                 method: "POST",
@@ -113,14 +104,13 @@ const AuthForm = () => {
             if (response.status !== 200 && response.status !== 201) {
                 throw new Error("Creating a User failed");
             }
+            dispatch(setNotification({ requestStatus: "success" }));
             const savedUser = await response.json();
-            setRequestStatus("success");
             reset();
-            setIsLogin((prevState) => !prevState);
+            
             return savedUser;
         } catch (error) {
-            setError(error);
-            setRequestStatus("error");
+            dispatch(setNotification({ requestStatus: "error", error: error }));
         }
     };
 
@@ -231,8 +221,7 @@ const AuthForm = () => {
                     variant="contained"
                     fullWidth
                 >
-                    {isLogin ? "Log In" : "Register" }
-                    
+                    {isLogin ? "Log In" : "Register"}
                 </Button>
             </form>
 
@@ -262,7 +251,9 @@ const AuthForm = () => {
 
             {/* notifications */}
 
-            {requestStatus === "success" && (
+            <Notification successTitle={isLogin ? "Successfully Logged In" : "Account created"} />
+
+            {/* {requestStatus === "success" && (
                 <Snackbar
                     open={true}
                     autoHideDuration={6000}
@@ -306,7 +297,7 @@ const AuthForm = () => {
                         {error.message}
                     </Alert>
                 </Snackbar>
-            )}
+            )} */}
         </Box>
     );
 };

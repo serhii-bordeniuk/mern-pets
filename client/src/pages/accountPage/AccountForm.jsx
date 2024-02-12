@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -7,8 +6,9 @@ import { Box, Typography } from "@mui/material";
 import { inputStyles } from "styles/styles";
 import styled from "@emotion/styled";
 import fileIcon from "../../resources/images/icons/file.svg";
-import { TextField, FormControl, Snackbar, Alert } from "@mui/material";
+import { TextField, FormControl } from "@mui/material";
 import FormButton from "components/ui/FormButton";
+import { useDispatch } from "react-redux";
 
 const FilePicker = styled(Box)`
     display: flex;
@@ -23,8 +23,7 @@ const FilePicker = styled(Box)`
 `;
 
 const AccountForm = () => {
-    const [error, setError] = useState(null);
-    const [requestStatus, setRequestStatus] = useState();
+    const dispatch = useDispatch();
 
     const schema = yup.object({
         fullName: yup.string("must be at least 3 characters").min(3),
