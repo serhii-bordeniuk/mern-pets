@@ -8,7 +8,9 @@ import styled from "@emotion/styled";
 import fileIcon from "../../resources/images/icons/file.svg";
 import { TextField, FormControl } from "@mui/material";
 import FormButton from "components/ui/FormButton";
-import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import Notification from "components/ui/Notification";
 
 const FilePicker = styled(Box)`
     display: flex;
@@ -22,11 +24,11 @@ const FilePicker = styled(Box)`
     cursor: pointer;
 `;
 
-const AccountForm = () => {
-    const dispatch = useDispatch();
+const AccountForm = ({ request }) => {
+    const token = useSelector((state) => state.auth.token);
 
     const schema = yup.object({
-        fullName: yup.string("must be at least 3 characters").min(3),
+        userName: yup.string("must be at least 3 characters").min(3),
         email: yup.string().email().min(4),
 
         phoneNumber: yup
@@ -38,23 +40,45 @@ const AccountForm = () => {
     const {
         register,
         handleSubmit,
+        setValue,
         formState: { errors },
-        reset,
     } = useForm({
         resolver: yupResolver(schema),
         mode: "onChange",
-        defaultValues: {
-            fullName: "",
-            email: "",
-            oldPassword: "",
-            password: "",
-            confirmedPassword: "",
-            phoneNumber: "",
-        },
     });
 
-    const onSubmit = (data) => {
-        console.log(data);
+    useEffect(() => {
+        const fetchUserData = async () => {
+            const userData = await request("http://localhost:3001/user", {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            setValue("userName", userData?.userName || "");
+            setValue("email", userData?.email || "");
+            setValue("phoneNumber", userData?.phoneNumber || "");
+        };
+
+        fetchUserData();
+    }, [token, request, setValue]);
+
+    const onSubmit = (formData) => {
+        updateUser(formData);
+    };
+
+    const updateUser = async (formData) => {
+        const filteredFormData = Object.fromEntries(
+            Object.entries(formData).filter(([key, value]) => value !== "")
+        );
+        const updatedUser = await request("http://localhost:3001/user", {
+            method: "PATCH",
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(filteredFormData),
+        });
     };
 
     return (
@@ -85,14 +109,15 @@ const AccountForm = () => {
                         >
                             <FormControl sx={{ ...inputStyles }} variant="outlined">
                                 <TextField
-                                    {...register("fullName")}
+                                    {...register("userName")}
                                     id="name-input"
                                     type="text"
                                     label="Full Name"
                                     variant="outlined"
                                     placeholder="User Name"
-                                    error={!!errors.fullName}
-                                    helperText={errors.fullName?.message}
+                                    error={!!errors.userName}
+                                    helperText={errors.userName?.message}
+                                    InputLabelProps={{ shrink: true }}
                                 />
                             </FormControl>
 
@@ -107,6 +132,7 @@ const AccountForm = () => {
                                     placeholder="Enter your email"
                                     error={!!errors.email}
                                     helperText={errors.email?.message}
+                                    InputLabelProps={{ shrink: true }}
                                 />
                             </FormControl>
 
@@ -119,6 +145,7 @@ const AccountForm = () => {
                                     variant="outlined"
                                     fullWidth
                                     placeholder="+380-00-000-00-00"
+                                    InputLabelProps={{ shrink: true }}
                                     error={!!errors.phoneNumber}
                                     helperText={errors.phoneNumber?.message}
                                 />
@@ -126,13 +153,15 @@ const AccountForm = () => {
                         </Box>
                     </Box>
                     <FormButton
-                        sx={{ marginTop: "20px" }}
+                        sx={{ marginTop: "20px", width: "95px" }}
                         title="Save"
+                        width="95px"
                         color="#403128"
                         type="submit"
                     />
                 </Box>
             </Box>
+            <Notification />
         </form>
     );
 };

@@ -6,13 +6,14 @@ import { inputStyles } from "styles/styles";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useSelector } from "react-redux";
+import Notification from "components/ui/Notification";
 
-const ChangePasswordForm = () => {
+const ChangePasswordForm = ({ request }) => {
+    const token = useSelector((state) => state.auth.token);
     const [showOldPassword, setShowOldPassword] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmedPassword, setShowConfirmedPassword] = useState(false);
-    const [error, setError] = useState(null);
-    const [requestStatus, setRequestStatus] = useState();
 
     const schema = yup.object({
         oldPassword: yup.string().min(8).max(32).required("password is a required field"),
@@ -54,8 +55,25 @@ const ChangePasswordForm = () => {
         }
     };
 
-    const onSubmit = (data) => {
-        console.log(data);
+    const updateUserPassword = async (formData) => {
+        const updatedPassword = await request("http://localhost:3001/user/password", {
+            method: "PATCH",
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                oldPassword: formData.oldPassword,
+                password: formData.password,
+            }),
+        });
+
+        console.log(updatedPassword);
+    };
+
+    const onSubmit = (formData) => {
+        updateUserPassword(formData);
+        reset()
     };
 
     return (
@@ -149,9 +167,15 @@ const ChangePasswordForm = () => {
                         />
                     </FormControl>
 
-                    <FormButton title="Change Password" color="#403128" type="submit" />
+                    <FormButton
+                        sx={{ width: "180px" }}
+                        title="Change Password"
+                        color="#403128"
+                        type="submit"
+                    />
                 </Box>
             </Box>
+            <Notification />
         </form>
     );
 };

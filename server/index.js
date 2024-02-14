@@ -8,8 +8,8 @@ import helmet from "helmet";
 import morgan from "morgan";
 import path from "path";
 
-import authRoutes from "./routes/auth.js"
-
+import authRoutes from "./routes/auth.js";
+import userRoutes from "./routes/user.js";
 
 import { fileURLToPath } from "url";
 
@@ -29,14 +29,14 @@ app.use(cors());
 /* files upload */
 
 app.use("/auth", authRoutes);
+app.use("/user", userRoutes);
 
 /* errors handler */
 
 app.use((error, req, res, next) => {
-    console.log(error)
     const status = error.statusCode || 500;
     const message = error.message;
-    const data = error.data;
+    const data = error.data
     res.status(status).json({ message: message, data: data });
 });
 
@@ -63,10 +63,6 @@ const fileStorage = multer.diskStorage({
 
 app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single("image"));
 app.use("/images", express.static(path.join(__dirname, "images")));
-
-
-
-
 
 /* mongoose setup */
 

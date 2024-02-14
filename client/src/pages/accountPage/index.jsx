@@ -2,6 +2,7 @@ import { Box } from "@mui/material";
 import AccountForm from "./AccountForm";
 import ChangePasswordForm from "./ChangePasswordForm";
 import styled from "@emotion/styled";
+import { useHttp } from "utils/useHttp";
 
 const StyledAccountPage = styled(Box)`
     max-width: 914px;
@@ -10,10 +11,12 @@ const StyledAccountPage = styled(Box)`
 `;
 
 const AccountPage = () => {
+    const { request } = useHttp();
+
     return (
         <StyledAccountPage>
-            <AccountForm />
-            <ChangePasswordForm />
+            <AccountForm request={request} />
+            <ChangePasswordForm request={request} />
         </StyledAccountPage>
     );
 };

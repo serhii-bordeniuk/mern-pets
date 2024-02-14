@@ -10,7 +10,6 @@ export const notificationSlice = createSlice({
     initialState,
     reducers: {
         setNotification: (state, action) => {
-            console.log(action)
             state.requestStatus = action.payload.requestStatus;
             state.error = action.payload.error;
         },

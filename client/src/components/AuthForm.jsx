@@ -82,7 +82,7 @@ const AuthForm = () => {
             navigate("/account");
             return resData;
         } catch (error) {
-            dispatch(setNotification({ requestStatus: "error", error: error }));
+            dispatch(setNotification({ requestStatus: "error", error: error.message }));
         }
     };
     const signup = async (formData) => {
@@ -107,10 +107,10 @@ const AuthForm = () => {
             dispatch(setNotification({ requestStatus: "success" }));
             const savedUser = await response.json();
             reset();
-            
+
             return savedUser;
         } catch (error) {
-            dispatch(setNotification({ requestStatus: "error", error: error }));
+            dispatch(setNotification({ requestStatus: "error", error: error.message }));
         }
     };
 
@@ -183,35 +183,40 @@ const AuthForm = () => {
                     />
                 </FormControl>
 
+                <Notification />
+
                 {!isLogin && (
-                    <FormControl sx={{ ...inputStyles }} variant="outlined">
-                        <TextField
-                            {...register("confirmedPassword")}
-                            id="confirmed-password-input"
-                            type={showConfirmedPassword ? "text" : "password"}
-                            error={!!errors.confirmedPassword}
-                            helperText={errors.confirmedPassword?.message}
-                            label="Confirm Password"
-                            placeholder="Confirm your password"
-                            InputProps={{
-                                endAdornment: (
-                                    <InputAdornment position="end">
-                                        <IconButton
-                                            aria-label="toggle password visibility"
-                                            onClick={() => handleClickShowPassword("confirmed")}
-                                            edge="end"
-                                        >
-                                            {showConfirmedPassword ? (
-                                                <VisibilityOff />
-                                            ) : (
-                                                <Visibility />
-                                            )}
-                                        </IconButton>
-                                    </InputAdornment>
-                                ),
-                            }}
-                        />
-                    </FormControl>
+                    <>
+                        <FormControl sx={{ ...inputStyles }} variant="outlined">
+                            <TextField
+                                {...register("confirmedPassword")}
+                                id="confirmed-password-input"
+                                type={showConfirmedPassword ? "text" : "password"}
+                                error={!!errors.confirmedPassword}
+                                helperText={errors.confirmedPassword?.message}
+                                label="Confirm Password"
+                                placeholder="Confirm your password"
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                aria-label="toggle password visibility"
+                                                onClick={() => handleClickShowPassword("confirmed")}
+                                                edge="end"
+                                            >
+                                                {showConfirmedPassword ? (
+                                                    <VisibilityOff />
+                                                ) : (
+                                                    <Visibility />
+                                                )}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    ),
+                                }}
+                            />
+                        </FormControl>
+                        <Notification />
+                    </>
                 )}
                 <Button
                     disabled={requestStatus === "pending"}
@@ -248,56 +253,6 @@ const AuthForm = () => {
                     </>
                 )}
             </Typography>
-
-            {/* notifications */}
-
-            <Notification successTitle={isLogin ? "Successfully Logged In" : "Account created"} />
-
-            {/* {requestStatus === "success" && (
-                <Snackbar
-                    open={true}
-                    autoHideDuration={6000}
-                    onClose={() => {
-                        setError(null);
-                        setRequestStatus(null);
-                    }}
-                    anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-                >
-                    <Alert severity="success" sx={{ width: "100%" }}>
-                        {isLogin ? "Successfully Logged In" : "Account created"}
-                    </Alert>
-                </Snackbar>
-            )}
-            {requestStatus === "pending" && (
-                <Snackbar
-                    open={true}
-                    autoHideDuration={6000}
-                    onClose={() => {
-                        setError(null);
-                        setRequestStatus(null);
-                    }}
-                    anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-                >
-                    <Alert severity="warning" sx={{ width: "100%" }}>
-                        Loading
-                    </Alert>
-                </Snackbar>
-            )}
-            {error && (
-                <Snackbar
-                    open={true}
-                    autoHideDuration={6000}
-                    onClose={() => {
-                        setError(null);
-                        setRequestStatus(null);
-                    }}
-                    anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-                >
-                    <Alert severity="error" sx={{ width: "100%" }}>
-                        {error.message}
-                    </Alert>
-                </Snackbar>
-            )} */}
         </Box>
     );
 };
