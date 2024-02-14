@@ -50,7 +50,7 @@ const AccountForm = ({ request }) => {
     useEffect(() => {
         const fetchUserData = async () => {
             const userData = await request("http://localhost:3001/user", {
-                method: "GET",
+                method: "get",
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -68,16 +68,13 @@ const AccountForm = ({ request }) => {
     };
 
     const updateUser = async (formData) => {
-        const filteredFormData = Object.fromEntries(
-            Object.entries(formData).filter(([key, value]) => value !== "")
-        );
         const updatedUser = await request("http://localhost:3001/user", {
-            method: "PATCH",
+            method: "put",
+            data: formData,
             headers: {
                 Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify(filteredFormData),
         });
     };
 
@@ -161,7 +158,6 @@ const AccountForm = ({ request }) => {
                     />
                 </Box>
             </Box>
-            <Notification />
         </form>
     );
 };

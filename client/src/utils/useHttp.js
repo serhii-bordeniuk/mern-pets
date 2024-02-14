@@ -2,6 +2,7 @@ import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setLogout } from "slices/authSlice";
 import { setNotification } from "slices/notificationSlice";
+import axios from "axios";
 
 export const useHttp = () => {
     const [loading, setLoading] = useState(false);
@@ -13,33 +14,35 @@ export const useHttp = () => {
     const request = useCallback(
         async (
             url,
-            { method = "GET", body = null, headers = { "Content-Type": "application/json" } }
+            { method = "get", data = null, headers = { "Content-Type": "application/json" } }
         ) => {
             setLoading(true);
             setProcess("loading");
             try {
-                const response = await fetch(url, { method, body, headers });
-                if (!response.ok) {
-                    const data = await response.json();
-                    const error = new Error(data.message);
-                    error.status = response.status;
-                    throw error;
-                }
-                const data = await response.json();
+                const response = await axios({
+                    url,
+                    method,
+                    data,
+                    headers,
+                });
+                const responseData = response.data;
                 setLoading(false);
                 setProcess("success");
-                if (method === "PATCH") {
-                    dispatch(setNotification({ requestStatus: "success" }));
+                if (method === "patch" || method === "post" || method === "put") {
+                    dispatch(setNotification({ requestStatus: "success", title: responseData.message  }));
                 }
-                return data;
+                return responseData;
             } catch (error) {
-                if (error.status === 401) {
+                if (error.response?.status === 401) {
                     dispatch(setLogout());
                 }
+                console.log(error);
                 setLoading(false);
                 setProcess("error");
-                setError(error.message || "Something went wrong");
-                dispatch(setNotification({ requestStatus: "error", error: error.message }));
+                setError(error.response.data?.message || "Something went wrong");
+                dispatch(
+                    setNotification({ requestStatus: "error", error: error.response.data.message })
+                );
             }
         }, // eslint-disable-next-line
         []

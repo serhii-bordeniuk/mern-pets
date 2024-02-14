@@ -8,26 +8,7 @@ const router = express.Router();
 
 router.get("/", isAuth, getUser);
 
-router.patch(
-    "/",
-    isAuth,
-    [
-        // body("userName").trim().isLength({ min: 3 }),
-        // body("email")
-        //     .isEmail()
-        //     .withMessage("Please, enter a valid email")
-        //     .custom((value, { req }) => {
-        //         return User.findOne({ email: value }).then((userDoc) => {
-        //             if (userDoc) {
-        //                 return Promise.reject("E-Mail address already exists!");
-        //             }
-        //         });
-        //     })
-        //     .normalizeEmail(),
-        //todo custom validation phone number
-    ],
-    updateUser
-);
+router.put("/", isAuth, updateUser);
 
 router.patch(
     "/password",

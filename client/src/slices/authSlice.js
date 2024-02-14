@@ -20,9 +20,4 @@ export const authSlice = createSlice({
     },
 });
 
-
-
 export const { setLogin, setLogout } = authSlice.actions;
-
-
-

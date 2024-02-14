@@ -4,7 +4,7 @@ import { setNotification } from "slices/notificationSlice";
 
 const Notification = ({ successTitle }) => {
     const dispatch = useDispatch();
-    const { requestStatus, error } = useSelector((state) => state.notification);
+    const { title, requestStatus, error } = useSelector((state) => state.notification);
 
     let alert;
 
@@ -26,7 +26,7 @@ const Notification = ({ successTitle }) => {
     if (requestStatus === "success") {
         alert = (
             <Alert severity="success" sx={{ width: "100%" }}>
-                {successTitle}
+                {title}
             </Alert>
         );
     }

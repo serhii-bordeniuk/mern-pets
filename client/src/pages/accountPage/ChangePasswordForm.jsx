@@ -175,7 +175,6 @@ const ChangePasswordForm = ({ request }) => {
                     />
                 </Box>
             </Box>
-            <Notification />
         </form>
     );
 };

@@ -7,6 +7,7 @@ import HealthPage from "pages/healthPage";
 import ExpensesPage from "pages/expensesPage";
 import PetsPage from "pages/petsPage";
 import Layout from "components/Layout";
+import Notification from "components/ui/Notification";
 
 function App() {
     const isAuth = Boolean(useSelector((state) => state.auth.token));
@@ -51,6 +52,7 @@ function App() {
                     />
                 </Routes>
             </BrowserRouter>
+            <Notification />
         </div>
     );
 }

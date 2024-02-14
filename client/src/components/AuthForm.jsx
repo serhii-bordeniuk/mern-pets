@@ -11,8 +11,8 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setLogin } from "slices/authSlice";
-import Notification from "./ui/Notification";
 import { setNotification } from "slices/notificationSlice";
+import { useHttp } from "utils/useHttp";
 
 const AuthForm = () => {
     const [isLogin, setIsLogin] = useState(false);
@@ -21,6 +21,7 @@ const AuthForm = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { requestStatus } = useSelector((state) => state.notification);
+    const { request } = useHttp();
 
     const schema = yup
         .object({
@@ -53,65 +54,53 @@ const AuthForm = () => {
 
     const login = async (formData) => {
         dispatch(setNotification({ requestStatus: "pending" }));
-        try {
-            const response = await fetch(`http://localhost:3001/auth/login`, {
-                method: "POST",
-                body: JSON.stringify({
-                    email: formData.email,
-                    password: formData.password,
-                }),
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            });
-            if (response.status === 401) {
-                throw new Error("Check your credentials and try again.");
-            }
-            if (response.status !== 200 && response.status !== 201) {
-                throw new Error("Could not authenticate you!");
-            }
-            const resData = await response.json();
 
-            dispatch(setNotification({ requestStatus: "success" }));
+        const loggedInUser = await request(`http://localhost:3001/auth/login`, {
+            method: "post",
+            data: {
+                email: formData.email,
+                password: formData.password,
+            },
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+        if (loggedInUser) {
             dispatch(
                 setLogin({
-                    userId: resData.userId,
-                    token: resData.token,
+                    userId: loggedInUser.userId,
+                    token: loggedInUser.token,
                 })
             );
+            dispatch(
+                setNotification({ requestStatus: "success", title: "Successfully Logged In" })
+            );
             navigate("/account");
-            return resData;
-        } catch (error) {
-            dispatch(setNotification({ requestStatus: "error", error: error.message }));
         }
     };
     const signup = async (formData) => {
         dispatch(setNotification({ requestStatus: "pending" }));
-        try {
-            const response = await fetch(`http://localhost:3001/auth/signup`, {
-                method: "POST",
-                body: JSON.stringify({
-                    email: formData.email,
-                    password: formData.password,
-                }),
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            });
-            if (response.status === 422) {
-                throw new Error("Make sure the email address isn't used yet!");
-            }
-            if (response.status !== 200 && response.status !== 201) {
-                throw new Error("Creating a User failed");
-            }
-            dispatch(setNotification({ requestStatus: "success" }));
-            const savedUser = await response.json();
-            reset();
+        const signedUpUser = await request(`http://localhost:3001/auth/signup`, {
+            method: "post",
+            data: {
+                email: formData.email,
+                password: formData.password,
+            },
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
 
-            return savedUser;
-        } catch (error) {
-            dispatch(setNotification({ requestStatus: "error", error: error.message }));
+        if (signedUpUser) {
+            dispatch(
+                setNotification({
+                    requestStatus: "success",
+                    title: "Successfully Signed Up! Now you can Log In.",
+                })
+            );
         }
+
+        reset();
     };
 
     const onSubmit = async (data) => {
@@ -183,8 +172,6 @@ const AuthForm = () => {
                     />
                 </FormControl>
 
-                <Notification />
-
                 {!isLogin && (
                     <>
                         <FormControl sx={{ ...inputStyles }} variant="outlined">
@@ -215,7 +202,6 @@ const AuthForm = () => {
                                 }}
                             />
                         </FormControl>
-                        <Notification />
                     </>
                 )}
                 <Button

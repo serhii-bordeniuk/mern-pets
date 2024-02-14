@@ -23,6 +23,10 @@ export const updateUser = async (req, res, next) => {
     try {
         const { userName, email, phoneNumber } = req.body;
 
+        console.log(userName, email, phoneNumber);
+
+        console.log(req.userId)
+
         const user = await User.findById(req.userId);
         if (!user) {
             const error = new Error("User not found.");
@@ -34,15 +38,13 @@ export const updateUser = async (req, res, next) => {
 
         //compare new data with an old one
 
-        if (!errors.isEmpty()) {
-            const error = new Error("Validation failed");
-            error.statusCode = 422;
-            error.data = errors.array();
-            throw error;
-        }
+        // if (!errors.isEmpty()) {
+        //     const error = new Error("Validation failed");
+        //     error.statusCode = 422;
+        //     error.data = errors.array();
+        //     throw error;
+        // }
 
-        
-        
         user.userName = userName;
         user.email = email;
         user.phoneNumber = phoneNumber;
