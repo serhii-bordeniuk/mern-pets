@@ -7,7 +7,6 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useSelector } from "react-redux";
-import Notification from "components/ui/Notification";
 
 const ChangePasswordForm = ({ request }) => {
     const token = useSelector((state) => state.auth.token);
@@ -16,7 +15,11 @@ const ChangePasswordForm = ({ request }) => {
     const [showConfirmedPassword, setShowConfirmedPassword] = useState(false);
 
     const schema = yup.object({
-        oldPassword: yup.string().min(8).max(32).required("password is a required field"),
+        oldPassword: yup
+            .string()
+            .min(8, "Password must be at least 8 characters")
+            .max(32, "Password can't be longer than 32 characters")
+            .required("password is a required field"),
         password: yup.string().min(8).max(32),
         confirmedPassword: yup
             .string()
@@ -73,7 +76,7 @@ const ChangePasswordForm = ({ request }) => {
 
     const onSubmit = (formData) => {
         updateUserPassword(formData);
-        reset()
+        reset();
     };
 
     return (

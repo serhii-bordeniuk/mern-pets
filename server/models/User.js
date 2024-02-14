@@ -11,9 +11,18 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    userName: String,
-    phoneNumber: String,
-    picturepath: String,
+    userName: {
+        type: String,
+        default: "",
+    },
+    phoneNumber: {
+        type: String,
+        default: "",
+    },
+    picturepath: {
+        type: String,
+        default: "",
+    },
     pets: [
         {
             type: SchemaTypes.ObjectId,

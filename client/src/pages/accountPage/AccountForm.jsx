@@ -10,7 +10,6 @@ import { TextField, FormControl } from "@mui/material";
 import FormButton from "components/ui/FormButton";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
-import Notification from "components/ui/Notification";
 
 const FilePicker = styled(Box)`
     display: flex;
@@ -28,20 +27,25 @@ const AccountForm = ({ request }) => {
     const token = useSelector((state) => state.auth.token);
 
     const schema = yup.object({
-        userName: yup.string("must be at least 3 characters").min(3),
+        userName: yup
+            .string()
+            .matches(/^[a-zA-Z]+$/, "Username must contain only letters")
+            .min(3, "Username must be at least 3 characters"),
         email: yup.string().email().min(4),
 
         phoneNumber: yup
             .string()
             .nullable()
-            .matches(/^\+?\d{11,12}$/),
+            .max(13, "Phone number must have 13 characters")
+            .min(13, "Phone number must have 13 characters")
+            .matches(/^\+?\d{11,12}$/, "Phone number must contain only numbers and '+'"),
     });
 
     const {
         register,
         handleSubmit,
         setValue,
-        formState: { errors },
+        formState: { errors, dirtyFields },
     } = useForm({
         resolver: yupResolver(schema),
         mode: "onChange",
@@ -64,10 +68,15 @@ const AccountForm = ({ request }) => {
     }, [token, request, setValue]);
 
     const onSubmit = (formData) => {
-        updateUser(formData);
+        const formDataToSend = {};
+        Object.keys(dirtyFields).forEach((key) => {
+            formDataToSend[key] = formData[key];
+        });
+        updateUser(formDataToSend);
     };
 
     const updateUser = async (formData) => {
+        //eslint-disable-next-line
         const updatedUser = await request("http://localhost:3001/user", {
             method: "put",
             data: formData,

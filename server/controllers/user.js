@@ -1,4 +1,4 @@
-import { validationResult } from "express-validator";
+import { validationResult, matchedData } from "express-validator";
 import User from "../models/User.js";
 import bcrypt from "bcrypt";
 
@@ -21,35 +21,32 @@ export const getUser = async (req, res, next) => {
 
 export const updateUser = async (req, res, next) => {
     try {
-        const { userName, email, phoneNumber } = req.body;
+        const errors = validationResult(req);
 
-        console.log(userName, email, phoneNumber);
-
-        console.log(req.userId)
+        if (!errors.isEmpty()) {
+            const errorMsgs = errors.array().map((error) => error.msg);
+            const error = new Error(`${errorMsgs.join(", ")}`); 
+            error.statusCode = 422;
+            error.data = errors.array();
+            throw error;
+        }
 
         const user = await User.findById(req.userId);
+
         if (!user) {
             const error = new Error("User not found.");
             error.statusCode = 404;
             throw error;
         }
 
-        const errors = validationResult(req);
+        Object.keys(req.body).forEach((key) => {
+            if (user[key] !== undefined) {
+                user[key] = req.body[key];
+            }
+        });
 
-        //compare new data with an old one
-
-        // if (!errors.isEmpty()) {
-        //     const error = new Error("Validation failed");
-        //     error.statusCode = 422;
-        //     error.data = errors.array();
-        //     throw error;
-        // }
-
-        user.userName = userName;
-        user.email = email;
-        user.phoneNumber = phoneNumber;
         await user.save();
-        res.status(200).json({
+        return res.status(200).json({
             user: { userName: user.userName, email: user.email, phoneNumber: user.phoneNumber },
             message: "User updated",
         });
