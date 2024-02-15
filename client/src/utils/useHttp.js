@@ -6,7 +6,7 @@ import axios from "axios";
 
 export const useHttp = () => {
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+    const [reqError, setReqError] = useState(null);
     const [process, setProcess] = useState("waiting");
 
     const dispatch = useDispatch();
@@ -28,20 +28,26 @@ export const useHttp = () => {
                 const responseData = response.data;
                 setLoading(false);
                 setProcess("success");
-                if (method === "patch" || method === "post" || method === "put") {
-                    dispatch(setNotification({ requestStatus: "success", title: responseData.message  }));
+                if (method !== "get") {
+                    dispatch(
+                        setNotification({ requestStatus: "success", title: responseData.message })
+                    );
                 }
                 return responseData;
             } catch (error) {
+                console.log(error);
                 if (error.response?.status === 401) {
                     dispatch(setLogout());
                 }
-                console.log(error);
                 setLoading(false);
                 setProcess("error");
-                setError(error.response.data?.message || "Something went wrong");
+                const errorMessage = error.response?.data?.message || "Something went wrong";
+                setReqError(errorMessage);
                 dispatch(
-                    setNotification({ requestStatus: "error", error: error.response.data.message })
+                    setNotification({
+                        requestStatus: "error",
+                        error: errorMessage,
+                    })
                 );
             }
         }, // eslint-disable-next-line
@@ -49,8 +55,8 @@ export const useHttp = () => {
     );
 
     const clearError = useCallback(() => {
-        setError(null);
+        setReqError(null);
     }, []);
 
-    return { loading, error, process, request, clearError };
+    return { loading, reqError, process, request, clearError };
 };

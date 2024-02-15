@@ -1,6 +1,6 @@
 import express from "express";
 import User from "../models/User.js";
-import { getUser, updateUser, updateUserPassword } from "../controllers/user.js";
+import { deleteUser, getUser, updateUser, updateUserPassword } from "../controllers/user.js";
 import { isAuth } from "../middleware/is-auth.js";
 import { body } from "express-validator";
 
@@ -49,5 +49,7 @@ router.patch(
     isAuth,
     updateUserPassword
 );
+
+router.delete("/delete", isAuth, deleteUser);
 
 export default router;

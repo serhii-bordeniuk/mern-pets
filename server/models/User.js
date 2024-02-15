@@ -1,7 +1,5 @@
 import mongoose, { SchemaTypes } from "mongoose";
 
-// const Schema = mongoose.Schema;
-
 const userSchema = new mongoose.Schema({
     email: {
         type: String,

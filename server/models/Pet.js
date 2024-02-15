@@ -1,5 +1,4 @@
-import mongoose, {SchemaTypes} from "mongoose";
-
+import mongoose, { SchemaTypes } from "mongoose";
 
 const petSchema = new mongoose.Schema({
     owner: {
@@ -24,7 +23,7 @@ const petSchema = new mongoose.Schema({
         required: true,
     },
     birthDate: {
-        type: Date(),
+        type: Date,
         required: true,
     },
     description: {

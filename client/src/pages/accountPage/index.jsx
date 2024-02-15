@@ -3,6 +3,7 @@ import AccountForm from "./AccountForm";
 import ChangePasswordForm from "./ChangePasswordForm";
 import styled from "@emotion/styled";
 import { useHttp } from "utils/useHttp";
+import DeleteAccount from "./DeleteAccount";
 
 const StyledAccountPage = styled(Box)`
     max-width: 914px;
@@ -17,6 +18,7 @@ const AccountPage = () => {
         <StyledAccountPage>
             <AccountForm request={request} />
             <ChangePasswordForm request={request} />
+            <DeleteAccount request={request} />
         </StyledAccountPage>
     );
 };

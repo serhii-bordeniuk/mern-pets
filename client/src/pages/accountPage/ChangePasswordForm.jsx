@@ -65,10 +65,10 @@ const ChangePasswordForm = ({ request }) => {
                 Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({
+            data: {
                 oldPassword: formData.oldPassword,
                 password: formData.password,
-            }),
+            },
         });
 
         console.log(updatedPassword);

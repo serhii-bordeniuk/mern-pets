@@ -8,8 +8,9 @@ import styled from "@emotion/styled";
 import fileIcon from "../../resources/images/icons/file.svg";
 import { TextField, FormControl } from "@mui/material";
 import FormButton from "components/ui/FormButton";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
+import { setLogout } from "slices/authSlice";
 
 const FilePicker = styled(Box)`
     display: flex;
@@ -25,6 +26,7 @@ const FilePicker = styled(Box)`
 
 const AccountForm = ({ request }) => {
     const token = useSelector((state) => state.auth.token);
+    const dispatch = useDispatch();
 
     const schema = yup.object({
         userName: yup
@@ -48,7 +50,7 @@ const AccountForm = ({ request }) => {
         formState: { errors, dirtyFields },
     } = useForm({
         resolver: yupResolver(schema),
-        mode: "onChange",
+        mode: "onSubmit",
     });
 
     useEffect(() => {
@@ -59,12 +61,16 @@ const AccountForm = ({ request }) => {
                     Authorization: `Bearer ${token}`,
                 },
             });
-            setValue("userName", userData?.userName || "");
-            setValue("email", userData?.email || "");
-            setValue("phoneNumber", userData?.phoneNumber || "");
+            if (userData) {
+                setValue("userName", userData?.userName || "");
+                setValue("email", userData?.email || "");
+                setValue("phoneNumber", userData?.phoneNumber || "");
+            } else {
+                dispatch(setLogout());
+            }
         };
 
-        fetchUserData();
+        fetchUserData(); //eslint-disable-next-line
     }, [token, request, setValue]);
 
     const onSubmit = (formData) => {

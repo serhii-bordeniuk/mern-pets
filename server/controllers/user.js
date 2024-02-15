@@ -1,5 +1,8 @@
-import { validationResult, matchedData } from "express-validator";
+import { validationResult } from "express-validator";
 import User from "../models/User.js";
+import Pet from "../models/Pet.js";
+import Expense from "../models/Expense.js";
+import Event from "../models/Event.js";
 import bcrypt from "bcrypt";
 
 export const getUser = async (req, res, next) => {
@@ -25,7 +28,7 @@ export const updateUser = async (req, res, next) => {
 
         if (!errors.isEmpty()) {
             const errorMsgs = errors.array().map((error) => error.msg);
-            const error = new Error(`${errorMsgs.join(", ")}`); 
+            const error = new Error(`${errorMsgs.join(", ")}`);
             error.statusCode = 422;
             error.data = errors.array();
             throw error;
@@ -83,6 +86,32 @@ export const updateUserPassword = async (req, res, next) => {
 
         const result = await user.save();
         res.status(201).json({ message: "password updated" });
+    } catch (error) {
+        if (!error.statusCode) {
+            error.statusCode = 500;
+        }
+        next(error);
+    }
+};
+
+export const deleteUser = async (req, res, next) => {
+    try {
+        const userId = req.userId;
+        const userToDelete = await User.findById(userId);
+        if (!userToDelete) {
+            const error = new Error("User not found.");
+            error.statusCode = 404;
+            throw error;
+        }
+        // Unlink relationships
+        await Promise.all([
+            Pet.deleteMany({ _id: { $in: userToDelete.pets } }),
+            Event.deleteMany({ _id: { $in: userToDelete.events } }),
+            Expense.deleteMany({ _id: { $in: userToDelete.expenses } }),
+        ]);
+
+        const deletedUser = await User.findByIdAndDelete(userToDelete._id);
+        res.status(200).json({ message: "User deleted successfully" });
     } catch (error) {
         if (!error.statusCode) {
             error.statusCode = 500;
