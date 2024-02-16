@@ -16,26 +16,26 @@ const StyledNavLinks = styled(Box)`
     width: 272px;
 `;
 
-
+const color = "#403128";
 
 const NavLinks = () => {
     return (
         <StyledNavLinks>
             <StyledSidebarLink to="/account">
-                <AccountCircleIcon />
+                <AccountCircleIcon sx={{ color: color }} />
                 Account
             </StyledSidebarLink>
 
             <StyledSidebarLink to="/pets">
-                <PetsIcon /> My Pets
+                <PetsIcon sx={{ color: color }} /> My Pets
             </StyledSidebarLink>
 
             <StyledSidebarLink to="/expenses">
-                <PaidIcon /> Expenses
+                <PaidIcon sx={{ color: color }} /> Expenses
             </StyledSidebarLink>
 
             <StyledSidebarLink to="/health">
-                <LocalHospitalIcon />
+                <LocalHospitalIcon sx={{ color: color }} />
                 Health
             </StyledSidebarLink>
         </StyledNavLinks>

@@ -10,6 +10,7 @@ import path from "path";
 
 import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/user.js";
+import petsRoutes from "./routes/pets.js";
 
 import { fileURLToPath } from "url";
 
@@ -30,6 +31,7 @@ app.use(cors());
 
 app.use("/auth", authRoutes);
 app.use("/user", userRoutes);
+app.use("/pets", petsRoutes);
 
 /* errors handler */
 
