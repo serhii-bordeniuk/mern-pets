@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -44,30 +44,40 @@ const ButtonsContainer = styled(Box)`
 `;
 
 const AddPetForm = () => {
-    const schema = yup.object({
-        name: yup
-            .string()
-            .matches(/^[a-zA-Z]+$/, "Name must contain only letters")
-            .min(3, "Name must be at least 3 characters"),
-        petType: yup.string().required("Select a valid option"),
-        sex: yup.string().required("Select a valid option"),
-        breed: yup
-            .string()
-            .matches(/^[a-zA-Z]+$/, "Breed must contain only letters")
-            .min(3, "Breed must be at least 3 characters"),
-        weight: yup.string().matches(/^[0-9]+$/, "Weight must contain only numbers"),
-        birthDate: yup.date().required("This is a required field"),
-        description: yup.string().min(2, "Description must be at least 2 characters").max(100),
-    });
-
     const [activeStep, setActiveStep] = useState(1);
+
+    const schemaArray = [
+        yup.object({
+            name: yup
+                .string()
+                .matches(/^[a-zA-Z]+$/, "Name must contain only letters")
+                .min(3, "Name must be at least 3 characters"),
+        }),
+        yup.object({
+            petType: yup.string().required("Select a valid option"),
+            sex: yup.string().required("Select a valid option"),
+        }),
+        yup.object({
+            breed: yup
+                .string()
+                .matches(/^[a-zA-Z]+$/, "Breed must contain only letters")
+                .min(3, "Breed must be at least 3 characters"),
+            weight: yup.string().matches(/^[0-9]+$/, "Weight must contain only numbers"),
+        }),
+        yup.object({
+            birthDate: yup.date().required("This is a required field"),
+            description: yup.string().min(2, "Description must be at least 2 characters").max(100),
+        }),
+    ];
+    const schema = schemaArray[activeStep - 1];
+
     const methods = useForm({
         resolver: yupResolver(schema),
         mode: "all",
     });
-    const { handleSubmit } = methods;
+    const { handleSubmit, trigger } = methods;
 
-    const StepContent = () => {
+    const StepContent = useCallback(() => {
         switch (activeStep) {
             case 1:
                 return <Step1 />;
@@ -80,13 +90,14 @@ const AddPetForm = () => {
             default:
                 return null;
         }
-    };
+    }, [activeStep]);
 
-    const handleNext = () => {
-        if (activeStep < 4) {
-            setActiveStep((prevState) => prevState + 1);
+    const handleNext = async () => {
+        const isStepValid = await trigger();
+        if (isStepValid) {
+          setActiveStep((prevState) => prevState + 1);
         }
-    };
+      };
 
     const handleBack = () => {
         if (activeStep > 1) {
@@ -129,13 +140,21 @@ const AddPetForm = () => {
                                 }}
                             />
 
-                            <FormButton
-                                onClick={handleNext}
-                                title="Next"
-                                color="#403128"
-                                sx={{ width: "150px", height: "56px", fontSize: "18px" }}
-                                type={activeStep === 4 ? "submit" : "button"}
-                            />
+                            {activeStep === 4 ? (
+                                <FormButton
+                                    title="Submit"
+                                    color="#403128"
+                                    sx={{ width: "150px", height: "56px", fontSize: "18px" }}
+                                    onClick={handleSubmit(onSubmit)}
+                                />
+                            ) : (
+                                <FormButton
+                                    onClick={handleNext}
+                                    title="Next"
+                                    color="#403128"
+                                    sx={{ width: "150px", height: "56px", fontSize: "18px" }}
+                                />
+                            )}
                         </ButtonsContainer>
                     </FormElement>
                 </form>

@@ -25,7 +25,7 @@ const Step3 = () => {
                     helperText={errors.breed?.message}
                 />
             </FormControl>
-            <h1>Weight Sally`s?</h1>
+            <h1>Weight?</h1>
             <FormControl sx={{ ...inputStyles }} variant="outlined">
                 <TextField
                     key="weight-input"
