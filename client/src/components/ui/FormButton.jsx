@@ -1,8 +1,9 @@
 import { Button } from "@mui/material";
 
-const FormButton = ({ sx, title, color, type, onClick }) => {
+const FormButton = ({ sx, title, color, type, onClick, disabled }) => {
     return (
         <Button
+            disabled={disabled}
             size="medium"
             onClick={onClick}
             type={type}

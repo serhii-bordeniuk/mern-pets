@@ -4,25 +4,13 @@ import { yupResolver } from "@hookform/resolvers/yup";
 
 import { Box, Typography } from "@mui/material";
 import { inputStyles } from "styles/styles";
-import styled from "@emotion/styled";
-import fileIcon from "../../resources/images/icons/file.svg";
+
 import { TextField, FormControl } from "@mui/material";
 import FormButton from "components/ui/FormButton";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { setLogout } from "slices/authSlice";
-
-const FilePicker = styled(Box)`
-    display: flex;
-    flex-shrink: 0;
-    align-items: center;
-    justify-content: center;
-    height: 188px;
-    width: 188px;
-    border-radius: 100%;
-    border: 1px solid #403128;
-    cursor: pointer;
-`;
+import FilePicker from "components/FilePicker";
 
 const AccountForm = ({ request }) => {
     const token = useSelector((state) => state.auth.token);
@@ -107,9 +95,9 @@ const AccountForm = ({ request }) => {
                             alignItems: "flex-end",
                         }}
                     >
-                        <FilePicker>
-                            <img src={fileIcon} alt="userImage" />
-                        </FilePicker>
+                        <FilePicker/>
+                            
+                        
                         <Box
                             sx={{
                                 display: "flex",
