@@ -9,6 +9,8 @@ import PetsPage from "pages/petsPage";
 import Layout from "components/Layout";
 import Notification from "components/ui/Notification";
 import AddPetPage from "pages/addPetPage";
+import PetItem from "components/PetItem";
+import PetDefailsPage from "pages/petDetailsPage";
 
 function App() {
     const isAuth = Boolean(useSelector((state) => state.auth.token));
@@ -56,6 +58,14 @@ function App() {
                         element={
                             <Layout pageTitle="Pets Page" auth={isAuth}>
                                 <AddPetPage />
+                            </Layout>
+                        }
+                    />
+                    <Route
+                        path="/pets/:petId"
+                        element={
+                            <Layout pageTitle="Pet Details" auth={isAuth}>
+                                <PetDefailsPage />
                             </Layout>
                         }
                     />

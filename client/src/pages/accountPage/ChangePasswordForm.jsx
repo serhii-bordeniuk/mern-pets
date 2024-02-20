@@ -59,6 +59,7 @@ const ChangePasswordForm = ({ request }) => {
     };
 
     const updateUserPassword = async (formData) => {
+        //eslint-disable-next-line
         const updatedPassword = await request("http://localhost:3001/user/password", {
             method: "PATCH",
             headers: {
@@ -71,7 +72,6 @@ const ChangePasswordForm = ({ request }) => {
             },
         });
 
-        console.log(updatedPassword);
     };
 
     const onSubmit = (formData) => {

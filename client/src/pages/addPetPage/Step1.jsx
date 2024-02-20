@@ -8,9 +8,6 @@ const Step1 = () => {
     const { register, formState } = useFormContext();
     const errors = formState.errors;
 
-    console.log(errors)
-    console.log('render')
-
     return (
         <StepWrapper>
             <h1>Photo</h1>

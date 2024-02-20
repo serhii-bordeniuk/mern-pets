@@ -11,6 +11,9 @@ import IconComponent from "components/ui/IconComponent";
 import FormButton from "components/ui/FormButton";
 import Step3 from "./Step3";
 import Step4 from "./Step4";
+import { useHttp } from "utils/useHttp";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const Wrapper = styled(Box)`
     margin-top: 35px;
@@ -45,6 +48,9 @@ const ButtonsContainer = styled(Box)`
 
 const AddPetForm = () => {
     const [activeStep, setActiveStep] = useState(1);
+    const { request } = useHttp();
+    const token = useSelector((state) => state.auth.token);
+    const navigate = useNavigate();
 
     const schemaArray = [
         yup.object({
@@ -60,7 +66,7 @@ const AddPetForm = () => {
         yup.object({
             breed: yup
                 .string()
-                .matches(/^[a-zA-Z]+$/, "Breed must contain only letters")
+                .matches(/^[a-zA-Z\s]+$/, "Breed must contain only letters")
                 .min(3, "Breed must be at least 3 characters"),
             weight: yup.string().matches(/^[0-9]+$/, "Weight must contain only numbers"),
         }),
@@ -95,9 +101,9 @@ const AddPetForm = () => {
     const handleNext = async () => {
         const isStepValid = await trigger();
         if (isStepValid) {
-          setActiveStep((prevState) => prevState + 1);
+            setActiveStep((prevState) => prevState + 1);
         }
-      };
+    };
 
     const handleBack = () => {
         if (activeStep > 1) {
@@ -105,10 +111,21 @@ const AddPetForm = () => {
         }
     };
 
-    console.log(activeStep);
+    const addPet = async (formData) => {
+        const addedPet = await request("http://localhost:3001/pets/add-pet", {
+            method: "put",
+            data: formData,
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+            },
+        });
+        console.log(addedPet);
+        navigate("/pets");
+    };
 
     const onSubmit = (formData) => {
-        console.log("formData", formData);
+        addPet(formData);
     };
 
     return (
