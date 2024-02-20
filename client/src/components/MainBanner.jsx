@@ -1,7 +1,7 @@
 import logo from "../resources/images/logo.svg";
 import banner from "../resources/images/banner.svg";
 import styled from "@emotion/styled";
-import { Box } from "@mui/material";
+import { Box, useTheme } from "@mui/material";
 import { useMediaQuery } from "@mui/material";
 
 const ImageWrapper = styled.div`
@@ -9,10 +9,13 @@ const ImageWrapper = styled.div`
 `;
 
 const MainBanner = () => {
+    const { palette } = useTheme();
+    const secondary = palette.secondary.main;
+
     const isNonMobile = useMediaQuery("(min-width: 1300px)");
     return (
         isNonMobile && (
-            <Box sx={{ backgroundColor: "#EBE6E1" }}>
+            <Box sx={{ backgroundColor: secondary }}>
                 <ImageWrapper style={{ marginTop: "138px" }}>
                     <img src={logo} alt="logo" />
                 </ImageWrapper>

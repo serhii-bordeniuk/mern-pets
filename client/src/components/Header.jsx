@@ -17,7 +17,7 @@ const StyledHeader = styled(Box)`
 const Header = ({ pageTitle }) => {
     return (
         <StyledHeader>
-            <Typography sx={{ fontSize: "48px", fontWeight: "600" }}>{pageTitle}</Typography>
+            <Typography fontWeight="600" variant="h1">{pageTitle}</Typography>
             <Box>
                 <NotificationsNoneIcon sx={{cursor: "pointer"}} />
             </Box>

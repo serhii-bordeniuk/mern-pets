@@ -1,8 +1,10 @@
-import styled from "@emotion/styled";
-import { Box } from "@mui/material";
+import { Box, useTheme } from "@mui/material";
 import FormButton from "./ui/FormButton";
 
 const ListPlaceholder = ({ title, imageSrc, onClick }) => {
+    const { palette } = useTheme();
+    const primary = palette.primary.main;
+
     return (
         <Box
             sx={{
@@ -18,7 +20,7 @@ const ListPlaceholder = ({ title, imageSrc, onClick }) => {
             <Box>
                 <img src={imageSrc} alt="placeholder" />
             </Box>
-            <FormButton title="ADD +" onClick={onClick} color="#403128" sx={{ width: "156px" }} />
+            <FormButton title="ADD +" onClick={onClick} color={primary} sx={{ width: "156px" }} />
         </Box>
     );
 };

@@ -1,6 +1,14 @@
 import { useState } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { Box, FormControl, IconButton, InputAdornment, TextField, Typography } from "@mui/material";
+import {
+    Box,
+    FormControl,
+    IconButton,
+    InputAdornment,
+    TextField,
+    Typography,
+    useTheme,
+} from "@mui/material";
 import FormButton from "components/ui/FormButton";
 import { inputStyles } from "styles/styles";
 import * as yup from "yup";
@@ -13,6 +21,8 @@ const ChangePasswordForm = ({ request }) => {
     const [showOldPassword, setShowOldPassword] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmedPassword, setShowConfirmedPassword] = useState(false);
+    const { palette } = useTheme();
+    const primary = palette.primary.main;
 
     const schema = yup.object({
         oldPassword: yup
@@ -71,7 +81,6 @@ const ChangePasswordForm = ({ request }) => {
                 password: formData.password,
             },
         });
-
     };
 
     const onSubmit = (formData) => {
@@ -82,7 +91,9 @@ const ChangePasswordForm = ({ request }) => {
     return (
         <form noValidate onSubmit={handleSubmit(onSubmit)}>
             <Box sx={{ padding: "10px" }}>
-                <Typography sx={{ fontSize: "20px" }}>Change password</Typography>
+                <Typography variant="h4" fontWeight="600">
+                    Change password
+                </Typography>
                 <Box
                     sx={{
                         display: "flex",
@@ -173,7 +184,7 @@ const ChangePasswordForm = ({ request }) => {
                     <FormButton
                         sx={{ width: "180px" }}
                         title="Change Password"
-                        color="#403128"
+                        color={primary}
                         type="submit"
                     />
                 </Box>

@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, useTheme } from "@mui/material";
 import { inputStyles } from "styles/styles";
 
 import { TextField, FormControl } from "@mui/material";
@@ -15,6 +15,8 @@ import FilePicker from "components/FilePicker";
 const AccountForm = ({ request }) => {
     const token = useSelector((state) => state.auth.token);
     const dispatch = useDispatch();
+    const { palette } = useTheme();
+    const primary = palette.primary.main;
 
     const schema = yup.object({
         userName: yup
@@ -84,7 +86,9 @@ const AccountForm = ({ request }) => {
     return (
         <form noValidate onSubmit={handleSubmit(onSubmit)}>
             <Box sx={{ padding: "10px" }}>
-                <Typography sx={{ fontSize: "20px" }}>Basic details</Typography>
+                <Typography variant="h4" fontWeight="600">
+                    Basic details
+                </Typography>
                 <Box sx={{ textAlign: "center" }}>
                     <Box
                         sx={{
@@ -95,9 +99,8 @@ const AccountForm = ({ request }) => {
                             alignItems: "flex-end",
                         }}
                     >
-                        <FilePicker/>
-                            
-                        
+                        <FilePicker />
+
                         <Box
                             sx={{
                                 display: "flex",
@@ -156,7 +159,7 @@ const AccountForm = ({ request }) => {
                         sx={{ marginTop: "20px", width: "95px" }}
                         title="Save"
                         width="95px"
-                        color="#403128"
+                        color={primary}
                         type="submit"
                     />
                 </Box>

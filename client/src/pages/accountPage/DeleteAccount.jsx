@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Typography, useTheme } from "@mui/material";
 import FormButton from "components/ui/FormButton";
 import styled from "@emotion/styled";
 import Dialog from "@mui/material/Dialog";
@@ -21,9 +21,13 @@ const StyledMainText = styled(StyledText)`
 `;
 
 const DeleteAccount = ({ request }) => {
+    
     const [open, setOpen] = useState(false);
     const token = useSelector((state) => state.auth.token);
     const dispatch = useDispatch();
+    const { palette } = useTheme();
+    const deleteColor = palette.delete.main
+    const primary = palette.primary.main
 
     const handleClickDialog = (type) => {
         if (type === "open") {
@@ -49,13 +53,13 @@ const DeleteAccount = ({ request }) => {
     return (
         <Box sx={{ padding: "10px 29px" }}>
             <Box sx={{ display: "flex", gap: "45px", alignItems: "center" }}>
-                <StyledMainText>Delete Account</StyledMainText>
+                <Typography variant="h4" color={deleteColor}>Delete Account</Typography>
                 <StyledText>
                     Delete your account and all your source data. This is irreversible.
                 </StyledText>
                 <FormButton
                     title="Delete"
-                    color="#D13737"
+                    color={deleteColor}
                     sx={{ width: "95px" }}
                     onClick={() => handleClickDialog("open")}
                 />
@@ -79,7 +83,7 @@ const DeleteAccount = ({ request }) => {
                         onClick={() => handleClickDialog("close")}
                         title="Go Back"
                         sx={{ width: "95px" }}
-                        color="#403128"
+                        color={primary}
                     />
                     <FormButton
                         onClick={onDeleteAccount}
@@ -87,7 +91,7 @@ const DeleteAccount = ({ request }) => {
                         width="95px"
                         title="Delete"
                         sx={{ width: "95px" }}
-                        color="#D13737"
+                        color={deleteColor}
                     />
                 </DialogActions>
             </Dialog>

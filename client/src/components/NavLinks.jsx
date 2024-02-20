@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, useTheme } from "@mui/material";
 import styled from "@emotion/styled";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import PetsIcon from "@mui/icons-material/Pets";
@@ -16,26 +16,27 @@ const StyledNavLinks = styled(Box)`
     width: 272px;
 `;
 
-const color = "#403128";
-
 const NavLinks = () => {
+    const { palette } = useTheme();
+    const primary = palette.primary.main;
+
     return (
         <StyledNavLinks>
             <StyledSidebarLink to="/account">
-                <AccountCircleIcon sx={{ color: color }} />
+                <AccountCircleIcon sx={{ color: primary }} />
                 Account
             </StyledSidebarLink>
 
             <StyledSidebarLink to="/pets">
-                <PetsIcon sx={{ color: color }} /> My Pets
+                <PetsIcon sx={{ color: primary }} /> My Pets
             </StyledSidebarLink>
 
             <StyledSidebarLink to="/expenses">
-                <PaidIcon sx={{ color: color }} /> Expenses
+                <PaidIcon sx={{ color: primary }} /> Expenses
             </StyledSidebarLink>
 
             <StyledSidebarLink to="/health">
-                <LocalHospitalIcon sx={{ color: color }} />
+                <LocalHospitalIcon sx={{ color: primary }} />
                 Health
             </StyledSidebarLink>
         </StyledNavLinks>

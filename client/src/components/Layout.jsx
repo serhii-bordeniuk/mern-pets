@@ -8,7 +8,7 @@ import { LayoutContainer } from "styles/styles";
 const LayoutWrapper = styled(Box)`
     width: 100%;
     margin-left: 352px;
-    margin-top: 57px;
+    margin-top: 40px;
     position: relative;
 `;
 

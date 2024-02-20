@@ -125,7 +125,7 @@ const AuthForm = () => {
 
     return (
         <Box sx={{ textAlign: "center", padding: "15px", maxWidth: "612px", width: "100%" }}>
-            <Typography variant="h1" sx={{ fontSize: "48px", fontWeight: "800" }}>
+            <Typography variant="h1" fontWeight="800">
                 {isLogin ? "Log In" : "Sign Up"}
             </Typography>
             <form
@@ -204,7 +204,7 @@ const AuthForm = () => {
                         </FormControl>
                     </>
                 )}
-                <Button
+                <Button 
                     disabled={requestStatus === "pending"}
                     sx={{ ...buttonStyles }}
                     size="large"

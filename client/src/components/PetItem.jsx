@@ -1,9 +1,11 @@
-import { Box } from "@mui/material";
+import { Box, useTheme } from "@mui/material";
 import catImage from "../resources/images/cat-imgae.png";
 import { useNavigate } from "react-router-dom";
 
 const PetItem = ({ name, petId }) => {
     const navigate = useNavigate();
+    const {palette} = useTheme()
+    const primary = palette.primary.main
 
     return (
         <Box
@@ -25,7 +27,7 @@ const PetItem = ({ name, petId }) => {
                     bottom: "0",
                     left: "0",
                     right: "0",
-                    backgroundColor: "#403128",
+                    backgroundColor: primary,
                     color: "#fff",
                     borderBottomLeftRadius: "10px",
                     borderBottomRightRadius: "10px",
