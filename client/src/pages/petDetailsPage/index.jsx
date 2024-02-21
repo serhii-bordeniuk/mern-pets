@@ -11,9 +11,7 @@ import {
     DialogTitle,
     FormControl,
     InputAdornment,
-    InputLabel,
     TextField,
-    TextareaAutosize,
     useTheme,
 } from "@mui/material";
 import FilePicker from "components/FilePicker";
@@ -23,13 +21,14 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { petDedailsSchema } from "utils/validators";
 import { formatDate, getYearsOld } from "utils/utils";
 import FormButton from "components/ui/FormButton";
+import Modal from "components/Modal";
 
 const PetDefailsPage = () => {
     const { request } = useHttp();
     const { petId } = useParams();
     const token = useSelector((state) => state.auth.token);
     const [pet, setPet] = useState();
-    const [open, setOpen] = useState(false);
+    const [isOpen, setOpen] = useState(false);
     const { palette } = useTheme();
     const deleteColor = palette.delete.main;
     const primary = palette.primary.main;
@@ -48,6 +47,14 @@ const PetDefailsPage = () => {
             setValue("birthDate", formatDate(fetchedPet?.pet.birthDate));
             setValue("description", fetchedPet?.pet.description);
             setPet(fetchedPet.pet);
+        }
+    };
+
+    const handleClickDialog = (type) => {
+        if (type === "open") {
+            setOpen(true);
+        } else {
+            setOpen(false);
         }
     };
 
@@ -74,7 +81,7 @@ const PetDefailsPage = () => {
             },
         });
         if (deletedPet) {
-            navigate("/pets")
+            navigate("/pets");
         }
     };
 
@@ -92,14 +99,6 @@ const PetDefailsPage = () => {
         resolver: yupResolver(petDedailsSchema),
         mode: "onSubmit",
     });
-
-    const handleClickDialog = (type) => {
-        if (type === "open") {
-            setOpen(true);
-        } else {
-            setOpen(false);
-        }
-    };
 
     return (
         <Box mt="50px">
@@ -215,38 +214,13 @@ const PetDefailsPage = () => {
                     />
                 </Box>
             </form>
-
-            <Dialog
-                open={open}
-                onClose={() => handleClickDialog("close")}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                <DialogTitle id="alert-dialog-title">
-                    {"Danger! Are you sure you want to delete your pet permanently?"}
-                </DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        You will lose all your data.
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <FormButton
-                        onClick={() => handleClickDialog("close")}
-                        title="Go Back"
-                        sx={{ width: "95px" }}
-                        color={primary}
-                    />
-                    <FormButton
-                        onClick={handleDeletePet}
-                        autoFocus
-                        width="95px"
-                        title="Delete Pet"
-                        sx={{ width: "95px" }}
-                        color={deleteColor}
-                    />
-                </DialogActions>
-            </Dialog>
+            <Modal
+                isOpen={isOpen}
+                onClose={handleClickDialog}
+                handleAction={handleDeletePet}
+                alertDialogText="Warning! Are your sure you want to delete your pet data?"
+                dialogContentText="Your pet will be deleted"
+            />
         </Box>
     );
 };

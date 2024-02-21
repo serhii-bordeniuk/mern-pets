@@ -1,34 +1,28 @@
 import { Box, Typography, useTheme } from "@mui/material";
 import FormButton from "components/ui/FormButton";
 import styled from "@emotion/styled";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setLogout } from "slices/authSlice";
+import Modal from "components/Modal";
 
 const StyledText = styled.p`
     margin: 0;
     padding: 0;
 `;
 
-
 const DeleteAccount = ({ request }) => {
-    const [open, setOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
     const token = useSelector((state) => state.auth.token);
     const dispatch = useDispatch();
     const { palette } = useTheme();
     const deleteColor = palette.delete.main;
-    const primary = palette.primary.main;
 
     const handleClickDialog = (type) => {
         if (type === "open") {
-            setOpen(true);
+            setIsOpen(true);
         } else {
-            setOpen(false);
+            setIsOpen(false);
         }
     };
 
@@ -61,37 +55,13 @@ const DeleteAccount = ({ request }) => {
                     onClick={() => handleClickDialog("open")}
                 />
             </Box>
-            <Dialog
-                open={open}
-                onClose={() => handleClickDialog("close")}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                <DialogTitle id="alert-dialog-title">
-                    {"Danger! Are you sure you want to delete your account permanently?"}
-                </DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        You will lose all your data.
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <FormButton
-                        onClick={() => handleClickDialog("close")}
-                        title="Go Back"
-                        sx={{ width: "95px" }}
-                        color={primary}
-                    />
-                    <FormButton
-                        onClick={onDeleteAccount}
-                        autoFocus
-                        width="95px"
-                        title="Delete"
-                        sx={{ width: "95px" }}
-                        color={deleteColor}
-                    />
-                </DialogActions>
-            </Dialog>
+            <Modal
+                isOpen={isOpen}
+                onClose={handleClickDialog}
+                handleAction={onDeleteAccount}
+                alertDialogText="Warning! Are your sure you want to delete your account?"
+                dialogContentText="Your account will be deleted! This is irreversible!"
+            />
         </Box>
     );
 };
