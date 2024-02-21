@@ -15,10 +15,7 @@ export const getUser = async (req, res, next) => {
         }
         res.status(200).json(user);
     } catch (error) {
-        if (!error.statusCode) {
-            error.statusCode = 500;
-        }
-        next(error);
+        handleErrors(error, next)
     }
 };
 
@@ -54,10 +51,7 @@ export const updateUser = async (req, res, next) => {
             message: "User updated",
         });
     } catch (error) {
-        if (!error.statusCode) {
-            error.statusCode = 500;
-        }
-        next(error);
+        handleErrors(error, next)
     }
 };
 
@@ -87,10 +81,7 @@ export const updateUserPassword = async (req, res, next) => {
         const result = await user.save();
         res.status(201).json({ message: "password updated" });
     } catch (error) {
-        if (!error.statusCode) {
-            error.statusCode = 500;
-        }
-        next(error);
+        handleErrors(error, next)
     }
 };
 
@@ -113,9 +104,6 @@ export const deleteUser = async (req, res, next) => {
         const deletedUser = await User.findByIdAndDelete(userToDelete._id);
         res.status(200).json({ message: "User deleted successfully" });
     } catch (error) {
-        if (!error.statusCode) {
-            error.statusCode = 500;
-        }
-        next(error);
+        handleErrors(error, next)
     }
 };

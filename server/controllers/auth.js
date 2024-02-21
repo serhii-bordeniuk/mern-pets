@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import { validationResult } from "express-validator";
 import jwt from "jsonwebtoken";
+import { handleErrors } from "../utlis/utlis.js";
 
 import User from "../models/User.js";
 
@@ -28,10 +29,7 @@ export const signup = async (req, res, next) => {
         const result = await user.save();
         res.status(201).json({ message: "User created", userId: result._id });
     } catch (error) {
-        if (!error.statusCode) {
-            error.statusCode = 500;
-        }
-        next(error);
+        handleErrors(error, next);
     }
 };
 
@@ -64,9 +62,6 @@ export const login = async (req, res, next) => {
         );
         res.status(200).json({ token: token, userId: loadedUser._id.toString() });
     } catch (error) {
-        if (!error.statusCode) {
-            error.statusCode = 500;
-        }
-        next(error);
+        handleErrors(error, next);
     }
 };

@@ -1,6 +1,7 @@
 import User from "../models/User.js";
 import Pet from "../models/Pet.js";
 import { validationResult } from "express-validator";
+import { handleErrors } from "../utlis/utlis.js";
 
 export const getUserPets = async (req, res, next) => {
     const userId = req.userId;
@@ -17,10 +18,7 @@ export const getUserPets = async (req, res, next) => {
 
         res.status(200).json({ message: "Pets fetched successfully.", pets: pets });
     } catch (error) {
-        if (!error.statusCode) {
-            error.statusCode = 500;
-        }
-        next(error);
+        handleErrors(error, next)
     }
 };
 
@@ -49,10 +47,7 @@ export const getPetById = async (req, res, next) => {
 
         res.status(200).json({ message: "Pet fetched", pet: pet });
     } catch (error) {
-        if (!error.statusCode) {
-            error.statusCode = 500;
-        }
-        next(error);
+        handleErrors(error, next)
     }
 };
 
@@ -97,10 +92,7 @@ export const addPet = async (req, res, next) => {
             owner: { _id: userId },
         });
     } catch (error) {
-        if (!error.statusCode) {
-            error.statusCode = 500;
-        }
-        next(error);
+        handleErrors(error, next)
     }
 };
 
@@ -129,10 +121,7 @@ export const updatePet = async (req, res, next) => {
 
         res.status(200).json({ message: "Pet successfully updated." });
     } catch (error) {
-        if (!error.statusCode) {
-            error.statusCode = 500;
-        }
-        next(error);
+        handleErrors(error, next)
     }
 };
 
@@ -159,9 +148,6 @@ export const deletePet = async (req, res, next) => {
         await Pet.findByIdAndDelete(petId);
         res.status(200).json({ message: "Pet deleted successfully." });
     } catch (error) {
-        if (!error.statusCode) {
-            error.statusCode = 500;
-        }
-        next(error);
+        handleErrors(error, next)
     }
 };
