@@ -46,19 +46,23 @@ const AccountForm = ({ request }) => {
         fetchUserData(); //eslint-disable-next-line
     }, [token, request, setValue]);
 
-    const onSubmit = (formData) => {
-        const formDataToSend = {};
-        Object.keys(dirtyFields).forEach((key) => {
-            formDataToSend[key] = formData[key];
-        });
-        updateUser(formDataToSend);
+    const onSubmit = (data) => {
+        // const formDataToSend = new FormData();
+        // Object.keys(dirtyFields).forEach((key) => {
+        //     formDataToSend.append(key, formData[key]);
+        // });
+        updateUser(data);
     };
 
     const updateUser = async (formData) => {
+        const formDataToSend = new FormData();
+        Object.keys(dirtyFields).forEach((key) => {
+            formDataToSend.append(key, formData[key]);
+        });
         //eslint-disable-next-line
         const updatedUser = await request("http://localhost:3001/user", {
             method: "put",
-            data: formData,
+            data: formDataToSend,
             headers: {
                 Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json",

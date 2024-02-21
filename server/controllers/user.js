@@ -4,6 +4,7 @@ import Pet from "../models/Pet.js";
 import Expense from "../models/Expense.js";
 import Event from "../models/Event.js";
 import bcrypt from "bcrypt";
+import { handleErrors } from "../utlis/utlis.js";
 
 export const getUser = async (req, res, next) => {
     try {

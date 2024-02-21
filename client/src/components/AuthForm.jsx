@@ -52,15 +52,13 @@ const AuthForm = () => {
         mode: "all",
     });
 
-    const login = async (formData) => {
-        dispatch(setNotification({ requestStatus: "pending" }));
-
+    const login = async (data) => {
+        const formData = new FormData();
+        formData.append("email", data.email);
+        formData.append("password", data.password);
         const loggedInUser = await request(`http://localhost:3001/auth/login`, {
             method: "post",
-            data: {
-                email: formData.email,
-                password: formData.password,
-            },
+            data: formData,
             headers: {
                 "Content-Type": "application/json",
             },
@@ -72,20 +70,16 @@ const AuthForm = () => {
                     token: loggedInUser.token,
                 })
             );
-            dispatch(
-                setNotification({ requestStatus: "success", title: "Successfully Logged In" })
-            );
             navigate("/account");
         }
     };
-    const signup = async (formData) => {
-        dispatch(setNotification({ requestStatus: "pending" }));
+    const signup = async (data) => {
+        const formData = new FormData();
+        formData.append("email", data.email);
+        formData.append("password", data.password);;
         const signedUpUser = await request(`http://localhost:3001/auth/signup`, {
             method: "post",
-            data: {
-                email: formData.email,
-                password: formData.password,
-            },
+            data: formData,
             headers: {
                 "Content-Type": "application/json",
             },

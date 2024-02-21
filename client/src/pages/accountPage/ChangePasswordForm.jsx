@@ -49,7 +49,10 @@ const ChangePasswordForm = ({ request }) => {
         }
     };
 
-    const updateUserPassword = async (formData) => {
+    const updateUserPassword = async (data) => {
+        const formData = new FormData();
+        formData.append("oldPassword", data.oldPassword);
+        formData.append("password", data.password);
         //eslint-disable-next-line
         const updatedPassword = await request("http://localhost:3001/user/password", {
             method: "PATCH",
@@ -57,10 +60,7 @@ const ChangePasswordForm = ({ request }) => {
                 Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json",
             },
-            data: {
-                oldPassword: formData.oldPassword,
-                password: formData.password,
-            },
+            data: formData,
         });
     };
 

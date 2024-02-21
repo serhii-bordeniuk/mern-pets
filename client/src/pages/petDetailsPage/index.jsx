@@ -62,12 +62,19 @@ const PetDefailsPage = () => {
         getPetById(petId);
     }, []);
 
-    const handleUpdatePet = async (formDataToSend) => {
+    const handleUpdatePet = async (data) => {
+        console.log(data);
+        const formData = new FormData();
+        for (const key in data) {
+            formData.append(key, data[key]);
+        }
+        console.log(formData);
         const updatedPet = await request(`http://localhost:3001/pets/${petId}`, {
             method: "put",
-            data: formDataToSend,
+            data: formData,
             headers: {
                 Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
             },
         });
     };
