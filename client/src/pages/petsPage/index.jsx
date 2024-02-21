@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useHttp } from "utils/useHttp";
-import { Box, useMediaQuery } from "@mui/material";
+import { Box, useMediaQuery, useTheme } from "@mui/material";
 import styled from "@emotion/styled";
 import ListPlaceholder from "components/ListPlaceholder";
 import placeholderImage from "../../resources/images/pet-banner.svg";
@@ -14,7 +14,9 @@ const PetsPage = () => {
     const isNonMobile = useMediaQuery("(min-width:1625px)");
     const { request } = useHttp();
     const navigate = useNavigate();
+    const { palette } = useTheme();
     const [pets, setPets] = useState([]);
+    const primary = palette.primary.main;
     useEffect(() => {
         const fetchedPets = async () => {
             const petsList = await request("http://localhost:3001/pets", {
@@ -30,8 +32,6 @@ const PetsPage = () => {
         fetchedPets();
     }, []);
 
-    console.log("pets", pets);
-
     return (
         <>
             {pets?.length < 1 ? (
@@ -42,19 +42,32 @@ const PetsPage = () => {
                 />
             ) : (
                 <>
-                    <Box>
-                        <FormButton title="Add" color="" />
-                    </Box>
-                    <Box
-                        display="flex"
-                        flexWrap="wrap"
-                        justifyContent={isNonMobile ? "space-between" : "space-around"}
-                        gap="15px"
-                        mt="85px"
-                    >
-                        {pets.map((item) => {
-                            return <PetItem key={item._id} name={item.name} petId={item._id} />;
-                        })}
+                    <Box mt="20px">
+                        <Box
+                            mt="50px"
+                            display="flex"
+                            flexWrap="wrap"
+                            justifyContent={isNonMobile ? "space-between" : "space-around"}
+                            gap="15px"
+                        >
+                            {pets.map((item) => {
+                                return <PetItem key={item._id} name={item.name} petId={item._id} />;
+                            })}
+                        </Box>
+                        <Box display="flex" justifyContent="flex-end">
+                            <FormButton
+                                sx={{
+                                    bottom: "15px",
+                                    position: "fixed",
+                                    zIndex: "10",
+                                    width: "150px",
+                                    height: "56px",
+                                }}
+                                title="Add +"
+                                color={primary}
+                                onClick={() => navigate("/pets/add-pet")}
+                            />
+                        </Box>
                     </Box>
                 </>
             )}

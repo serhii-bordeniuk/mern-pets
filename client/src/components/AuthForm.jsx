@@ -204,7 +204,7 @@ const AuthForm = () => {
                         </FormControl>
                     </>
                 )}
-                <Button 
+                <Button
                     disabled={requestStatus === "pending"}
                     sx={{ ...buttonStyles }}
                     size="large"

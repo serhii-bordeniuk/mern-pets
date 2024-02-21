@@ -2,7 +2,7 @@ import { useFormContext } from "react-hook-form";
 import { inputStyles } from "styles/styles";
 import { StepWrapper } from "./AddPetForm";
 import FilePicker from "components/FilePicker";
-import { FormControl, TextField } from "@mui/material";
+import { FormControl, InputAdornment, TextField } from "@mui/material";
 
 const Step3 = () => {
     const { register, formState } = useFormContext();
@@ -34,9 +34,12 @@ const Step3 = () => {
                     type="text"
                     label="Weight"
                     variant="outlined"
-                    placeholder="Weight of your pet in kg"
+                    placeholder="Weight of your pet"
                     error={!!errors.weight}
                     helperText={errors.weight?.message}
+                    InputProps={{
+                        startAdornment: <InputAdornment position="start">kg</InputAdornment>,
+                      }}
                 />
             </FormControl>
         </StepWrapper>

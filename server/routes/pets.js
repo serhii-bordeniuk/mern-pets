@@ -1,4 +1,4 @@
-import { addPet, getUserPets } from "../controllers/pets.js";
+import { addPet, deletePet, getPetById, getUserPets, updatePet } from "../controllers/pets.js";
 import { isAuth } from "../middleware/is-auth.js";
 import express from "express";
 import { body } from "express-validator";
@@ -21,5 +21,20 @@ router.put(
     isAuth,
     addPet
 );
+
+router.get("/:petId", isAuth, getPetById);
+
+router.put(
+    "/:petId",
+    [
+        body("name").trim().isLength({ min: 3 }),
+        body("weight").trim().isLength({ min: 1 }),
+        body("description").isLength({ min: 3, max: 200 }),
+    ],
+    isAuth,
+    updatePet
+);
+
+router.delete("/:petId", isAuth, deletePet);
 
 export default router;

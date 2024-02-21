@@ -14,6 +14,7 @@ import Step4 from "./Step4";
 import { useHttp } from "utils/useHttp";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import dayjs from 'dayjs';
 
 const Wrapper = styled(Box)`
     margin-top: 35px;
@@ -71,7 +72,7 @@ const AddPetForm = () => {
             weight: yup.string().matches(/^[0-9]+$/, "Weight must contain only numbers"),
         }),
         yup.object({
-            birthDate: yup.date().required("This is a required field"),
+            birthDate: yup.date().required("Birth Date is a required field"),
             description: yup.string().min(2, "Description must be at least 2 characters").max(100),
         }),
     ];
@@ -80,6 +81,9 @@ const AddPetForm = () => {
     const methods = useForm({
         resolver: yupResolver(schema),
         mode: "all",
+        defaultValues: {
+            birthDate: dayjs(),
+        },
     });
     const { handleSubmit, trigger } = methods;
 

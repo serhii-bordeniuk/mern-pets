@@ -23,7 +23,6 @@ const Step2 = () => {
                             id="pet-type-select"
                             variant="outlined"
                             label="Type"
-                            // {...register("petType")}
                             {...field}
                             error={!!errors.petType}
                         >

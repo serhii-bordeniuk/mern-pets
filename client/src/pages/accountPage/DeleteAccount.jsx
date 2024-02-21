@@ -15,19 +15,14 @@ const StyledText = styled.p`
     padding: 0;
 `;
 
-const StyledMainText = styled(StyledText)`
-    color: #d13737;
-    font-size: 20px;
-`;
 
 const DeleteAccount = ({ request }) => {
-    
     const [open, setOpen] = useState(false);
     const token = useSelector((state) => state.auth.token);
     const dispatch = useDispatch();
     const { palette } = useTheme();
-    const deleteColor = palette.delete.main
-    const primary = palette.primary.main
+    const deleteColor = palette.delete.main;
+    const primary = palette.primary.main;
 
     const handleClickDialog = (type) => {
         if (type === "open") {
@@ -53,7 +48,9 @@ const DeleteAccount = ({ request }) => {
     return (
         <Box sx={{ padding: "10px 29px" }}>
             <Box sx={{ display: "flex", gap: "45px", alignItems: "center" }}>
-                <Typography variant="h4" color={deleteColor}>Delete Account</Typography>
+                <Typography variant="h4" color={deleteColor}>
+                    Delete Account
+                </Typography>
                 <StyledText>
                     Delete your account and all your source data. This is irreversible.
                 </StyledText>

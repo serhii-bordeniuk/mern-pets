@@ -11,10 +11,10 @@ import {
 } from "@mui/material";
 import FormButton from "components/ui/FormButton";
 import { inputStyles } from "styles/styles";
-import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useSelector } from "react-redux";
+import { changePasswordSchema } from "utils/validators";
 
 const ChangePasswordForm = ({ request }) => {
     const token = useSelector((state) => state.auth.token);
@@ -24,32 +24,13 @@ const ChangePasswordForm = ({ request }) => {
     const { palette } = useTheme();
     const primary = palette.primary.main;
 
-    const schema = yup.object({
-        oldPassword: yup
-            .string()
-            .min(8, "Password must be at least 8 characters")
-            .max(32, "Password can't be longer than 32 characters")
-            .required("password is a required field"),
-        password: yup.string().min(8).max(32),
-        confirmedPassword: yup
-            .string()
-            .required("confirm password is a required field")
-            .nullable()
-            .test("match", "Passwords must match", function (value) {
-                if (value === null) {
-                    return false;
-                }
-                return value === this.parent.password;
-            }),
-    });
-
     const {
         register,
         handleSubmit,
         formState: { errors },
         reset,
     } = useForm({
-        resolver: yupResolver(schema),
+        resolver: yupResolver(changePasswordSchema),
         mode: "onChange",
         defaultValues: {
             oldPassword: "",

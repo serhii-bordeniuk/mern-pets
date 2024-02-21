@@ -1,16 +1,14 @@
 import { useForm } from "react-hook-form";
-import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-
 import { Box, Typography, useTheme } from "@mui/material";
 import { inputStyles } from "styles/styles";
-
 import { TextField, FormControl } from "@mui/material";
 import FormButton from "components/ui/FormButton";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { setLogout } from "slices/authSlice";
 import FilePicker from "components/FilePicker";
+import { accountSchema } from "utils/validators";
 
 const AccountForm = ({ request }) => {
     const token = useSelector((state) => state.auth.token);
@@ -18,28 +16,13 @@ const AccountForm = ({ request }) => {
     const { palette } = useTheme();
     const primary = palette.primary.main;
 
-    const schema = yup.object({
-        userName: yup
-            .string()
-            .matches(/^[a-zA-Z]+$/, "Username must contain only letters")
-            .min(3, "Username must be at least 3 characters"),
-        email: yup.string().email().min(4),
-
-        phoneNumber: yup
-            .string()
-            .nullable()
-            .max(13, "Phone number must have 13 characters")
-            .min(13, "Phone number must have 13 characters")
-            .matches(/^\+?\d{11,12}$/, "Phone number must contain only numbers and '+'"),
-    });
-
     const {
         register,
         handleSubmit,
         setValue,
         formState: { errors, dirtyFields },
     } = useForm({
-        resolver: yupResolver(schema),
+        resolver: yupResolver(accountSchema),
         mode: "onSubmit",
     });
 
