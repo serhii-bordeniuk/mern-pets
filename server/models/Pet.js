@@ -34,8 +34,9 @@ const petSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    petPicturePath: {
+    picturepath: {
         type: String,
+        default: ""
         
     },
     documentPath: String,

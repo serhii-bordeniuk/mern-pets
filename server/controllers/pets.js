@@ -2,6 +2,7 @@ import User from "../models/User.js";
 import Pet from "../models/Pet.js";
 import { validationResult } from "express-validator";
 import { handleErrors } from "../utlis/utlis.js";
+import { clearImage } from "../index.js";
 
 export const getUserPets = async (req, res, next) => {
     const userId = req.userId;
@@ -13,12 +14,15 @@ export const getUserPets = async (req, res, next) => {
             throw error;
         }
 
-        const pets = user.pets.map((pet) => ({ _id: pet._id, name: pet.name }));
-        //todo add imagePath
+        const pets = user.pets.map((pet) => ({
+            _id: pet._id,
+            name: pet.name,
+            picturepath: pet.picturepath,
+        }));
 
         res.status(200).json({ message: "Pets fetched successfully.", pets: pets });
     } catch (error) {
-        handleErrors(error, next)
+        handleErrors(error, next);
     }
 };
 
@@ -47,7 +51,7 @@ export const getPetById = async (req, res, next) => {
 
         res.status(200).json({ message: "Pet fetched", pet: pet });
     } catch (error) {
-        handleErrors(error, next)
+        handleErrors(error, next);
     }
 };
 
@@ -64,6 +68,10 @@ export const addPet = async (req, res, next) => {
         }
 
         const { name, petType, sex, breed, weight, birthDate, description } = req.body;
+        let imageUrl = req.body.image;
+        if (req.file) {
+            imageUrl = req.file.path;
+        }
 
         const pet = new Pet({
             name: name,
@@ -74,6 +82,7 @@ export const addPet = async (req, res, next) => {
             birthDate: birthDate,
             description: description,
             owner: userId,
+            picturepath: imageUrl,
         });
 
         await pet.save();
@@ -92,7 +101,7 @@ export const addPet = async (req, res, next) => {
             owner: { _id: userId },
         });
     } catch (error) {
-        handleErrors(error, next)
+        handleErrors(error, next);
     }
 };
 
@@ -114,6 +123,16 @@ export const updatePet = async (req, res, next) => {
             error.statusCode = 403;
             throw error;
         }
+
+        let imageUrl = req.body.image;
+        if (req.file) {
+            imageUrl = req.file.path;
+        }
+        if (imageUrl !== pet.picturepath) {
+            clearImage(pet.picturepath);
+        }
+
+        pet.picturepath = imageUrl;
         pet.name = name;
         pet.description = description;
         pet.weight = weight;
@@ -121,7 +140,7 @@ export const updatePet = async (req, res, next) => {
 
         res.status(200).json({ message: "Pet successfully updated." });
     } catch (error) {
-        handleErrors(error, next)
+        handleErrors(error, next);
     }
 };
 
@@ -145,9 +164,12 @@ export const deletePet = async (req, res, next) => {
         user.pets.pull(petId);
         await user.save();
 
+        if (petToDelete.picturepath) {
+            clearImage(petToDelete.picturepath);
+        }
         await Pet.findByIdAndDelete(petId);
         res.status(200).json({ message: "Pet deleted successfully." });
     } catch (error) {
-        handleErrors(error, next)
+        handleErrors(error, next);
     }
 };

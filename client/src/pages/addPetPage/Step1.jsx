@@ -4,14 +4,14 @@ import { FormControl, TextField } from "@mui/material";
 import { inputStyles } from "styles/styles";
 import { useFormContext } from "react-hook-form";
 
-const Step1 = () => {
+const Step1 = ({setSelectedImage, selectedImage}) => {
     const { register, formState } = useFormContext();
     const errors = formState.errors;
 
     return (
         <StepWrapper>
             <h1>Photo</h1>
-            <FilePicker />
+            <FilePicker onChange={setSelectedImage} selectedImage={selectedImage}/>
             <h1>What is your pet`s name?</h1>
             <FormControl sx={{ ...inputStyles }} variant="outlined">
                 <TextField

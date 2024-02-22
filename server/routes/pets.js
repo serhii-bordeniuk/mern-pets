@@ -27,9 +27,9 @@ router.get("/:petId", isAuth, getPetById);
 router.put(
     "/:petId",
     [
-        body("name").trim().isLength({ min: 3 }),
-        body("weight").trim().isLength({ min: 1 }),
-        body("description").isLength({ min: 3, max: 200 }),
+        body("name").optional().trim().isLength({ min: 3 }),
+        body("weight").optional().trim().isLength({ min: 1 }),
+        body("description").optional().isLength({ min: 3, max: 200 }),
     ],
     isAuth,
     updatePet

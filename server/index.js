@@ -7,6 +7,7 @@ import multer from "multer";
 import helmet from "helmet";
 import morgan from "morgan";
 import path from "path";
+import fs from "fs";
 
 import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/user.js";
@@ -27,24 +28,8 @@ app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
 
-/* routes */
-
-app.use("/auth", authRoutes);
-app.use("/user", userRoutes);
-app.use("/pets", petsRoutes);
-
-/* errors handler */
-
-app.use((error, req, res, next) => {
-    const status = error.statusCode || 500;
-    const message = error.message;
-    const data = error.data;
-    res.status(status).json({ message: message, data: data });
-});
-
 /* files upload */
 
-app.use("/images", express.static(path.join(__dirname, "images")));
 const fileFilter = (req, file, cb) => {
     if (
         file.mimetype === "image/png" ||
@@ -62,11 +47,41 @@ const fileStorage = multer.diskStorage({
         cb(null, "images");
     },
     filename: (req, file, cb) => {
-        cb(null, new Date().toString() + "-" + file.originalname);
+        cb(null, new Date().toISOString().replace(/:/g, "-") + "-" + file.originalname);
     },
 });
 
-app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single("image"));
+app.use(
+    multer({
+        storage: fileStorage,
+        limits: { fileSize: 1024 * 1024 * 5 },
+        fileFilter: fileFilter,
+    }).single("image")
+);
+
+export const clearImage = (filePath) => {
+    filePath = path.join(__dirname, filePath);
+    fs.unlink(filePath, (err) => console.log(err));
+};
+
+app.use("/images", express.static(path.join(__dirname, "images")));
+
+/* routes */ 
+
+app.use("/auth", authRoutes);
+app.use("/user", userRoutes);
+app.use("/pets", petsRoutes);
+
+
+/* errors handler */
+
+app.use((error, req, res, next) => {
+    console.log('error', error)
+    const status = error.statusCode || 500;
+    const message = error.message;
+    const data = error.data;
+    res.status(status).json({ message: message, data: data });
+});
 
 /* mongoose setup */
 

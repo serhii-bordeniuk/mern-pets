@@ -5,6 +5,7 @@ import Expense from "../models/Expense.js";
 import Event from "../models/Event.js";
 import bcrypt from "bcrypt";
 import { handleErrors } from "../utlis/utlis.js";
+import { clearImage } from "../index.js";
 
 export const getUser = async (req, res, next) => {
     try {
@@ -16,7 +17,7 @@ export const getUser = async (req, res, next) => {
         }
         res.status(200).json(user);
     } catch (error) {
-        handleErrors(error, next)
+        handleErrors(error, next);
     }
 };
 
@@ -40,6 +41,20 @@ export const updateUser = async (req, res, next) => {
             throw error;
         }
 
+        let imageUrl = req.body.image;
+        console.log('imageUrl', imageUrl)
+        if (req.file) {
+            imageUrl = req.file.path;
+        }
+        console.log('imageUrl', imageUrl)
+        console.log('user.picturepath', user.picturepath)
+
+        if (imageUrl !== user.picturepath) {
+            clearImage(user.picturepath);
+        }
+
+        user.picturepath = imageUrl;
+
         Object.keys(req.body).forEach((key) => {
             if (user[key] !== undefined) {
                 user[key] = req.body[key];
@@ -52,7 +67,7 @@ export const updateUser = async (req, res, next) => {
             message: "User updated",
         });
     } catch (error) {
-        handleErrors(error, next)
+        handleErrors(error, next);
     }
 };
 
@@ -82,7 +97,7 @@ export const updateUserPassword = async (req, res, next) => {
         const result = await user.save();
         res.status(201).json({ message: "password updated" });
     } catch (error) {
-        handleErrors(error, next)
+        handleErrors(error, next);
     }
 };
 
@@ -102,9 +117,13 @@ export const deleteUser = async (req, res, next) => {
             Expense.deleteMany({ _id: { $in: userToDelete.expenses } }),
         ]);
 
+        if (userToDelete.picturepath) {
+            clearImage(userToDelete.picturepath);
+        }
+
         const deletedUser = await User.findByIdAndDelete(userToDelete._id);
         res.status(200).json({ message: "User deleted successfully" });
     } catch (error) {
-        handleErrors(error, next)
+        handleErrors(error, next);
     }
 };

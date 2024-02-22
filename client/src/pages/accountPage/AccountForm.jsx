@@ -1,11 +1,11 @@
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Typography, useTheme } from "@mui/material";
 import { inputStyles } from "styles/styles";
 import { TextField, FormControl } from "@mui/material";
 import FormButton from "components/ui/FormButton";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
 import { setLogout } from "slices/authSlice";
 import FilePicker from "components/FilePicker";
 import { accountSchema } from "utils/validators";
@@ -15,7 +15,7 @@ const AccountForm = ({ request }) => {
     const dispatch = useDispatch();
     const { palette } = useTheme();
     const primary = palette.primary.main;
-
+    const [selectedImage, setSelectedImage] = useState(null);
     const {
         register,
         handleSubmit,
@@ -38,6 +38,9 @@ const AccountForm = ({ request }) => {
                 setValue("userName", userData?.userName || "");
                 setValue("email", userData?.email || "");
                 setValue("phoneNumber", userData?.phoneNumber || "");
+                if (userData.picturepath) {
+                    setSelectedImage(userData?.picturepath);
+                }
             } else {
                 dispatch(setLogout());
             }
@@ -47,10 +50,6 @@ const AccountForm = ({ request }) => {
     }, [token, request, setValue]);
 
     const onSubmit = (data) => {
-        // const formDataToSend = new FormData();
-        // Object.keys(dirtyFields).forEach((key) => {
-        //     formDataToSend.append(key, formData[key]);
-        // });
         updateUser(data);
     };
 
@@ -59,13 +58,17 @@ const AccountForm = ({ request }) => {
         Object.keys(dirtyFields).forEach((key) => {
             formDataToSend.append(key, formData[key]);
         });
+        /////
+        if (selectedImage) {
+            formDataToSend.append("image", selectedImage);
+        }
+
         //eslint-disable-next-line
         const updatedUser = await request("http://localhost:3001/user", {
             method: "put",
             data: formDataToSend,
             headers: {
                 Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json",
             },
         });
     };
@@ -86,7 +89,7 @@ const AccountForm = ({ request }) => {
                             alignItems: "flex-end",
                         }}
                     >
-                        <FilePicker />
+                        <FilePicker onChange={setSelectedImage} selectedImage={selectedImage} />
 
                         <Box
                             sx={{

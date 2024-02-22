@@ -2,10 +2,10 @@ import { Box, useTheme } from "@mui/material";
 import catImage from "../resources/images/cat-imgae.png";
 import { useNavigate } from "react-router-dom";
 
-const PetItem = ({ name, petId }) => {
+const PetItem = ({ name, petId, picturepath }) => {
     const navigate = useNavigate();
-    const {palette} = useTheme()
-    const primary = palette.primary.main
+    const { palette } = useTheme();
+    const primary = palette.primary.main;
 
     return (
         <Box
@@ -18,7 +18,13 @@ const PetItem = ({ name, petId }) => {
                 borderRadius: "10px",
             }}
         >
-            <img src={catImage} alt="your pet" height="100%" width="100%" />
+            <img
+                src={picturepath ? `http://localhost:3001/${picturepath}` : catImage}
+                alt="your pet"
+                height="100%"
+                width="100%"
+                style={{objectFit: "cover",}}
+            />
 
             <Box
                 sx={{

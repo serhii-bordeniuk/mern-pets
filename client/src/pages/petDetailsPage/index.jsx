@@ -33,6 +33,7 @@ const PetDefailsPage = () => {
     const deleteColor = palette.delete.main;
     const primary = palette.primary.main;
     const navigate = useNavigate();
+    const [selectedImage, setSelectedImage] = useState(null);
 
     const getPetById = async (petId) => {
         const fetchedPet = await request(`http://localhost:3001/pets/${petId}`, {
@@ -46,6 +47,9 @@ const PetDefailsPage = () => {
             setValue("weight", fetchedPet?.pet.weight || "");
             setValue("birthDate", formatDate(fetchedPet?.pet.birthDate));
             setValue("description", fetchedPet?.pet.description);
+            if (fetchedPet.pet.picturepath) {
+                setSelectedImage(fetchedPet?.pet.picturepath);
+            }
             setPet(fetchedPet.pet);
         }
     };
@@ -63,18 +67,19 @@ const PetDefailsPage = () => {
     }, []);
 
     const handleUpdatePet = async (data) => {
-        console.log(data);
         const formData = new FormData();
         for (const key in data) {
             formData.append(key, data[key]);
         }
-        console.log(formData);
+        if (selectedImage) {
+            formData.append("image", selectedImage);
+        }
+
         const updatedPet = await request(`http://localhost:3001/pets/${petId}`, {
             method: "put",
             data: formData,
             headers: {
                 Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json",
             },
         });
     };
@@ -114,7 +119,7 @@ const PetDefailsPage = () => {
                     <Box display="flex" flexDirection="row" gap="30px">
                         {/* Photo */}
                         <Box>
-                            <FilePicker />
+                            <FilePicker onChange={setSelectedImage} selectedImage={selectedImage} />
                         </Box>
                         {/* INPUTS */}
                         <Box display="flex" flexDirection="column" width="219px" gap="15px">

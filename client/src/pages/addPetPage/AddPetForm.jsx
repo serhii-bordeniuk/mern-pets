@@ -14,7 +14,7 @@ import Step4 from "./Step4";
 import { useHttp } from "utils/useHttp";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import dayjs from 'dayjs';
+import dayjs from "dayjs";
 
 const Wrapper = styled(Box)`
     margin-top: 35px;
@@ -86,11 +86,12 @@ const AddPetForm = () => {
         },
     });
     const { handleSubmit, trigger } = methods;
+    const [selectedImage, setSelectedImage] = useState(null);
 
     const StepContent = useCallback(() => {
         switch (activeStep) {
             case 1:
-                return <Step1 />;
+                return <Step1 setSelectedImage={setSelectedImage} selectedImage={selectedImage} />;
             case 2:
                 return <Step2 />;
             case 3:
@@ -116,12 +117,28 @@ const AddPetForm = () => {
     };
 
     const addPet = async (formData) => {
+        const formDataToSend = new FormData();
+        for (const key in formData) {
+            //Check if formData has the property corresponding to the current key
+            if (formData.hasOwnProperty(key)) {
+                // Check if the key is 'birthDate' and the value is an instance of Date
+                if (key === "birthDate" && formData[key] instanceof Date) {
+                    // If it's 'birthDate', convert the Date object to ISO string before appending
+                    formDataToSend.append(key, formData[key].toISOString());
+                    // For other keys, simply append the value to formDataToSend
+                } else {
+                    formDataToSend.append(key, formData[key]);
+                }
+            }
+        }
+        if (selectedImage) {
+            formDataToSend.append("image", selectedImage);
+        }
         const addedPet = await request("http://localhost:3001/pets/add-pet", {
             method: "put",
-            data: formData,
+            data: formDataToSend,
             headers: {
                 Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json",
             },
         });
         console.log(addedPet);

@@ -10,7 +10,6 @@ const Step3 = () => {
 
     return (
         <StepWrapper>
-            <FilePicker />
             <h1>Breed of Your Pet?</h1>
             <FormControl sx={{ ...inputStyles }} variant="outlined">
                 <TextField

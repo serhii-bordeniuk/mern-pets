@@ -10,7 +10,6 @@ const Step2 = () => {
 
     return (
         <StepWrapper sx={{ gap: "25px" }}>
-            <FilePicker />
             <h1>The Type Of You Pet?</h1>
             <FormControl sx={{ ...inputStyles }} variant="outlined">
                 <InputLabel id="pet-type-select">Type</InputLabel>

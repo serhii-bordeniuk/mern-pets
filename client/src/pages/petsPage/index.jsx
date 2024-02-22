@@ -1,18 +1,19 @@
 import { useEffect, useState } from "react";
 import { useHttp } from "utils/useHttp";
-import { Box, useMediaQuery, useTheme } from "@mui/material";
-import styled from "@emotion/styled";
-import ListPlaceholder from "components/ListPlaceholder";
-import placeholderImage from "../../resources/images/pet-banner.svg";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+
+import { Box, useMediaQuery, useTheme } from "@mui/material";
+import { CircularProgress } from "@mui/material";
+import ListPlaceholder from "components/ListPlaceholder";
+import placeholderImage from "../../resources/images/pet-banner.svg";
 import PetItem from "components/PetItem";
 import FormButton from "components/ui/FormButton";
 
 const PetsPage = () => {
     const token = useSelector((state) => state.auth.token);
     const isNonMobile = useMediaQuery("(min-width:1625px)");
-    const { request } = useHttp();
+    const { request, loading } = useHttp();
     const navigate = useNavigate();
     const { palette } = useTheme();
     const [pets, setPets] = useState([]);
@@ -32,15 +33,20 @@ const PetsPage = () => {
         fetchedPets();
     }, []);
 
-    return (
+    return loading ? (
+        <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+            <CircularProgress />
+        </Box>
+    ) : (
         <>
-            {pets?.length < 1 ? (
+            {pets && pets.length === 0 && (
                 <ListPlaceholder
                     title="Create A Personal Profile Of Your Pet"
                     imageSrc={placeholderImage}
                     onClick={() => navigate("/pets/add-pet")}
                 />
-            ) : (
+            )}
+            {pets && pets.length > 0 && (
                 <>
                     <Box mt="20px">
                         <Box
@@ -51,7 +57,7 @@ const PetsPage = () => {
                             gap="15px"
                         >
                             {pets.map((item) => {
-                                return <PetItem key={item._id} name={item.name} petId={item._id} />;
+                                return <PetItem key={item._id} name={item.name} petId={item._id} picturepath={item.picturepath} />;
                             })}
                         </Box>
                         <Box display="flex" justifyContent="flex-end">
