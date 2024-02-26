@@ -2,19 +2,8 @@ import { useEffect, useState } from "react";
 import { useHttp } from "utils/useHttp";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-import {
-    Box,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
-    FormControl,
-    InputAdornment,
-    TextField,
-    useTheme,
-} from "@mui/material";
-import FilePicker from "components/FilePicker";
+import { Box, FormControl, InputAdornment, TextField, useTheme } from "@mui/material";
+import ImagePicker from "components/ImagePicker";
 import { inputStyles } from "styles/styles";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -22,6 +11,7 @@ import { petDedailsSchema } from "utils/validators";
 import { formatDate, getYearsOld } from "utils/utils";
 import FormButton from "components/ui/FormButton";
 import Modal from "components/Modal";
+import FilePicker from "components/FilePicker";
 
 const PetDefailsPage = () => {
     const { request } = useHttp();
@@ -33,7 +23,28 @@ const PetDefailsPage = () => {
     const deleteColor = palette.delete.main;
     const primary = palette.primary.main;
     const navigate = useNavigate();
+
     const [selectedImage, setSelectedImage] = useState(null);
+
+    const [passportFile, setPassportFile] = useState(null);
+    const [medCardFile, setMedCardFile] = useState(null);
+    const [otherDocFile, setOtherDocFile] = useState(null);
+
+    const fileStateMap = {
+        Passport: [passportFile, setPassportFile],
+        "Medical Card": [medCardFile, setMedCardFile],
+        "Another Doc": [otherDocFile, setOtherDocFile],
+    };
+
+    const handleFileChange = (e, fileType, shouldDelete = false) => {
+        const [currentFile, setFile] = fileStateMap[fileType];
+        if (shouldDelete) {
+            setFile(null);
+        } else {
+            const file = e.target.files[0];
+            setFile(file);
+        }
+    };
 
     const getPetById = async (petId) => {
         const fetchedPet = await request(`http://localhost:3001/pets/${petId}`, {
@@ -50,6 +61,15 @@ const PetDefailsPage = () => {
             if (fetchedPet.pet.picturepath) {
                 setSelectedImage(fetchedPet?.pet.picturepath);
             }
+            if (fetchedPet.pet.passportpath) {
+                setPassportFile(fetchedPet?.pet.passportpath);
+            }
+            if (fetchedPet.pet.medcardpath) {
+                setMedCardFile(fetchedPet?.pet.medcardpath);
+            }
+            if (fetchedPet.pet.anotherdocpath) {
+                setOtherDocFile(fetchedPet?.pet.anotherdocpath);
+            }
             setPet(fetchedPet.pet);
         }
     };
@@ -64,6 +84,7 @@ const PetDefailsPage = () => {
 
     useEffect(() => {
         getPetById(petId);
+        //eslint-disable-next-line
     }, []);
 
     const handleUpdatePet = async (data) => {
@@ -74,7 +95,16 @@ const PetDefailsPage = () => {
         if (selectedImage) {
             formData.append("image", selectedImage);
         }
-
+        if (passportFile) {
+            formData.append("passportFile", passportFile);
+        }
+        if (medCardFile) {
+            formData.append("medCardFile", medCardFile);
+        }
+        if (otherDocFile) {
+            formData.append("otherDocFile", otherDocFile);
+        }
+        //eslint-disable-next-line
         const updatedPet = await request(`http://localhost:3001/pets/${petId}`, {
             method: "put",
             data: formData,
@@ -114,12 +144,15 @@ const PetDefailsPage = () => {
 
     return (
         <Box mt="50px">
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
                 <Box display="flex" flexDirection="row" justifyContent="space-between">
                     <Box display="flex" flexDirection="row" gap="30px">
                         {/* Photo */}
                         <Box>
-                            <FilePicker onChange={setSelectedImage} selectedImage={selectedImage} />
+                            <ImagePicker
+                                onChange={setSelectedImage}
+                                selectedImage={selectedImage}
+                            />
                         </Box>
                         {/* INPUTS */}
                         <Box display="flex" flexDirection="column" width="219px" gap="15px">
@@ -178,7 +211,7 @@ const PetDefailsPage = () => {
                         </Box>
                     </Box>
 
-                    <FormControl sx={{ width: "645px", height: "319px" }} variant="outlined">
+                    <FormControl sx={{ width: "645px" }} variant="outlined">
                         <TextField
                             multiline
                             {...register("description")}
@@ -195,7 +228,25 @@ const PetDefailsPage = () => {
                     </FormControl>
                 </Box>
 
-                <Box display="flex" flexDirection="row" justifyContent="space-between">
+                <Box display="flex" flexDirection="row" gap="75px" mt="50px">
+                    <FilePicker
+                        title="Passport"
+                        handleFileChange={handleFileChange}
+                        attachedFile={passportFile}
+                    />
+                    <FilePicker
+                        title="Medical Card"
+                        handleFileChange={handleFileChange}
+                        attachedFile={medCardFile}
+                    />
+                    <FilePicker
+                        title="Another Doc"
+                        handleFileChange={handleFileChange}
+                        attachedFile={otherDocFile}
+                    />
+                </Box>
+
+                <Box display="flex" flexDirection="row" justifyContent="space-between" mt="125px">
                     <FormButton
                         onClick={() => navigate(-1)}
                         title="Back"

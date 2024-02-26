@@ -1,67 +1,81 @@
-import styled from "@emotion/styled";
-import { Box } from "@mui/material";
-import fileIcon from "../resources/images/icons/file.svg";
 import { useState } from "react";
-
-const StyledFilePicker = styled(Box)`
-    position: relative;
-    display: flex;
-    flex-shrink: 0;
-    align-items: center;
-    justify-content: center;
-    height: 188px;
-    width: 188px;
-    border-radius: 100%;
-    border: 1px solid #403128;
+import { Box, Typography, useTheme } from "@mui/material";
+import UploadFileIcon from "@mui/icons-material/UploadFile";
+import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
+import CloseIcon from "@mui/icons-material/Close";
+import styled from "@emotion/styled";
+const InputStyled = styled.input`
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
     cursor: pointer;
-
-    input[type="file"] {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        opacity: 0;
-        cursor: pointer;
-        clip-path: circle(50%);
-    }
 `;
 
-const FilePicker = ({ onChange, selectedImage }) => {
-    const [previewImage, setPreviewImage] = useState(null);
-    const handleFileChange = (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setPreviewImage(reader.result);
-            };
-            reader.readAsDataURL(file);
-            onChange(file);
+const FilePicker = ({ title, attachedFile, handleFileChange }) => {
+    const { palette } = useTheme();
+    const primary = palette.primary.main;
+    const secondary = palette.secondary.main;
+
+    const handleFileOpen = () => {
+        if (attachedFile instanceof File) {
+            const blob = new Blob([attachedFile], { type: attachedFile.type });
+            const blobUrl = URL.createObjectURL(blob);
+            window.open(blobUrl);
+        } else if (typeof attachedFile === "string") {
+            const url = attachedFile.replace(/\\/g, "/");
+            window.open(`http://localhost:3001/${url}`);
         }
     };
+
     return (
-        <StyledFilePicker>
-            <input
-                type="file"
-                onChange={handleFileChange}
-                accept="image/jpeg, image/png, image/jpg"
-            />
-            {previewImage || selectedImage ? (
-                <img
-                    style={{
-                        objectFit: "cover",
-                        borderRadius: "100%",
-                        width: "100%",
-                        height: "100%",
-                    }}
-                    src={previewImage || `http://localhost:3001/${selectedImage}`}
-                    alt="user avatar"
+        <Box
+            position="relative"
+            width="196px"
+            height="218px"
+            border={`1px ${attachedFile ? "solid" : "dashed"} ${primary}`}
+            borderRadius="10px"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            flexDirection="column"
+        >
+            {!attachedFile && (
+                <InputStyled
+                    type="file"
+                    onChange={(e) => handleFileChange(e, title)}
+                    accept="application/pdf"
                 />
-            ) : (
-                <img src={fileIcon} alt="placeholder" />
             )}
-        </StyledFilePicker>
+            {attachedFile ? (
+                <CloseIcon
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        handleFileChange(e, title, true);
+                    }}
+                    sx={{ position: "absolute", top: "2px", right: "2px", cursor: "pointer" }}
+                />
+            ) : null}
+            {attachedFile ? (
+                <Box
+                    onClick={() => {
+                        handleFileOpen(attachedFile);
+                    }}
+                    sx={{ backgroundColor: secondary, cursor: "pointer" }}
+                    p="48px 60px"
+                    borderRadius="10px"
+                >
+                    <InsertDriveFileIcon sx={{ color: primary }} />
+                </Box>
+            ) : (
+                <UploadFileIcon sx={{ color: primary }} />
+            )}
+            <Typography variant="h6" mt={attachedFile ? "20px" : null}>
+                {title}
+            </Typography>
+        </Box>
     );
 };
 export default FilePicker;

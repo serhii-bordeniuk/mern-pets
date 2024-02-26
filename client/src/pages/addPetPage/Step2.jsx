@@ -1,7 +1,7 @@
 import { FormControl, FormHelperText, InputLabel, Select } from "@mui/material";
 import { StepWrapper, StyledMenuItem } from "./AddPetForm";
 import { inputStyles } from "styles/styles";
-import FilePicker from "components/FilePicker";
+import FilePicker from "components/ImagePicker";
 import { useFormContext, Controller } from "react-hook-form";
 
 const Step2 = () => {

@@ -16,6 +16,7 @@ const PetItem = ({ name, petId, picturepath }) => {
                 cursor: "pointer",
                 position: "relative",
                 borderRadius: "10px",
+                overflow: "hidden"
             }}
         >
             <img

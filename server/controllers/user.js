@@ -5,7 +5,7 @@ import Expense from "../models/Expense.js";
 import Event from "../models/Event.js";
 import bcrypt from "bcrypt";
 import { handleErrors } from "../utlis/utlis.js";
-import { clearImage } from "../index.js";
+import { clearFile } from "../index.js";
 
 export const getUser = async (req, res, next) => {
     try {
@@ -42,15 +42,17 @@ export const updateUser = async (req, res, next) => {
         }
 
         let imageUrl = req.body.image;
-        console.log('imageUrl', imageUrl)
-        if (req.file) {
-            imageUrl = req.file.path;
+        
+        if (req.files.image) {
+            imageUrl = req.files.image[0].path;
         }
-        console.log('imageUrl', imageUrl)
-        console.log('user.picturepath', user.picturepath)
+        
+        if (imageUrl !== user.picturepath) {
+            clearFile(user.picturepath);
+        }
 
         if (imageUrl !== user.picturepath) {
-            clearImage(user.picturepath);
+            clearFile(user.picturepath);
         }
 
         user.picturepath = imageUrl;
@@ -118,7 +120,7 @@ export const deleteUser = async (req, res, next) => {
         ]);
 
         if (userToDelete.picturepath) {
-            clearImage(userToDelete.picturepath);
+            clearFile(userToDelete.picturepath);
         }
 
         const deletedUser = await User.findByIdAndDelete(userToDelete._id);

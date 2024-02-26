@@ -1,4 +1,4 @@
-import FilePicker from "components/FilePicker";
+import ImagePicker from "components/ImagePicker";
 import { StepWrapper } from "./AddPetForm";
 import { FormControl, TextField } from "@mui/material";
 import { inputStyles } from "styles/styles";
@@ -11,7 +11,7 @@ const Step1 = ({setSelectedImage, selectedImage}) => {
     return (
         <StepWrapper>
             <h1>Photo</h1>
-            <FilePicker onChange={setSelectedImage} selectedImage={selectedImage}/>
+            <ImagePicker onChange={setSelectedImage} selectedImage={selectedImage}/>
             <h1>What is your pet`s name?</h1>
             <FormControl sx={{ ...inputStyles }} variant="outlined">
                 <TextField

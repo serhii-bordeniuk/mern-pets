@@ -2,7 +2,7 @@ import User from "../models/User.js";
 import Pet from "../models/Pet.js";
 import { validationResult } from "express-validator";
 import { handleErrors } from "../utlis/utlis.js";
-import { clearImage } from "../index.js";
+import { clearFile } from "../index.js";
 
 export const getUserPets = async (req, res, next) => {
     const userId = req.userId;
@@ -108,6 +108,7 @@ export const addPet = async (req, res, next) => {
 export const updatePet = async (req, res, next) => {
     try {
         const { name, weight, description } = req.body;
+        const { image, passportFile, medCardFile, otherDocFile } = req.files;
         const petId = req.params.petId;
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -125,14 +126,43 @@ export const updatePet = async (req, res, next) => {
         }
 
         let imageUrl = req.body.image;
-        if (req.file) {
-            imageUrl = req.file.path;
-        }
-        if (imageUrl !== pet.picturepath) {
-            clearImage(pet.picturepath);
+        let passportpath = req.body.passportFile;
+        let medcardpath = req.body.medCardFile;
+        let anotherdocpath = req.body.otherDocFile;
+
+        if (image) {
+            imageUrl = image[0].path;
         }
 
+        if (passportFile) {
+            passportpath = passportFile[0].path;
+        }
+        if (medCardFile) {
+            medcardpath = medCardFile[0].path;
+        }
+        if (otherDocFile) {
+            anotherdocpath = otherDocFile[0].path;
+        }
+
+        if (imageUrl !== pet.picturepath) {
+            clearFile(pet.picturepath);
+        }
+        if (passportpath !== pet.passportpath) {
+            clearFile(pet.passportpath);
+        }
+        if (medcardpath !== pet.medcardpath) {
+            clearFile(pet.medcardpath);
+        }
+        if (anotherdocpath !== pet.anotherdocpath) {
+            clearFile(pet.anotherdocpath);
+        }
+
+        //todo optimize the code above
+
         pet.picturepath = imageUrl;
+        pet.passportpath = passportpath;
+        pet.medcardpath = medcardpath;
+        pet.anotherdocpath = anotherdocpath;
         pet.name = name;
         pet.description = description;
         pet.weight = weight;
@@ -165,8 +195,9 @@ export const deletePet = async (req, res, next) => {
         await user.save();
 
         if (petToDelete.picturepath) {
-            clearImage(petToDelete.picturepath);
+            clearFile(petToDelete.picturepath);
         }
+        //todo delete documents
         await Pet.findByIdAndDelete(petId);
         res.status(200).json({ message: "Pet deleted successfully." });
     } catch (error) {

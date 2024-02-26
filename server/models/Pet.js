@@ -36,10 +36,20 @@ const petSchema = new mongoose.Schema({
     },
     picturepath: {
         type: String,
-        default: ""
-        
+        default: "",
     },
-    documentPath: String,
+    passportpath: {
+        type: String,
+        default: "",
+    },
+    medcardpath: {
+        type: String,
+        default: "",
+    },
+    anotherdocpath: {
+        type: String,
+        default: "",
+    },
 });
 
 const Pet = mongoose.model("Pet", petSchema);

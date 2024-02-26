@@ -4,6 +4,7 @@ import { deleteUser, getUser, updateUser, updateUserPassword } from "../controll
 import { isAuth } from "../middleware/is-auth.js";
 import { body } from "express-validator";
 
+
 const router = express.Router();
 
 router.get("/", isAuth, getUser);
@@ -11,7 +12,7 @@ router.get("/", isAuth, getUser);
 router.put(
     "/",
     [
-        body("username")
+        body("username") 
             .optional()
             .trim()
             .isLength({ min: 3 })

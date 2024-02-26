@@ -27,6 +27,8 @@ app.use(morgan("common"));
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
+app.use("/images", express.static(path.join(__dirname, "images")));
+app.use("/documents", express.static(path.join(__dirname, "documents")));
 
 /* files upload */
 
@@ -34,7 +36,8 @@ const fileFilter = (req, file, cb) => {
     if (
         file.mimetype === "image/png" ||
         file.mimetype === "image/jpg" ||
-        file.mimetype === "image/jpeg"
+        file.mimetype === "image/jpeg" ||
+        file.mimetype === "application/pdf"
     ) {
         cb(null, true);
     } else {
@@ -44,7 +47,11 @@ const fileFilter = (req, file, cb) => {
 
 const fileStorage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, "images");
+        let destinationFolder = "images";
+        if (file.mimetype === "application/pdf") {
+            destinationFolder = "documents";
+        }
+        cb(null, destinationFolder);
     },
     filename: (req, file, cb) => {
         cb(null, new Date().toISOString().replace(/:/g, "-") + "-" + file.originalname);
@@ -56,27 +63,29 @@ app.use(
         storage: fileStorage,
         limits: { fileSize: 1024 * 1024 * 5 },
         fileFilter: fileFilter,
-    }).single("image")
+    }).fields([
+        { name: "image", maxCount: 1 },
+        { name: "passportFile", maxCount: 1 },
+        { name: "medCardFile", maxCount: 1 },
+        { name: "otherDocFile", maxCount: 1 },
+    ])
 );
 
-export const clearImage = (filePath) => {
+export const clearFile = (filePath) => {
     filePath = path.join(__dirname, filePath);
     fs.unlink(filePath, (err) => console.log(err));
 };
 
-app.use("/images", express.static(path.join(__dirname, "images")));
-
-/* routes */ 
+/* routes */
 
 app.use("/auth", authRoutes);
 app.use("/user", userRoutes);
 app.use("/pets", petsRoutes);
 
-
 /* errors handler */
 
 app.use((error, req, res, next) => {
-    console.log('error', error)
+    console.log("error", error);
     const status = error.statusCode || 500;
     const message = error.message;
     const data = error.data;

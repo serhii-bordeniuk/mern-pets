@@ -7,8 +7,8 @@ import { inputStyles } from "styles/styles";
 import { TextField, FormControl } from "@mui/material";
 import FormButton from "components/ui/FormButton";
 import { setLogout } from "slices/authSlice";
-import FilePicker from "components/FilePicker";
 import { accountSchema } from "utils/validators";
+import ImagePicker from "components/ImagePicker";
 
 const AccountForm = ({ request }) => {
     const token = useSelector((state) => state.auth.token);
@@ -89,7 +89,7 @@ const AccountForm = ({ request }) => {
                             alignItems: "flex-end",
                         }}
                     >
-                        <FilePicker onChange={setSelectedImage} selectedImage={selectedImage} />
+                        <ImagePicker onChange={setSelectedImage} selectedImage={selectedImage} />
 
                         <Box
                             sx={{
