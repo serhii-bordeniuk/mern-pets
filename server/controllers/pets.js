@@ -57,6 +57,7 @@ export const getPetById = async (req, res, next) => {
 
 export const addPet = async (req, res, next) => {
     const userId = req.userId;
+    const {image} = req.files
     try {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -68,10 +69,10 @@ export const addPet = async (req, res, next) => {
         }
 
         const { name, petType, sex, breed, weight, birthDate, description } = req.body;
-        let imageUrl = req.body.image;
-        if (req.file) {
-            imageUrl = req.file.path;
-        }
+        console.log('image', image)
+        
+            const imageUrl = image[0].path;
+        
 
         const pet = new Pet({
             name: name,
