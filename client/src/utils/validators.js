@@ -43,3 +43,11 @@ export const petDedailsSchema = yup.object({
     birthDate: yup.date().required("This is a required field"),
     description: yup.string().min(2, "Description must be at least 2 characters").max(100),
 });
+
+export const expenseAddSchema = yup.object({
+    category: yup.string().required("Select a valid option"),
+    price: yup.string().matches(/^[0-9]+$/, "Price must contain only numbers"),
+    description: yup.string().min(2, "Description must be at least 2 characters").max(100),
+    pet: yup.string().required("Select a valid option"),
+    date: yup.date().required("Birth Date is a required field"),
+});

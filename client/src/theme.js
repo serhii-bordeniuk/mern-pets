@@ -15,8 +15,14 @@ export const themeSettings = {
         others: {
             main: "#E2BD5D",
         },
-        primaryDelete: {
+        entertainment: {
             main: "#E26060",
+        },
+        food: {
+            main: "#9FC699",
+        },
+        medicine: {
+            main: "#758FD1"
         },
         text: {
             primary: "#000000",

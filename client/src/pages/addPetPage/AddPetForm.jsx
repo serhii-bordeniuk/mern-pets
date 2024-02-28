@@ -117,7 +117,6 @@ const AddPetForm = () => {
     };
 
     const addPet = async (formData) => {
-        console.log('formData', formData)
         const formDataToSend = new FormData();
         for (const key in formData) {
             //Check if formData has the property corresponding to the current key
@@ -142,7 +141,6 @@ const AddPetForm = () => {
                 Authorization: `Bearer ${token}`,
             },
         });
-        console.log(addedPet);
         navigate("/pets");
     };
 

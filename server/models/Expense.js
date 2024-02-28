@@ -1,11 +1,10 @@
 import mongoose, { SchemaTypes } from "mongoose";
 
-
 const expenseSchema = new mongoose.Schema({
     owner: {
         type: SchemaTypes.ObjectId,
         ref: "User",
-        reqqired: true,
+        required: true,
     },
     category: {
         type: String,
@@ -13,6 +12,11 @@ const expenseSchema = new mongoose.Schema({
     },
     description: {
         type: String,
+        required: true,
+    },
+    pet: {
+        type: SchemaTypes.ObjectId,
+        ref: "Pet",
         required: true,
     },
     price: {

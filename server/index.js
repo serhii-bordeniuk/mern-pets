@@ -12,6 +12,7 @@ import fs from "fs";
 import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/user.js";
 import petsRoutes from "./routes/pets.js";
+import expensesRoutes from "./routes/expenses.js";
 
 import { fileURLToPath } from "url";
 
@@ -81,6 +82,7 @@ export const clearFile = (filePath) => {
 app.use("/auth", authRoutes);
 app.use("/user", userRoutes);
 app.use("/pets", petsRoutes);
+app.use("/expenses", expensesRoutes);
 
 /* errors handler */
 

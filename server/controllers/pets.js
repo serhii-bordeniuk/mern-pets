@@ -57,7 +57,7 @@ export const getPetById = async (req, res, next) => {
 
 export const addPet = async (req, res, next) => {
     const userId = req.userId;
-    const {image} = req.files
+    const { image } = req.files;
     try {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -69,10 +69,7 @@ export const addPet = async (req, res, next) => {
         }
 
         const { name, petType, sex, breed, weight, birthDate, description } = req.body;
-        console.log('image', image)
-        
-            const imageUrl = image[0].path;
-        
+        const imageUrl = image[0].path;
 
         const pet = new Pet({
             name: name,
@@ -178,7 +175,6 @@ export const updatePet = async (req, res, next) => {
 export const deletePet = async (req, res, next) => {
     try {
         const petId = req.params.petId;
-        const userId = req.userId;
         const petToDelete = await Pet.findById(petId);
         if (petToDelete.owner.toString() !== req.userId) {
             const error = new Error("Not authorized!");

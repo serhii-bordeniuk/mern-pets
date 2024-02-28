@@ -215,7 +215,7 @@ const AuthForm = () => {
                     <>
                         Don't have an account yet?
                         <span
-                            style={{ cursor: "pointer", textDecoration: "underline" }}
+                            style={{ cursor: "pointer", textDecoration: "underline", marginLeft: "5px" }}
                             onClick={togglePageSwitcher}
                         >
                             Register
