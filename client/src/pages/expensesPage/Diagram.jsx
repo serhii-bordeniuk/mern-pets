@@ -24,7 +24,7 @@ const Diagram = ({ expenses }) => {
     const entertainment = palette.entertainment.main;
     const others = palette.others.main;
 
-    const calculatedExpenses = useMemo(() => {
+    const calculateExpenses = (expenses) => {
         const categoryExpenses = {
             food: 0,
             medicine: 0,
@@ -39,10 +39,10 @@ const Diagram = ({ expenses }) => {
             }
         });
 
-        console.log("1");
-
         return categoryExpenses;
-    }, [expenses]);
+    };
+
+    const calculatedExpenses = useMemo(() => calculateExpenses(expenses), [expenses]);
 
     const data = [
         { label: "Food", value: calculatedExpenses.food, color: food },
