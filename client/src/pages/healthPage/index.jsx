@@ -45,7 +45,7 @@ const HealthPage = () => {
     }, []);
 
     return (
-        <>
+        <Box m="auto" maxWidth="920px">
             {events && events.length === 0 && (
                 <ListPlaceholder
                     title="There are no scheduled events"
@@ -58,29 +58,28 @@ const HealthPage = () => {
 
             {events && (
                 <>
-                    
                     <EventsList
                         events={events}
                         token={token}
                         handleDeleteEvent={handleDeleteEvent}
                     />
                     <Box display="flex" justifyContent="flex-end">
-                            <FormButton
-                                sx={{
-                                    bottom: "15px",
-                                    position: "fixed",
-                                    zIndex: "10",
-                                    width: "150px",
-                                    height: "56px",
-                                }}
-                                title="Add +"
-                                color={primary}
-                                onClick={() => navigate("/health/add-event")}
-                            />
-                        </Box>
+                        <FormButton
+                            sx={{
+                                bottom: "15px",
+                                position: "fixed",
+                                zIndex: "10",
+                                width: "150px",
+                                height: "56px",
+                            }}
+                            title="Add +"
+                            color={primary}
+                            onClick={() => navigate("/health/add-event")}
+                        />
+                    </Box>
                 </>
             )}
-        </>
+        </Box>
     );
 };
 export default HealthPage;

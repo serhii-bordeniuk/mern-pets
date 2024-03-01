@@ -3,7 +3,8 @@ import EventCard from "./EventCard";
 
 const EventsList = ({ events, handleDeleteEvent }) => {
     return (
-        <Box mt="10px" display="flex" flexWrap="wrap" gap="20px" justifyContent="center">
+            
+            <Box mt="10px" display="flex" flexWrap="wrap" gap="20px" justifyContent="flex-start">
             {events.map((event) => {
                 return (
                     <EventCard
@@ -20,6 +21,7 @@ const EventsList = ({ events, handleDeleteEvent }) => {
                 );
             })}
         </Box>
+      
     );
 };
 export default EventsList;

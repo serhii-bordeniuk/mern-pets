@@ -38,7 +38,7 @@ const PetsPage = () => {
             <CircularProgress />
         </Box>
     ) : (
-        <>
+        <Box mt="20px" maxWidth="850px" m="auto">
             {pets && pets.length === 0 && (
                 <ListPlaceholder
                     title="Create A Personal Profile Of Your Pet"
@@ -48,36 +48,41 @@ const PetsPage = () => {
             )}
             {pets && pets.length > 0 && (
                 <>
-                    <Box mt="20px">
-                        <Box
-                            mt="50px"
-                            display="flex"
-                            flexWrap="wrap"
-                            justifyContent={isNonMobile ? "space-between" : "space-around"}
-                            gap="15px"
-                        >
-                            {pets.map((item) => {
-                                return <PetItem key={item._id} name={item.name} petId={item._id} picturepath={item.picturepath} />;
-                            })}
-                        </Box>
-                        <Box display="flex" justifyContent="flex-end">
-                            <FormButton
-                                sx={{
-                                    bottom: "15px",
-                                    position: "fixed",
-                                    zIndex: "10",
-                                    width: "150px",
-                                    height: "56px",
-                                }}
-                                title="Add +"
-                                color={primary}
-                                onClick={() => navigate("/pets/add-pet")}
-                            />
-                        </Box>
+                    <Box
+                        mt="50px"
+                        display="flex"
+                        flexWrap="wrap"
+                        justifyContent="flex-start"
+                        gap="50px"
+                    >
+                        {pets.map((item) => {
+                            return (
+                                <PetItem
+                                    key={item._id}
+                                    name={item.name}
+                                    petId={item._id}
+                                    picturepath={item.picturepath}
+                                />
+                            );
+                        })}
+                    </Box>
+                    <Box display="flex" justifyContent="flex-end">
+                        <FormButton
+                            sx={{
+                                bottom: "15px",
+                                position: "fixed",
+                                zIndex: "10",
+                                width: "150px",
+                                height: "56px",
+                            }}
+                            title="Add +"
+                            color={primary}
+                            onClick={() => navigate("/pets/add-pet")}
+                        />
                     </Box>
                 </>
             )}
-        </>
+        </Box>
     );
 };
 export default PetsPage;
