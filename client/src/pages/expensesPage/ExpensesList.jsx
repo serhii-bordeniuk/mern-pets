@@ -11,7 +11,7 @@ const ExpensesList = ({ expenses, token, setExpenses }) => {
         id: expense._id,
         pet: expense.pet.name,
         date: dayjs(expense.date).format("MM/DD/YYYY"),
-        price: `$ ${expense.price}`,
+        
     }));
 
     const handleDeleteExpense = async (id) => {

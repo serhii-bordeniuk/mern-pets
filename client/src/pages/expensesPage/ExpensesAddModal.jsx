@@ -58,7 +58,6 @@ const ExpensesAddModal = ({ onClose, isOpen, token, getExpenses }) => {
         getPets();
     }, []);
 
-    console.log('pets', pets)
 
     const {
         control,

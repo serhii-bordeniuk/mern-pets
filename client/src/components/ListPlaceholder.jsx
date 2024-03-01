@@ -1,4 +1,4 @@
-import { Box, useTheme } from "@mui/material";
+import { Box, Typography, useTheme } from "@mui/material";
 import FormButton from "./ui/FormButton";
 
 const ListPlaceholder = ({ title, imageSrc, onClick }) => {
@@ -16,7 +16,7 @@ const ListPlaceholder = ({ title, imageSrc, onClick }) => {
                 margin: "0 auto",
             }}
         >
-            <h1>Create a personal profile of your pet</h1>
+            <Typography fontWeight="600" variant="h2">{title}</Typography>
             <Box>
                 <img src={imageSrc} alt="placeholder" />
             </Box>

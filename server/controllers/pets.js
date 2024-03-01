@@ -29,14 +29,6 @@ export const getUserPets = async (req, res, next) => {
 export const getPetById = async (req, res, next) => {
     const petId = req.params.petId;
     try {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            const errorMsgs = errors.array().map((error) => error.msg);
-            const error = new Error(`${errorMsgs.join(", ")}`);
-            error.statusCode = 422;
-            error.data = errors.array();
-            throw error;
-        }
         const pet = await Pet.findById(petId);
         if (!pet) {
             const error = new Error("Could not find pet.");

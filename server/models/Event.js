@@ -7,13 +7,25 @@ const eventSchema = new Schema({
         ref: "User",
         required: true,
     },
-    title: {
+    eventTitle: {
         type: String,
         required: true,
     },
     relatedPet: {
         type: SchemaTypes.ObjectId,
         ref: "Pet",
+        required: true,
+    },
+    date: {
+        type: Date,
+        required: true,
+    },
+    description: {
+        type: String,
+        required: true,
+    },
+    reminder: {
+        type: String,
         required: true,
     },
 });

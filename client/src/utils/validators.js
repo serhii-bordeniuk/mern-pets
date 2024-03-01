@@ -51,3 +51,21 @@ export const expenseAddSchema = yup.object({
     pet: yup.string().required("Select a valid option"),
     date: yup.date().required("Birth Date is a required field"),
 });
+
+export const eventAddSchema = yup.object({
+    eventTitle: yup
+        .string()
+        .matches(/^[a-zA-Z\s]+$/, "Title must contain only letters")
+        .min(2, "Title must be at lesat 2 characters")
+        .max(50, "Title can't be longer than 50 characters"),
+    relatedPet: yup.string().required("Select a valid option"),
+    date: yup.date().required("Date is a required field"),
+    description: yup
+        .string()
+        .min(2, "Description must be at least 2 characters")
+        .max(100, "Description can't be longer than 100 characters"),
+    reminder: yup
+        .string()
+        .min(2, "Reminder must be at least 2 characters")
+        .max(100, "Reminder can't be longer than 100 characters"),
+});

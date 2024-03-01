@@ -5,7 +5,7 @@ import { setNotification } from "slices/notificationSlice";
 import axios from "axios";
 
 export const useHttp = () => {
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [reqError, setReqError] = useState(null);
     const [process, setProcess] = useState("waiting");
 
@@ -16,7 +16,6 @@ export const useHttp = () => {
             url,
             { method = "get", data = null, headers = { "Content-Type": "application/json" } }
         ) => {
-            setLoading(true);
             setProcess("loading");
             try {
                 const response = await axios({

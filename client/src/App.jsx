@@ -15,6 +15,7 @@ import { createTheme } from "@mui/material";
 import { themeSettings } from "theme";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import AddEventPage from "pages/addEventPage";
 
 function App() {
     const isAuth = Boolean(useSelector((state) => state.auth.token));
@@ -76,6 +77,22 @@ function App() {
                                 element={
                                     <Layout pageTitle="Pet Details" auth={isAuth}>
                                         <PetDefailsPage />
+                                    </Layout>
+                                }
+                            />
+                            <Route
+                                path="/health/add-event"
+                                element={
+                                    <Layout pageTitle="Add Event Page" auth={isAuth}>
+                                        <AddEventPage />
+                                    </Layout>
+                                }
+                            />
+                            <Route
+                                path="/health/:eventId"
+                                element={
+                                    <Layout pageTitle="Edit Event Page" auth={isAuth}>
+                                        <AddEventPage />
                                     </Layout>
                                 }
                             />

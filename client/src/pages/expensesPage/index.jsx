@@ -36,8 +36,6 @@ const ExpensesPage = () => {
         getExpenses();
     }, []);
 
-    console.log('expenses', expenses)
-
     return loading ? (
         <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
             <CircularProgress />
