@@ -9,9 +9,10 @@ import Modal from "components/Modal";
 const StyledText = styled.p`
     margin: 0;
     padding: 0;
+    text-align: center;
 `;
 
-const DeleteAccount = ({ request }) => {
+const DeleteAccount = ({ request, isMobile }) => {
     const [isOpen, setIsOpen] = useState(false);
     const token = useSelector((state) => state.auth.token);
     const dispatch = useDispatch();
@@ -40,8 +41,13 @@ const DeleteAccount = ({ request }) => {
     };
 
     return (
-        <Box sx={{ padding: "10px 29px" }}>
-            <Box sx={{ display: "flex", gap: "45px", alignItems: "center" }}>
+        <Box p={isMobile ? "10px 0px" : "10px 29px"}>
+            <Box
+                display="flex"
+                gap={isMobile? "5px" : "45px"}
+                alignItems="center"
+                flexDirection={isMobile ? "column" : "row"}
+            >
                 <Typography variant="h4" color={deleteColor}>
                     Delete Account
                 </Typography>

@@ -2,7 +2,14 @@ import { useEffect, useState } from "react";
 import { useHttp } from "utils/useHttp";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { Box, FormControl, InputAdornment, TextField, useTheme } from "@mui/material";
+import {
+    Box,
+    FormControl,
+    InputAdornment,
+    TextField,
+    useMediaQuery,
+    useTheme,
+} from "@mui/material";
 import ImagePicker from "components/ImagePicker";
 import { inputStyles } from "styles/styles";
 import { useForm } from "react-hook-form";
@@ -23,6 +30,8 @@ const PetDefailsPage = () => {
     const deleteColor = palette.delete.main;
     const primary = palette.primary.main;
     const navigate = useNavigate();
+    const isMobile = useMediaQuery("(max-width:1100px)");
+    const isMobileActions = useMediaQuery("(max-width:700px)");
 
     const [selectedImage, setSelectedImage] = useState(null);
 
@@ -143,19 +152,30 @@ const PetDefailsPage = () => {
     });
 
     return (
-        <Box mt="50px">
+        <Box mt={isMobile ? "25px" : "50px"} pb="10px">
             <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
-                <Box display="flex" flexDirection="row" justifyContent="space-between">
-                    <Box display="flex" flexDirection="row" gap="30px">
+                <Box
+                    display="flex"
+                    flexDirection={isMobile ? "column" : "row"}
+                    justifyContent="space-between"
+                    gap="20px"
+                >
+                    <Box display="flex" flexDirection="row" gap={isMobile ? "10px" : "30px"}>
                         {/* Photo */}
                         <Box>
                             <ImagePicker
+                                isMobile={isMobile}
                                 onChange={setSelectedImage}
                                 selectedImage={selectedImage}
                             />
                         </Box>
                         {/* INPUTS */}
-                        <Box display="flex" flexDirection="column" width="219px" gap="15px">
+                        <Box
+                            display="flex"
+                            flexDirection="column"
+                            width={isMobile ? "100%" : "219px"}
+                            gap="15px"
+                        >
                             <FormControl sx={{ ...inputStyles }} variant="outlined">
                                 <TextField
                                     {...register("name")}
@@ -211,7 +231,13 @@ const PetDefailsPage = () => {
                         </Box>
                     </Box>
 
-                    <FormControl sx={{ width: "645px" }} variant="outlined">
+                    <FormControl
+                        sx={{
+                            maxWidth: `${isMobile ? null : "645px"}`,
+                            width: `${isMobile ? null : "100%"} `,
+                        }}
+                        variant="outlined"
+                    >
                         <TextField
                             multiline
                             {...register("description")}
@@ -223,12 +249,19 @@ const PetDefailsPage = () => {
                             error={!!errors.description}
                             helperText={errors.description?.message}
                             InputLabelProps={{ shrink: true }}
-                            rows={10}
+                            rows={isMobile ? 5 : 10}
                         />
                     </FormControl>
                 </Box>
 
-                <Box display="flex" flexDirection="row" gap="75px" mt="50px">
+                <Box
+                    display="flex"
+                    alignItems={isMobile ? "center" : null}
+                    justifyContent={isMobile ? "center" : null}
+                    gap={isMobile ? "20px" : "30px"}
+                    mt="50px"
+                    flexDirection={isMobileActions ? "column" : "row"}
+                >
                     <FilePicker
                         title="Passport"
                         handleFileChange={handleFileChange}
@@ -246,7 +279,15 @@ const PetDefailsPage = () => {
                     />
                 </Box>
 
-                <Box display="flex" flexDirection="row" justifyContent="space-between" mt="125px">
+                <Box
+                    display="flex"
+                    alignItems={isMobile ? "center" : null}
+                    flexDirection={isMobileActions ? "column" : "row"}
+                    gap="10px"
+                    justifyContent="space-between"
+                    mt={isMobile ? "30px" : "125px"}
+
+                >
                     <FormButton
                         onClick={() => navigate(-1)}
                         title="Back"

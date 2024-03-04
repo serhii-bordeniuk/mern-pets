@@ -130,7 +130,7 @@ const ExpensesAddModal = ({ onClose, isOpen, token, getExpenses }) => {
                             onClick={() => handleCategorySelect("entertainment")}
                         >
                             <img src={entertainmentIcon} alt="entertainment category" />
-                            <Typography>Entertainment</Typography>
+                            <Typography>Fun</Typography>
                         </CategoryStyled>
                         <CategoryStyled
                             selected={expenseCategory === "others"}
@@ -222,7 +222,7 @@ const ExpensesAddModal = ({ onClose, isOpen, token, getExpenses }) => {
                             <Controller
                                 control={control}
                                 name="date"
-                                render={({ field }) => <DatePicker label="Date" {...field} />}
+                                render={({ field }) => <DatePicker disableFuture label="Date" {...field} />}
                             />
                             <FormHelperText
                                 error={!!errors.date && !!errors.date.message}

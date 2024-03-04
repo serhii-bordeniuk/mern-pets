@@ -1,4 +1,4 @@
-import { Box, CircularProgress, useTheme } from "@mui/material";
+import { Box, CircularProgress, useMediaQuery, useTheme } from "@mui/material";
 import ExpensesPlaceholder from "./ExpensesPlaceholder";
 import Diagram from "./Diagram";
 import ExpensesAddModal from "./ExpensesAddModal";
@@ -15,6 +15,7 @@ const ExpensesPage = () => {
     const token = useSelector((state) => state.auth.token);
     const { palette } = useTheme();
     const primary = palette.primary.main;
+    const isMobile = useMediaQuery("(max-width: 1530px)");
 
     const handleToggleModal = () => {
         setIsOpenModal((prevState) => !prevState);
@@ -41,8 +42,8 @@ const ExpensesPage = () => {
             <CircularProgress />
         </Box>
     ) : (
-        <Box mt="50px">
-            <Box display="flex" flexDirection="row" alignItems="flex-start">
+        <Box pt={isMobile ? "20px" : "50px"} position="relative">
+            <Box display="flex" flexDirection="row" alignItems="flex-start" mb="20px" position="fixed" >
                 <FormButton
                     title="ADD +"
                     color={primary}
@@ -51,7 +52,16 @@ const ExpensesPage = () => {
                     disabled={isOpenModal}
                 />
             </Box>
-            <Box mt="10px" display="flex" justifyContent="space-between" gap="20px">
+            <Box
+
+                p="50px 0px"
+                m="0 auto"
+                display="flex"
+                justifyContent="space-between"
+                gap="10px"
+                flexDirection={isMobile ? "column-reverse" : "row"}
+                maxWidth={isMobile ? "645px" : null}
+            >
                 {expenses && expenses.length === 0 && (
                     <ExpensesPlaceholder handleOpen={handleToggleModal} />
                 )}

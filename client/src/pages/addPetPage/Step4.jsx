@@ -17,6 +17,7 @@ const Step4 = () => {
                     name="birthDate"
                     render={({ field }) => (
                         <DatePicker
+                            disableFuture
                             label="Birth Date"
                             {...field}
                         />

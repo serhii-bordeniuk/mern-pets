@@ -8,7 +8,7 @@ const AddEventPage = () => {
 
     const { eventId } = useParams();
     return (
-        <Box m="0 auto" mt="80px" display="flex" flexDirection="column" width="511px">
+        <Box m="0 auto" mt="80px" display="flex" flexDirection="column" maxWidth="511px">
             <Typography fontWeight="600px" textAlign="center" variant="h3">
                 {!eventId ? "Adding" : "Editing"} Event
             </Typography>

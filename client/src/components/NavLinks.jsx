@@ -16,26 +16,26 @@ const StyledNavLinks = styled(Box)`
     width: 272px;
 `;
 
-const NavLinks = () => {
+const NavLinks = ({ toggleNavbar }) => {
     const { palette } = useTheme();
     const primary = palette.primary.main;
 
     return (
         <StyledNavLinks>
-            <StyledSidebarLink to="/account">
+            <StyledSidebarLink to="/account" onClick={toggleNavbar}>
                 <AccountCircleIcon sx={{ color: primary }} />
                 Account
             </StyledSidebarLink>
 
-            <StyledSidebarLink to="/pets">
+            <StyledSidebarLink to="/pets" onClick={toggleNavbar}>
                 <PetsIcon sx={{ color: primary }} /> My Pets
             </StyledSidebarLink>
 
-            <StyledSidebarLink to="/expenses">
+            <StyledSidebarLink to="/expenses" onClick={toggleNavbar}>
                 <PaidIcon sx={{ color: primary }} /> Expenses
             </StyledSidebarLink>
 
-            <StyledSidebarLink to="/health">
+            <StyledSidebarLink to="/health" onClick={toggleNavbar}>
                 <LocalHospitalIcon sx={{ color: primary }} />
                 Health
             </StyledSidebarLink>

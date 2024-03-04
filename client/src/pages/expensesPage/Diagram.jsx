@@ -1,4 +1,4 @@
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { PieChart } from "@mui/x-charts/PieChart";
 import foodIcon from "../../resources/images/icons/food-icon.svg";
 import medicineIcon from "../../resources/images/icons/medicine-icon.svg";
@@ -17,6 +17,7 @@ const CategoryTitle = styled(Typography)`
 `;
 
 const Diagram = ({ expenses }) => {
+    const isMobile = useMediaQuery("(max-width: 500px)");
     const { palette } = useTheme();
     const primary = palette.primary.main;
     const medicine = palette.medicine.main;
@@ -52,19 +53,19 @@ const Diagram = ({ expenses }) => {
     ];
 
     return (
-        <Box border={`1px solid ${primary}`} borderRadius="10px" p="23px 98px">
+        <Box border={`1px solid ${primary}`} borderRadius="10px" p="15px 50px" display="flex" flexDirection="column" alignItems="center">
             <PieChart
                 series={[
                     {
                         paddingAngle: 3,
-                        innerRadius: 173,
-                        outerRadius: 210,
+                        innerRadius: isMobile ? 113 : 173, //113
+                        outerRadius: isMobile? 150 : 210, //150
                         data,
                     },
                 ]}
                 margin={{ right: 5 }}
-                width={420}
-                height={420}
+                width={isMobile ? 300 : 420}
+                height={isMobile ? 300 : 420}
                 slotProps={{
                     legend: {
                         hidden: true,

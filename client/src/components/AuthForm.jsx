@@ -225,7 +225,7 @@ const AuthForm = () => {
                     <>
                         Do you have an account already?
                         <span
-                            style={{ cursor: "pointer", textDecoration: "underline" }}
+                            style={{ cursor: "pointer", textDecoration: "underline", marginLeft: "5px" }}
                             onClick={togglePageSwitcher}
                         >
                             Log In

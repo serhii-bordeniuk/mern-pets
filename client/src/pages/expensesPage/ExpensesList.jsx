@@ -32,7 +32,7 @@ const ExpensesList = ({ expenses, token, setExpenses }) => {
         {
             field: "category",
             headerName: "Category",
-            width: 80,
+            width: 70,
             renderCell: (params) => {
                 return getCategoryIcon(params.row.category);
             },

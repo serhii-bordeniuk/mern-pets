@@ -61,7 +61,10 @@ export const addPet = async (req, res, next) => {
         }
 
         const { name, petType, sex, breed, weight, birthDate, description } = req.body;
-        const imageUrl = image[0].path;
+        let imageUrl = "";
+        if (image) {
+            imageUrl = image[0].path;
+        }
 
         const pet = new Pet({
             name: name,

@@ -2,7 +2,7 @@ import { Alert, Snackbar } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { setNotification } from "slices/notificationSlice";
 
-const Notification = ({ successTitle }) => {
+const Notification = () => {
     const dispatch = useDispatch();
     const { title, requestStatus, error } = useSelector((state) => state.notification);
 

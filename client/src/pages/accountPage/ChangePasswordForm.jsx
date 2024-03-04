@@ -71,7 +71,7 @@ const ChangePasswordForm = ({ request }) => {
 
     return (
         <form noValidate onSubmit={handleSubmit(onSubmit)}>
-            <Box sx={{ padding: "10px" }}>
+            <Box mt="10px">
                 <Typography variant="h4" fontWeight="600">
                     Change password
                 </Typography>

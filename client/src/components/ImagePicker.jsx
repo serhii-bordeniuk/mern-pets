@@ -9,8 +9,8 @@ const StyledImagePicker = styled(Box)`
     flex-shrink: 0;
     align-items: center;
     justify-content: center;
-    height: 188px;
-    width: 188px;
+    height: ${({ isMobile }) => (isMobile ? "140px" : "188px")};
+    width: ${({ isMobile }) => (isMobile ? "140px" : "188px")}; 
     border-radius: 100%;
     border: 1px solid #403128;
     cursor: pointer;
@@ -27,7 +27,7 @@ const StyledImagePicker = styled(Box)`
     }
 `;
 
-const ImagePicker = ({ onChange, selectedImage }) => {
+const ImagePicker = ({ onChange, selectedImage, isMobile }) => {
     const [previewImage, setPreviewImage] = useState(null);
     const handleFileChange = (event) => {
         const file = event.target.files[0];
@@ -41,7 +41,7 @@ const ImagePicker = ({ onChange, selectedImage }) => {
         }
     };
     return (
-        <StyledImagePicker>
+        <StyledImagePicker isMobile={isMobile}>
             <input
                 type="file"
                 onChange={handleFileChange}

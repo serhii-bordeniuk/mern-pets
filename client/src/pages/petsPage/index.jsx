@@ -12,7 +12,7 @@ import FormButton from "components/ui/FormButton";
 
 const PetsPage = () => {
     const token = useSelector((state) => state.auth.token);
-    const isNonMobile = useMediaQuery("(min-width:1625px)");
+    const isMobile = useMediaQuery("(max-width:1200px)");
     const { request, loading } = useHttp();
     const navigate = useNavigate();
     const { palette } = useTheme();
@@ -49,10 +49,11 @@ const PetsPage = () => {
             {pets && pets.length > 0 && (
                 <>
                     <Box
+                        // sx={(theme) => ({[theme.breakpoints.down("sm")]: {flexDirection: "column"}}) }
                         mt="50px"
                         display="flex"
                         flexWrap="wrap"
-                        justifyContent="flex-start"
+                        justifyContent="center"
                         gap="50px"
                     >
                         {pets.map((item) => {

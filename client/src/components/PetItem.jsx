@@ -1,4 +1,4 @@
-import { Box, useTheme } from "@mui/material";
+import { Box, useMediaQuery, useTheme } from "@mui/material";
 import catImage from "../resources/images/cat-imgae.png";
 import { useNavigate } from "react-router-dom";
 

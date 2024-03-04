@@ -1,25 +1,19 @@
-import { Box } from "@mui/material";
+import { Box, useMediaQuery } from "@mui/material";
 import AccountForm from "./AccountForm";
 import ChangePasswordForm from "./ChangePasswordForm";
-import styled from "@emotion/styled";
 import { useHttp } from "utils/useHttp";
 import DeleteAccount from "./DeleteAccount";
 
-const StyledAccountPage = styled(Box)`
-    max-width: 914px;
-    padding: 30px 25px;
-    margin: auto;
-`;
-
 const AccountPage = () => {
+    const isMobile = useMediaQuery("(max-width: 900px)");
     const { request } = useHttp();
 
     return (
-        <StyledAccountPage>
-            <AccountForm request={request} />
+        <Box maxWidth="914px" p={isMobile ? "0" : "30px 25px"} m="auto">
+            <AccountForm request={request} isMobile={isMobile}/>
             <ChangePasswordForm request={request} />
-            <DeleteAccount request={request} />
-        </StyledAccountPage>
+            <DeleteAccount request={request} isMobile={isMobile}/>
+        </Box>
     );
 };
 export default AccountPage;

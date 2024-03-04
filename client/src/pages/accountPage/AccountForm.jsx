@@ -10,7 +10,7 @@ import { setLogout } from "slices/authSlice";
 import { accountSchema } from "utils/validators";
 import ImagePicker from "components/ImagePicker";
 
-const AccountForm = ({ request }) => {
+const AccountForm = ({ request, isMobile }) => {
     const token = useSelector((state) => state.auth.token);
     const dispatch = useDispatch();
     const { palette } = useTheme();
@@ -75,19 +75,17 @@ const AccountForm = ({ request }) => {
 
     return (
         <form noValidate onSubmit={handleSubmit(onSubmit)}>
-            <Box sx={{ padding: "10px" }}>
+            <Box>
                 <Typography variant="h4" fontWeight="600">
                     Basic details
                 </Typography>
                 <Box sx={{ textAlign: "center" }}>
                     <Box
-                        sx={{
-                            display: "flex",
-                            flexDirection: "row",
-                            gap: "25px",
-                            marginTop: "20px",
-                            alignItems: "flex-end",
-                        }}
+                        display="flex"
+                        flexDirection={isMobile ? "column" : "row"}
+                        gap="25px"
+                        mt="20px"
+                        alignItems={isMobile ? "center" : "flex-end"}
                     >
                         <ImagePicker onChange={setSelectedImage} selectedImage={selectedImage} />
 
