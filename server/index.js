@@ -13,7 +13,7 @@ import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/user.js";
 import petsRoutes from "./routes/pets.js";
 import expensesRoutes from "./routes/expenses.js";
-import eventsRoutes from "./routes/events.js"
+import eventsRoutes from "./routes/events.js";
 
 import { fileURLToPath } from "url";
 
@@ -84,7 +84,7 @@ app.use("/auth", authRoutes);
 app.use("/user", userRoutes);
 app.use("/pets", petsRoutes);
 app.use("/expenses", expensesRoutes);
-app.use("/events", eventsRoutes)
+app.use("/events", eventsRoutes);
 
 /* errors handler */
 
@@ -105,3 +105,7 @@ mongoose
         app.listen(PORT, () => console.log(`Server Port ${PORT}`));
     })
     .catch((error) => console.log(error));
+
+export default () => {
+    return app;
+};
