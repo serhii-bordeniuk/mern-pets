@@ -7,7 +7,7 @@ import axios from "axios";
 export const useHttp = () => {
     const [loading, setLoading] = useState(true);
     const [reqError, setReqError] = useState(null);
-    const [process, setProcess] = useState("waiting");
+    const [processing, setProcessing] = useState("waiting");
 
     const dispatch = useDispatch();
 
@@ -16,7 +16,7 @@ export const useHttp = () => {
             url,
             { method = "get", data = null, headers = { "Content-Type": "application/json" } }
         ) => {
-            setProcess("loading");
+            setProcessing("loading");
             try {
                 const response = await axios({
                     url,
@@ -26,12 +26,13 @@ export const useHttp = () => {
                 });
                 const responseData = response.data;
                 setLoading(false);
-                setProcess("success");
+                
                 if (method !== "get") {
                     dispatch(
                         setNotification({ requestStatus: "success", title: responseData.message })
                     );
                 }
+                setProcessing("success");
                 return responseData;
             } catch (error) {
                 console.log(error);
@@ -39,7 +40,7 @@ export const useHttp = () => {
                     dispatch(setLogout());
                 }
                 setLoading(false);
-                setProcess("error");
+                setProcessing("error");
                 const errorMessage = error.response?.data?.message || "Something went wrong";
                 setReqError(errorMessage);
                 dispatch(
@@ -57,5 +58,5 @@ export const useHttp = () => {
         setReqError(null);
     }, []);
 
-    return { loading, reqError, process, request, clearError };
+    return { loading, reqError, processing, request, clearError };
 };

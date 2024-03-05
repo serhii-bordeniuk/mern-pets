@@ -16,9 +16,9 @@ const ListPlaceholder = ({ title, imageSrc, onClick }) => {
                 margin: "0 auto",
             }}
         >
-            <Typography fontWeight="600" variant="h2">{title}</Typography>
+            <Typography textAlign="center" fontWeight="600" variant="h2">{title}</Typography>
             <Box>
-                <img src={imageSrc} alt="placeholder" />
+                <img src={imageSrc} alt="placeholder" width="100%" height="100%" />
             </Box>
             <FormButton title="ADD +" onClick={onClick} color={primary} sx={{ width: "156px" }} />
         </Box>

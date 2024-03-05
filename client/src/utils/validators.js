@@ -3,8 +3,8 @@ import * as yup from "yup";
 export const accountSchema = yup.object({
     userName: yup
         .string()
-        .matches(/^[a-zA-Z]+$/, "Username must contain only letters")
-        .min(3, "Username must be at least 3 characters"),
+        .matches(/^[a-zA-Z\s]+$/, "Full Name must contain only letters")
+        .min(3, "Full Name must be at least 3 characters"),
     email: yup.string().email().min(4),
 
     phoneNumber: yup

@@ -44,17 +44,7 @@ const ExpensesPage = () => {
         </Box>
     ) : (
         <Box pt={isMobile ? "20px" : "50px"} position="relative">
-            <Box display="flex" flexDirection="row" alignItems="flex-start" mb="20px" position="fixed" >
-                <FormButton
-                    title="ADD +"
-                    color={primary}
-                    sx={{ width: "88px", height: "36px" }}
-                    onClick={handleToggleModal}
-                    disabled={isOpenModal}
-                />
-            </Box>
             <Box
-
                 p="50px 0px"
                 m="0 auto"
                 display="flex"
@@ -67,7 +57,24 @@ const ExpensesPage = () => {
                     <ExpensesPlaceholder handleOpen={handleToggleModal} />
                 )}
                 {expenses && expenses.length > 0 && (
-                    <ExpensesList setExpenses={setExpenses} token={token} expenses={expenses} />
+                    <>
+                        <Box
+                            display="flex"
+                            flexDirection="row"
+                            alignItems="flex-start"
+                            mb="20px"
+                            position="fixed"
+                        >
+                            <FormButton
+                                title="ADD +"
+                                color={primary}
+                                sx={{ width: "88px", height: "36px" }}
+                                onClick={handleToggleModal}
+                                disabled={isOpenModal}
+                            />
+                        </Box>
+                        <ExpensesList setExpenses={setExpenses} token={token} expenses={expenses} />
+                    </>
                 )}
 
                 <Diagram expenses={expenses} />

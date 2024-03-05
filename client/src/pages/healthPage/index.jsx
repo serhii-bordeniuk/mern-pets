@@ -57,7 +57,7 @@ const HealthPage = () => {
                 />
             )}
 
-            {events && (
+            {events && events.length > 0 && (
                 <>
                     <EventsList
                         events={events}

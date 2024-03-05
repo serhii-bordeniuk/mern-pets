@@ -69,7 +69,7 @@ const AddPetForm = () => {
                 .string()
                 .matches(/^[a-zA-Z\s]+$/, "Breed must contain only letters")
                 .min(3, "Breed must be at least 3 characters"),
-            weight: yup.string().matches(/^[0-9]+$/, "Weight must contain only numbers"),
+            weight: yup.string().matches(/^[0-9]+$/, "Weight must contain only numbers").test('max', 'Weight must be less than or equal to 100', value => parseInt(value) <= 100),
         }),
         yup.object({
             birthDate: yup.date().required("Birth Date is a required field"),

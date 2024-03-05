@@ -15,23 +15,30 @@ import { setNotification } from "slices/notificationSlice";
 import { useHttp } from "utils/useHttp";
 
 const AuthForm = () => {
+    
     const [isLogin, setIsLogin] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmedPassword, setShowConfirmedPassword] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { requestStatus } = useSelector((state) => state.notification);
-    const { request } = useHttp();
+    const { request, processing } = useHttp();
 
     const schema = yup
         .object({
-            email: yup.string().email().min(4),
-            password: yup.string().min(8).max(32),
+            email: yup
+                .string()
+                .email("Email must be a valid email")
+                .min(4, "Email must be at least 4 characters"),
+            password: yup
+                .string()
+                .min(8, "Password must be at least 8 characters")
+                .max(32, "Password can not be longer than 32 characters"),
             confirmedPassword:
                 !isLogin &&
                 yup
                     .string()
-                    .required("confirm password is a required field")
+                    .required("Confirm password is a required field")
                     .nullable()
                     .test("match", "Passwords must match", function (value) {
                         if (value === null) {
@@ -76,7 +83,7 @@ const AuthForm = () => {
     const signup = async (data) => {
         const formData = new FormData();
         formData.append("email", data.email);
-        formData.append("password", data.password);;
+        formData.append("password", data.password);
         const signedUpUser = await request(`${process.env.REACT_APP_BASE_URL}/auth/signup`, {
             method: "post",
             data: formData,
@@ -199,7 +206,8 @@ const AuthForm = () => {
                     </>
                 )}
                 <Button
-                    disabled={requestStatus === "pending"}
+                    disabled={processing === "loading"}
+                    
                     sx={{ ...buttonStyles }}
                     size="large"
                     type="submit"
@@ -215,7 +223,11 @@ const AuthForm = () => {
                     <>
                         Don't have an account yet?
                         <span
-                            style={{ cursor: "pointer", textDecoration: "underline", marginLeft: "5px" }}
+                            style={{
+                                cursor: "pointer",
+                                textDecoration: "underline",
+                                marginLeft: "5px",
+                            }}
                             onClick={togglePageSwitcher}
                         >
                             Register
@@ -225,7 +237,11 @@ const AuthForm = () => {
                     <>
                         Do you have an account already?
                         <span
-                            style={{ cursor: "pointer", textDecoration: "underline", marginLeft: "5px" }}
+                            style={{
+                                cursor: "pointer",
+                                textDecoration: "underline",
+                                marginLeft: "5px",
+                            }}
                             onClick={togglePageSwitcher}
                         >
                             Log In
