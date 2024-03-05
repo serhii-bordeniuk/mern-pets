@@ -28,7 +28,7 @@ const DeleteAccount = ({ request, isMobile }) => {
     };
 
     const onDeleteAccount = async () => {
-        const deletedUser = await request("http://localhost:3001/user/delete", {
+        const deletedUser = await request(`${process.env.REACT_APP_BASE_URL}/user/delete`, {
             method: "delete",
             headers: {
                 Authorization: `Bearer ${token}`,

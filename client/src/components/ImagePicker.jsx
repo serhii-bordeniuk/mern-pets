@@ -55,7 +55,7 @@ const ImagePicker = ({ onChange, selectedImage, isMobile }) => {
                         width: "100%",
                         height: "100%",
                     }}
-                    src={previewImage || `http://localhost:3001/${selectedImage}`}
+                    src={previewImage || `${process.env.REACT_APP_BASE_URL}/${selectedImage}`}
                     alt="user avatar"
                 />
             ) : (

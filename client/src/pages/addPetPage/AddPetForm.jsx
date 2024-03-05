@@ -101,6 +101,7 @@ const AddPetForm = () => {
             default:
                 return null;
         }
+        //eslint-disable-next-line
     }, [activeStep]);
 
     const handleNext = async () => {
@@ -134,7 +135,8 @@ const AddPetForm = () => {
         if (selectedImage) {
             formDataToSend.append("image", selectedImage);
         }
-        const addedPet = await request("http://localhost:3001/pets/add-pet", {
+        //eslint-disable-next-line
+        const addedPet = await request(`${process.env.REACT_APP_BASE_URL}/pets/add-pet`, {
             method: "put",
             data: formDataToSend,
             headers: {

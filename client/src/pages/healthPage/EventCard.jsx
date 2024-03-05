@@ -50,7 +50,7 @@ const EventCard = ({
                             borderRadius: "50%",
                             border: `1px solid ${primary}`,
                         }}
-                        src={`http://localhost:3001/${picturepath}`}
+                        src={`${process.env.REACT_APP_BASE_URL}/${picturepath}`}
                         alt={petName}
                     />
                     <Typography fontWeight="800">{petName}</Typography>

@@ -3,7 +3,7 @@ import { useHttp } from "utils/useHttp";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-import { Box, useMediaQuery, useTheme } from "@mui/material";
+import { Box, useTheme } from "@mui/material";
 import { CircularProgress } from "@mui/material";
 import ListPlaceholder from "components/ListPlaceholder";
 import placeholderImage from "../../resources/images/pet-banner.svg";
@@ -12,7 +12,6 @@ import FormButton from "components/ui/FormButton";
 
 const PetsPage = () => {
     const token = useSelector((state) => state.auth.token);
-    const isMobile = useMediaQuery("(max-width:1200px)");
     const { request, loading } = useHttp();
     const navigate = useNavigate();
     const { palette } = useTheme();
@@ -20,7 +19,7 @@ const PetsPage = () => {
     const primary = palette.primary.main;
     useEffect(() => {
         const fetchedPets = async () => {
-            const petsList = await request("http://localhost:3001/pets", {
+            const petsList = await request(`${process.env.REACT_APP_BASE_URL}/pets`, {
                 method: "get",
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -31,6 +30,7 @@ const PetsPage = () => {
             }
         };
         fetchedPets();
+        //eslint-disable-next-line
     }, []);
 
     return loading ? (

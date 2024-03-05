@@ -28,7 +28,7 @@ const AccountForm = ({ request, isMobile }) => {
 
     useEffect(() => {
         const fetchUserData = async () => {
-            const userData = await request("http://localhost:3001/user", {
+            const userData = await request(`${process.env.REACT_APP_BASE_URL}/user`, {
                 method: "get",
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -64,7 +64,7 @@ const AccountForm = ({ request, isMobile }) => {
         }
 
         //eslint-disable-next-line
-        const updatedUser = await request("http://localhost:3001/user", {
+        const updatedUser = await request(`${process.env.REACT_APP_BASE_URL}/user`, {
             method: "put",
             data: formDataToSend,
             headers: {

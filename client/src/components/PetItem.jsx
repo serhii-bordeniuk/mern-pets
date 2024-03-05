@@ -1,4 +1,4 @@
-import { Box, useMediaQuery, useTheme } from "@mui/material";
+import { Box, useTheme } from "@mui/material";
 import catImage from "../resources/images/cat-imgae.png";
 import { useNavigate } from "react-router-dom";
 
@@ -16,15 +16,15 @@ const PetItem = ({ name, petId, picturepath }) => {
                 cursor: "pointer",
                 position: "relative",
                 borderRadius: "10px",
-                overflow: "hidden"
+                overflow: "hidden",
             }}
         >
             <img
-                src={picturepath ? `http://localhost:3001/${picturepath}` : catImage}
+                src={picturepath ? `${process.env.REACT_APP_BASE_URL}/${picturepath}` : catImage}
                 alt="your pet"
                 height="100%"
                 width="100%"
-                style={{objectFit: "cover",}}
+                style={{ objectFit: "cover" }}
             />
 
             <Box

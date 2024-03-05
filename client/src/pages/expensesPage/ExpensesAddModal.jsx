@@ -43,7 +43,7 @@ const ExpensesAddModal = ({ onClose, isOpen, token, getExpenses }) => {
     const [pets, setPets] = useState([]);
 
     const getPets = async () => {
-        const fetchedPets = await request("http://localhost:3001/pets", {
+        const fetchedPets = await request(`${process.env.REACT_APP_BASE_URL}/pets`, {
             method: "get",
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -56,6 +56,7 @@ const ExpensesAddModal = ({ onClose, isOpen, token, getExpenses }) => {
 
     useEffect(() => {
         getPets();
+        //eslint-disable-next-line
     }, []);
 
 
@@ -88,7 +89,7 @@ const ExpensesAddModal = ({ onClose, isOpen, token, getExpenses }) => {
         formData.append("pet", data.pet);
         formData.append("date", data.date.toISOString());
 
-        const addedExpense = await request("http://localhost:3001/expenses/add-expense", {
+        const addedExpense = await request(`${process.env.REACT_APP_BASE_URL}/expenses/add-expense`, {
             data: formData,
             method: "put",
             headers: {
@@ -199,7 +200,7 @@ const ExpensesAddModal = ({ onClose, isOpen, token, getExpenses }) => {
                                                 <Box display="flex" gap="10px">
                                                     <img
                                                         alt="pet"
-                                                        src={`http://localhost:3001/${pet.picturepath}`}
+                                                        src={`${process.env.REACT_APP_BASE_URL}/${pet.picturepath}`}
                                                         style={{
                                                             width: "30px",
                                                             height: "30px",

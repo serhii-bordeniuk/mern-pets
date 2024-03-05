@@ -21,7 +21,7 @@ import { useHttp } from "utils/useHttp";
 import { eventAddSchema } from "utils/validators";
 
 const EventForm = ({ token, eventId, }) => {
-    const { request, loading } = useHttp();
+    const { request } = useHttp();
     const [pets, setPets] = useState([]);
     const { palette } = useTheme();
     const navigate = useNavigate();
@@ -29,7 +29,7 @@ const EventForm = ({ token, eventId, }) => {
     
 
     const getEventById = async () => {
-        const fetchedEvent = await request(`http://localhost:3001/events/${eventId}`, {
+        const fetchedEvent = await request(`${process.env.REACT_APP_BASE_URL}/events/${eventId}`, {
             method: "get",
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -45,7 +45,7 @@ const EventForm = ({ token, eventId, }) => {
     };
 
     const getPets = async () => {
-        const fetchedPets = await request("http://localhost:3001/pets", {
+        const fetchedPets = await request(`${process.env.REACT_APP_BASE_URL}/pets`, {
             method: "get",
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -61,6 +61,7 @@ const EventForm = ({ token, eventId, }) => {
         if (eventId) {
             getEventById();
         }
+        //eslint-disable-next-line
     }, []);
 
     const {
@@ -90,7 +91,7 @@ const EventForm = ({ token, eventId, }) => {
         } else {
             endpoint = "add-event";
         }
-        const postedEvent = await request(`http://localhost:3001/events/${endpoint}`, {
+        const postedEvent = await request(`${process.env.REACT_APP_BASE_URL}/events/${endpoint}`, {
             method: "put",
             data: formData,
             headers: {
@@ -147,7 +148,7 @@ const EventForm = ({ token, eventId, }) => {
                                     <Box display="flex" gap="10px">
                                         <img
                                             alt="pet"
-                                            src={`http://localhost:3001/${pet.picturepath}`}
+                                            src={`${process.env.REACT_APP_BASE_URL}/${pet.picturepath}`}
                                             style={{
                                                 width: "30px",
                                                 height: "30px",

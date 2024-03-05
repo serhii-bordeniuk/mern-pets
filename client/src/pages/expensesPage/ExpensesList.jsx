@@ -15,7 +15,7 @@ const ExpensesList = ({ expenses, token, setExpenses }) => {
     }));
 
     const handleDeleteExpense = async (id) => {
-        const deletedExpense = await request(`http://localhost:3001/expenses/${id}`, {
+        const deletedExpense = await request(`${process.env.REACT_APP_BASE_URL}/expenses/${id}`, {
             method: "delete",
             headers: {
                 Authorization: `Bearer ${token}`,

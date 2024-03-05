@@ -22,7 +22,7 @@ const ExpensesPage = () => {
     };
 
     const getExpenses = async () => {
-        const fetchedExpenses = await request("http://localhost:3001/expenses", {
+        const fetchedExpenses = await request(`${process.env.REACT_APP_BASE_URL}/expenses`, {
             method: "get",
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -35,6 +35,7 @@ const ExpensesPage = () => {
 
     useEffect(() => {
         getExpenses();
+        //eslint-disable-next-line
     }, []);
 
     return loading ? (

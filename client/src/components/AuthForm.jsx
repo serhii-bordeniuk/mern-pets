@@ -56,7 +56,7 @@ const AuthForm = () => {
         const formData = new FormData();
         formData.append("email", data.email);
         formData.append("password", data.password);
-        const loggedInUser = await request(`http://localhost:3001/auth/login`, {
+        const loggedInUser = await request(`${process.env.REACT_APP_BASE_URL}/auth/login`, {
             method: "post",
             data: formData,
             headers: {
@@ -77,7 +77,7 @@ const AuthForm = () => {
         const formData = new FormData();
         formData.append("email", data.email);
         formData.append("password", data.password);;
-        const signedUpUser = await request(`http://localhost:3001/auth/signup`, {
+        const signedUpUser = await request(`${process.env.REACT_APP_BASE_URL}/auth/signup`, {
             method: "post",
             data: formData,
             headers: {

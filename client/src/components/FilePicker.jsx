@@ -25,7 +25,7 @@ const FilePicker = ({ title, attachedFile, handleFileChange }) => {
             window.open(blobUrl);
         } else if (typeof attachedFile === "string") {
             const url = attachedFile.replace(/\\/g, "/");
-            window.open(`http://localhost:3001/${url}`);
+            window.open(`${process.env.REACT_APP_BASE_URL}/${url}`);
         }
     };
 

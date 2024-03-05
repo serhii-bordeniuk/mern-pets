@@ -54,7 +54,7 @@ const ChangePasswordForm = ({ request }) => {
         formData.append("oldPassword", data.oldPassword);
         formData.append("password", data.password);
         //eslint-disable-next-line
-        const updatedPassword = await request("http://localhost:3001/user/password", {
+        const updatedPassword = await request(`${process.env.REACT_APP_BASE_URL}/user/password`, {
             method: "PATCH",
             headers: {
                 Authorization: `Bearer ${token}`,

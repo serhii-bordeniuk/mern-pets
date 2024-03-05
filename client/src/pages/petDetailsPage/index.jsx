@@ -46,6 +46,7 @@ const PetDefailsPage = () => {
     };
 
     const handleFileChange = (e, fileType, shouldDelete = false) => {
+        //eslint-disable-next-line
         const [currentFile, setFile] = fileStateMap[fileType];
         if (shouldDelete) {
             setFile(null);
@@ -56,7 +57,7 @@ const PetDefailsPage = () => {
     };
 
     const getPetById = async (petId) => {
-        const fetchedPet = await request(`http://localhost:3001/pets/${petId}`, {
+        const fetchedPet = await request(`${process.env.REACT_APP_BASE_URL}/pets/${petId}`, {
             method: "get",
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -114,7 +115,7 @@ const PetDefailsPage = () => {
             formData.append("otherDocFile", otherDocFile);
         }
         //eslint-disable-next-line
-        const updatedPet = await request(`http://localhost:3001/pets/${petId}`, {
+        const updatedPet = await request(`${process.env.REACT_APP_BASE_URL}/pets/${petId}`, {
             method: "put",
             data: formData,
             headers: {
@@ -124,7 +125,7 @@ const PetDefailsPage = () => {
     };
 
     const handleDeletePet = async () => {
-        const deletedPet = await request(`http://localhost:3001/pets/${petId}`, {
+        const deletedPet = await request(`${process.env.REACT_APP_BASE_URL}/pets/${petId}`, {
             method: "delete",
             data: null,
             headers: {
@@ -145,7 +146,7 @@ const PetDefailsPage = () => {
         register,
         handleSubmit,
         setValue,
-        formState: { errors, dirtyFields },
+        formState: { errors },
     } = useForm({
         resolver: yupResolver(petDedailsSchema),
         mode: "onSubmit",
