@@ -10,8 +10,6 @@ export const accountSchema = yup.object({
     phoneNumber: yup
         .string()
         .nullable()
-        .max(13, "Phone number must have 13 characters")
-        .min(13, "Phone number must have 13 characters")
         .matches(/^\+?\d{11,12}$/, "Phone number must contain only numbers and '+'"),
 });
 
