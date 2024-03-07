@@ -1,27 +1,26 @@
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { Box, Typography } from "@mui/material";
+import { AlertTitle, Box, Typography } from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { inputStyles, buttonStyles } from "styles/styles";
+import Alert from "@mui/material/Alert";
 
 import { TextField, InputAdornment, IconButton, FormControl, Button } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setLogin } from "slices/authSlice";
 import { setNotification } from "slices/notificationSlice";
 import { useHttp } from "utils/useHttp";
 
 const AuthForm = () => {
-    
     const [isLogin, setIsLogin] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmedPassword, setShowConfirmedPassword] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { requestStatus } = useSelector((state) => state.notification);
     const { request, processing } = useHttp();
 
     const schema = yup
@@ -96,7 +95,7 @@ const AuthForm = () => {
             dispatch(
                 setNotification({
                     requestStatus: "success",
-                    title: "Successfully Signed Up! Now you can Log In.",
+                    title: "Successfully Signed Up!",
                 })
             );
         }
@@ -107,6 +106,7 @@ const AuthForm = () => {
     const onSubmit = async (data) => {
         if (!isLogin) {
             await signup(data);
+            await login(data);
         } else {
             await login(data);
         }
@@ -207,7 +207,6 @@ const AuthForm = () => {
                 )}
                 <Button
                     disabled={processing === "loading"}
-                    
                     sx={{ ...buttonStyles }}
                     size="large"
                     type="submit"
@@ -249,6 +248,11 @@ const AuthForm = () => {
                     </>
                 )}
             </Typography>
+
+            <Alert sx={{textAlign: "start", marginTop: "20px"}} severity="info">
+                <AlertTitle>Please Note!</AlertTitle>
+                he server may take up to 30 seconds to spin up and run initially. Thank you for your patience!
+            </Alert>
         </Box>
     );
 };

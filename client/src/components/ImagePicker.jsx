@@ -29,6 +29,7 @@ const StyledImagePicker = styled(Box)`
 
 const ImagePicker = ({ onChange, selectedImage, isMobile }) => {
     const [previewImage, setPreviewImage] = useState(null);
+    const [imageError, setImageError] = useState(false);
     const handleFileChange = (event) => {
         const file = event.target.files[0];
         if (file) {
@@ -40,6 +41,12 @@ const ImagePicker = ({ onChange, selectedImage, isMobile }) => {
             onChange(file);
         }
     };
+
+    const handleImageError = () => {
+        setImageError(true);
+    };
+
+
     return (
         <StyledImagePicker isMobile={isMobile}>
             <input
@@ -47,7 +54,7 @@ const ImagePicker = ({ onChange, selectedImage, isMobile }) => {
                 onChange={handleFileChange}
                 accept="image/jpeg, image/png, image/jpg"
             />
-            {previewImage || selectedImage ? (
+            {previewImage || (selectedImage && !imageError) ? (
                 <img
                     style={{
                         objectFit: "cover",
@@ -56,6 +63,7 @@ const ImagePicker = ({ onChange, selectedImage, isMobile }) => {
                         height: "100%",
                     }}
                     src={previewImage || `${process.env.REACT_APP_BASE_URL}/${selectedImage}`}
+                    onError={handleImageError}
                     alt="user avatar"
                 />
             ) : (
