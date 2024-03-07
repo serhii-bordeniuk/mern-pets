@@ -251,7 +251,7 @@ const AuthForm = () => {
 
             <Alert sx={{textAlign: "start", marginTop: "20px"}} severity="info">
                 <AlertTitle>Please Note!</AlertTitle>
-                he server may take up to 30 seconds to spin up and run initially. Thank you for your patience!
+                The server may take up to 30 seconds to spin up and run initially. Thank you for your patience!
             </Alert>
         </Box>
     );
