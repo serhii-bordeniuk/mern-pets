@@ -178,14 +178,12 @@ export const deletePet = async (req, res, next) => {
             error.statusCode = 403;
             throw error;
         }
-        const user = await User.findById(req.userId);
+        const user = await User.findById(req.userId).populate("events expenses");
         if (!user) {
             const error = new Error("User not found.");
             error.statusCode = 404;
             throw error;
         }
-
-        user.pets.pull(petId);
 
         //clear files
 
@@ -202,21 +200,24 @@ export const deletePet = async (req, res, next) => {
             clearFile(petToDelete.anotherdocpath);
         }
 
-        //unlink relations
+        const relatedEvents = await Event.find({ relatedPet: petId }).exec();
+        const relatedExpenses = await Expense.find({ pet: petId }).exec();
 
-        user.events = user.events.filter(event => event.relatedPet.toString() !== petId);
-        user.expenses = user.expenses.filter(expense => expense.pet.toString() !== petId);
-
-        await user.save();
+        console.log('relatedExpenses', relatedExpenses)
 
         await Promise.all([
-            Event.deleteMany({ relatedPet: petId }),
-            Expense.deleteMany({ pet: petId }),
+            Event.deleteMany({ relatedPet: { $in: petId } }),
+            Expense.deleteMany({ pet: { $in: petId } }),
         ]);
+
+        user.pets.pull(petId);
+        user.events.pull(...relatedEvents.map((event) => event._id));
+        user.expenses.pull(...relatedExpenses.map((expense) => expense._id));
+        await user.save();
 
         await Pet.findByIdAndDelete(petId);
         res.status(200).json({ message: "Pet deleted successfully." });
     } catch (error) {
-        handleErrors(error, next);
+        handleErrors(error, next); 
     }
 };
