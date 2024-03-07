@@ -1,5 +1,7 @@
 import User from "../models/User.js";
 import Pet from "../models/Pet.js";
+import Event from "../models/Event.js";
+import Expense from "../models/Expense.js";
 import { validationResult } from "express-validator";
 import { handleErrors } from "../utlis/utlis.js";
 import { clearFile } from "../index.js";
@@ -184,12 +186,34 @@ export const deletePet = async (req, res, next) => {
         }
 
         user.pets.pull(petId);
-        await user.save();
+
+        //clear files
 
         if (petToDelete.picturepath) {
             clearFile(petToDelete.picturepath);
         }
-        //todo delete documents
+        if (petToDelete.passportpath) {
+            clearFile(petToDelete.passportpath);
+        }
+        if (petToDelete.medcardpath) {
+            clearFile(petToDelete.medcardpath);
+        }
+        if (petToDelete.anotherdocpath) {
+            clearFile(petToDelete.anotherdocpath);
+        }
+
+        //unlink relations
+
+        user.events = user.events.filter(event => event.relatedPet.toString() !== petId);
+        user.expenses = user.expenses.filter(expense => expense.pet.toString() !== petId);
+
+        await user.save();
+
+        await Promise.all([
+            Event.deleteMany({ relatedPet: petId }),
+            Expense.deleteMany({ pet: petId }),
+        ]);
+
         await Pet.findByIdAndDelete(petId);
         res.status(200).json({ message: "Pet deleted successfully." });
     } catch (error) {
