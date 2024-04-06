@@ -2,8 +2,11 @@ import { Box, Typography } from "@mui/material";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import { LayoutContainer } from "styles/styles";
 import MenuIcon from "@mui/icons-material/Menu";
+import {useTheme} from "@mui/material";
 
 const Header = ({ pageTitle, toggleNavbar, isMobile }) => {
+    const { palette } = useTheme();
+    const primary = palette.primary.main;
 
     return (
         <Box
@@ -24,7 +27,7 @@ const Header = ({ pageTitle, toggleNavbar, isMobile }) => {
                     )}
                     {!isMobile && (
                         <>
-                            <Typography fontWeight="600" variant="h1">
+                            <Typography fontWeight="600" variant="h1" color={primary}>
                                 {pageTitle}
                             </Typography>
                             <Box>

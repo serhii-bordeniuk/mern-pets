@@ -1,4 +1,4 @@
-import { Box, useTheme } from "@mui/material";
+import { Box, useTheme, CircularProgress } from "@mui/material";
 import ListPlaceholder from "components/ListPlaceholder";
 import placeholderImage from "../../resources/images/playful-cat.svg";
 import { useNavigate } from "react-router-dom";
@@ -12,7 +12,7 @@ const HealthPage = () => {
     const [events, setEvents] = useState();
     const token = useSelector((state) => state.auth.token);
     const navigate = useNavigate();
-    const { request } = useHttp();
+    const { request, loading } = useHttp();
     const { palette } = useTheme();
     const primary = palette.primary.main;
 
@@ -45,7 +45,11 @@ const HealthPage = () => {
         //eslint-disable-next-line
     }, []);
 
-    return (
+    return loading ? (
+        <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+            <CircularProgress />
+        </Box>
+    ) :  (
         <Box m="auto" maxWidth="920px">
             {events && events.length === 0 && (
                 <ListPlaceholder
