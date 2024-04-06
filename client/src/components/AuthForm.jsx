@@ -16,7 +16,7 @@ import { setNotification } from "slices/notificationSlice";
 import { useHttp } from "utils/useHttp";
 
 const AuthForm = () => {
-    const [isLogin, setIsLogin] = useState(false);
+    const [isLogin, setIsLogin] = useState(true);
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmedPassword, setShowConfirmedPassword] = useState(false);
     const dispatch = useDispatch();
@@ -51,9 +51,13 @@ const AuthForm = () => {
     const {
         register,
         handleSubmit,
-        formState: { errors },
+        formState: { errors, },
         reset,
     } = useForm({
+        defaultValues: {
+            email: "test@test.com",
+            password: "1234567890"
+        },
         resolver: yupResolver(schema),
         mode: "all",
     });
@@ -76,7 +80,7 @@ const AuthForm = () => {
                     token: loggedInUser.token,
                 })
             );
-            navigate("/account");
+            navigate("/pets");
         }
     };
     const signup = async (data) => {

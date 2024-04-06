@@ -9,6 +9,7 @@ import CloseIcon from "@mui/icons-material/Close";
 
 const Sidebar = ({ isMobile, isSidebarOpen, toggleNavbar }) => {
     const { palette } = useTheme();
+    const primary = palette.primary.main;
     const secondary = palette.secondary.main;
     const dispatch = useDispatch();
     return (
@@ -29,7 +30,7 @@ const Sidebar = ({ isMobile, isSidebarOpen, toggleNavbar }) => {
                 {isMobile ? (
                     <CloseIcon
                     onClick={toggleNavbar}
-                        sx={{ position: "absolute", right: "20px", top: "10px", cursor: "pointer" }}
+                        sx={{ position: "absolute", right: "20px", top: "10px", cursor: "pointer", color: primary }}
                     />
                 ) : null}
                 <img src={mainLogo} width="100%" alt="" />
@@ -37,7 +38,7 @@ const Sidebar = ({ isMobile, isSidebarOpen, toggleNavbar }) => {
                 <NavLinks toggleNavbar={toggleNavbar}/>
             </Box>
             <StyledSidebarLink onClick={() => dispatch(setLogout())}>
-                <LogoutIcon />
+                <LogoutIcon sx={{ color: primary }}/>
                 Log Out
             </StyledSidebarLink>
         </Box>

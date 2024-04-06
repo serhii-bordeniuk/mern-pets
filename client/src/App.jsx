@@ -30,7 +30,7 @@ function App() {
                             <Route path="*" element={<NotFoundPage />} />
                             <Route
                                 path="/"
-                                element={isAuth ? <Navigate to="/account" /> : <AuthPage />}
+                                element={isAuth ? <Navigate to="/pets" /> : <AuthPage />}
                             />
                             <Route
                                 path="/account"

@@ -16,6 +16,7 @@ const FormWrapper = styled(Box)`
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    padding: 30px 0px 30px 0px;
     height: 100%;
 `;
 
