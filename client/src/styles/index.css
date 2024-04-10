@@ -10,7 +10,6 @@ html,
 body,
 #root,
 .app {
-    background-color: #FFF;
     height: 100%;
     width: 100%;
     font-family: "Nunito Sans", sans-serif;

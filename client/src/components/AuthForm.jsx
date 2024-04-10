@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AlertTitle, Box, Typography } from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -48,19 +48,34 @@ const AuthForm = () => {
         })
         .required();
 
+    const formDefaultValues = () => {
+        if (isLogin) {
+            return {
+                email: "test@test.com",
+                password: "1234567890",
+            };
+        } else {
+            return {
+                email: "",
+                password: ""
+            }
+        }
+    };
+
     const {
         register,
         handleSubmit,
-        formState: { errors, },
+        formState: { errors },
         reset,
     } = useForm({
-        defaultValues: {
-            email: "test@test.com",
-            password: "1234567890"
-        },
+        defaultValues: formDefaultValues(),
         resolver: yupResolver(schema),
         mode: "all",
     });
+
+    useEffect(() => {
+        reset({...formDefaultValues()})
+      }, [isLogin])
 
     const login = async (data) => {
         const formData = new FormData();
@@ -253,9 +268,10 @@ const AuthForm = () => {
                 )}
             </Typography>
 
-            <Alert sx={{textAlign: "start", marginTop: "20px"}} severity="info">
+            <Alert sx={{ textAlign: "start", marginTop: "20px" }} severity="info">
                 <AlertTitle>Please Note!</AlertTitle>
-                The server may take up to 30 seconds to spin up and run initially. Thank you for your patience!
+                The server may take up to 30 seconds to spin up and run initially. Thank you for
+                your patience!
             </Alert>
         </Box>
     );

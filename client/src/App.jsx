@@ -16,6 +16,7 @@ import { themeSettings } from "theme";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import AddEventPage from "pages/addEventPage";
+import LandingPage from "pages/landingPage/LandingPage";
 
 function App() {
     const isAuth = Boolean(useSelector((state) => state.auth.token));
@@ -30,6 +31,10 @@ function App() {
                             <Route path="*" element={<NotFoundPage />} />
                             <Route
                                 path="/"
+                                element={isAuth ? <Navigate to="/pets" /> : <LandingPage />}
+                            />
+                            <Route
+                                path="/auth"
                                 element={isAuth ? <Navigate to="/pets" /> : <AuthPage />}
                             />
                             <Route
