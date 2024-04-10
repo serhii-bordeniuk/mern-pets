@@ -75,7 +75,6 @@ const Diagram = ({ expenses }) => {
             <Box
                 display="flex"
                 flexDirection="row"
-                gap="30px"
                 mt="20px"
                 justifyContent="space-between"
             >

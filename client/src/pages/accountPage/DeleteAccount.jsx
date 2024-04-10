@@ -18,6 +18,8 @@ const DeleteAccount = ({ request, isMobile }) => {
     const dispatch = useDispatch();
     const { palette } = useTheme();
     const deleteColor = palette.delete.main;
+    const userId = useSelector((state) => state.auth.userId)
+    const testAccId = "65ea2d866069ce47f172b1d9"
 
     const handleClickDialog = (type) => {
         if (type === "open") {
@@ -55,9 +57,10 @@ const DeleteAccount = ({ request, isMobile }) => {
                     Delete your account and all your source data. This is irreversible.
                 </StyledText>
                 <FormButton
+                    disabled={userId === testAccId} // to prevent accidental deletion of a test account
                     title="Delete"
                     color={deleteColor}
-                    sx={{ width: "95px" }}
+                    sx={{ width: "95px"}}
                     onClick={() => handleClickDialog("open")}
                 />
             </Box>

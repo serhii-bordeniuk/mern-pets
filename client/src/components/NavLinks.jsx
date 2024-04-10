@@ -3,6 +3,8 @@ import styled from "@emotion/styled";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import PetsIcon from "@mui/icons-material/Pets";
 import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
+import { useNavigate } from "react-router-dom";
+import SidebarButton from "./ui/SidebarButton";
 
 import PaidIcon from "@mui/icons-material/Paid";
 import { StyledSidebarLink } from "styles/styles";
@@ -19,26 +21,45 @@ const StyledNavLinks = styled(Box)`
 const NavLinks = ({ toggleNavbar }) => {
     const { palette } = useTheme();
     const primary = palette.primary.main;
+    const navigate = useNavigate();
 
     return (
         <StyledNavLinks>
-            <StyledSidebarLink to="/account" onClick={toggleNavbar}>
-                <AccountCircleIcon sx={{ color: primary }} />
-                Account
-            </StyledSidebarLink>
+            <SidebarButton
+                title="Account"
+                onClick={() => {
+                    toggleNavbar();
+                    navigate("/account");
+                }}
+                icon={<AccountCircleIcon />}
+            />
 
-            <StyledSidebarLink to="/pets" onClick={toggleNavbar}>
-                <PetsIcon sx={{ color: primary }} /> My Pets
-            </StyledSidebarLink>
+            <SidebarButton
+                title="My Pets"
+                onClick={() => {
+                    toggleNavbar();
+                    navigate("/pets");
+                }}
+                icon={<PetsIcon />}
+            />
 
-            <StyledSidebarLink to="/expenses" onClick={toggleNavbar}>
-                <PaidIcon sx={{ color: primary }} /> Expenses
-            </StyledSidebarLink>
+            <SidebarButton
+                onClick={() => {
+                    toggleNavbar();
+                    navigate("/expenses");
+                }}
+                title="Expenses"
+                icon={<PaidIcon />}
+            />
 
-            <StyledSidebarLink to="/health" onClick={toggleNavbar}>
-                <LocalHospitalIcon sx={{ color: primary }} />
-                Health
-            </StyledSidebarLink>
+            <SidebarButton
+                onClick={() => {
+                    toggleNavbar();
+                    navigate("/health");
+                }}
+                title="Health"
+                icon={<LocalHospitalIcon />}
+            />
         </StyledNavLinks>
     );
 };

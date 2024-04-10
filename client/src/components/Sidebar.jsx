@@ -4,8 +4,8 @@ import { setLogout } from "slices/authSlice";
 import { useDispatch } from "react-redux";
 import mainLogo from "../resources/images/logo.svg";
 import LogoutIcon from "@mui/icons-material/Logout";
-import { StyledSidebarLink } from "styles/styles";
 import CloseIcon from "@mui/icons-material/Close";
+import SidebarButton from "./ui/SidebarButton";
 
 const Sidebar = ({ isMobile, isSidebarOpen, toggleNavbar }) => {
     const { palette } = useTheme();
@@ -29,18 +29,25 @@ const Sidebar = ({ isMobile, isSidebarOpen, toggleNavbar }) => {
             <Box>
                 {isMobile ? (
                     <CloseIcon
-                    onClick={toggleNavbar}
-                        sx={{ position: "absolute", right: "20px", top: "10px", cursor: "pointer", color: primary }}
+                        onClick={toggleNavbar}
+                        sx={{
+                            position: "absolute",
+                            right: "20px",
+                            top: "10px",
+                            cursor: "pointer",
+                            color: primary,
+                        }}
                     />
                 ) : null}
                 <img src={mainLogo} width="100%" alt="" />
                 <Divider sx={{ height: "2px", marginTop: "25px" }} />
-                <NavLinks toggleNavbar={toggleNavbar}/>
+                <NavLinks toggleNavbar={toggleNavbar} />
             </Box>
-            <StyledSidebarLink onClick={() => dispatch(setLogout())}>
-                <LogoutIcon sx={{ color: primary }}/>
-                Log Out
-            </StyledSidebarLink>
+            <SidebarButton
+                onClick={() => dispatch(setLogout())}
+                icon={<LogoutIcon />}
+                title="Log Out"
+            />
         </Box>
     );
 };

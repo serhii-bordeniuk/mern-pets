@@ -49,8 +49,6 @@ const ExpensesPage = () => {
                     display="flex"
                     flexDirection="row"
                     alignItems="flex-start"
-                    mb="20px"
-                    position="fixed"
                 >
                     <FormButton
                         title="ADD +"

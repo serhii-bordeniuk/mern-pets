@@ -1,6 +1,5 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
-import { Link } from "react-router-dom";
 
 export const inputStyles = css`
     width: 100%;
@@ -11,31 +10,6 @@ export const inputStyles = css`
     .MuiInputLabel-root.Mui-focused,
     .MuiInputLabel-root.MuiInputLabel-shrink {
         color: #402835;
-    }
-`;
-
-export const StyledSidebarLink = styled(Link)`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    cursor: pointer;
-    font-size: 20px;
-    line-height: 24px;
-    font-weight: 400;
-    color: black;
-    width: 100%;
-    height: 69px;
-    border-radius: 20px;
-    border: none;
-    text-decoration: none;
-    &:hover {
-        background-color: #ffff;
-    }
-    .MuiSvgIcon-root {
-        margin-right: 28px;
-        margin-left: 10px;
-        width: 53px;
-        height: 53px;
     }
 `;
 
