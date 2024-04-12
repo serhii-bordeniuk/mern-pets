@@ -11,14 +11,14 @@ const AuthPageContainer = styled(Box)`
     height: 100vh;
 `;
 
-const FormWrapper = styled(Box)`
+const FormWrapper = styled(Box)(({isNonMobile}) => `
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
     padding: 30px 0px 30px 0px;
     height: 100%;
-`;
+    ...(isNonMobile ? { justifyContent: "center" } : {} )
+`);
 
 const AuthPage = () => {
     const isNonMobile = useMediaQuery("(min-width: 1300px)");
@@ -30,8 +30,10 @@ const AuthPage = () => {
             </FormWrapper>
         </AuthPageContainer>
     ) : (
-        <FormWrapper>
-            <img src={mainLogo} alt="logo" />
+        <FormWrapper isNonMobile>
+            <Box>
+                <img src={mainLogo} alt="logo" />
+            </Box>
             <AuthForm />
         </FormWrapper>
     );
