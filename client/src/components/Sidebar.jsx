@@ -23,8 +23,7 @@ const Sidebar = ({ isMobile, isSidebarOpen, toggleNavbar }) => {
             top="0"
             bottom="0"
             left={isMobile ? (isSidebarOpen ? "0" : "-100%") : "0"}
-            transition="0.7s ease-in-out"
-            sx={{ backgroundColor: secondary }}
+            sx={{ backgroundColor: secondary, transition: "left 0.5s ease-in-out" }}
         >
             <Box>
                 {isMobile ? (

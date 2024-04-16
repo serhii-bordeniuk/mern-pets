@@ -82,6 +82,7 @@ const LandingPage = () => {
                 end: "center center",
             },
         })
+//eslint-disable-next-line
     }, []);
 
     return (
