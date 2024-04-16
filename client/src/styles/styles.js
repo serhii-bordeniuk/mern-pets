@@ -32,4 +32,5 @@ export const LayoutContainer = styled.div`
     max-width: 1270px;
     margin: 0 auto;
     padding: 0 20px;
+    overflow: hidden
 `;

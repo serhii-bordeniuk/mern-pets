@@ -26,7 +26,7 @@ const Management = () => {
                     </Box>
                     {/* Right side */}
                     <Box>
-                        <Typography variant="h3" fontSize="45px" fontWeight="700">
+                        <Typography className="managementTitle" variant="h3" fontSize="45px" fontWeight="700">
                             Why do you need pets management software?
                         </Typography>
                         <Typography mt="20px" sx={{ color: "#b1aaaa" }}>
@@ -45,7 +45,7 @@ const Management = () => {
                     {/* Left side */}
 
                     <Box >
-                        <Typography variant="h3" fontSize="45px" fontWeight="700">
+                        <Typography className="managementSecondTitle" variant="h3" fontSize="45px" fontWeight="700">
                             Efficient money control
                         </Typography>
                         <Typography mt="20px" sx={{ color: "#b1aaaa" }}>

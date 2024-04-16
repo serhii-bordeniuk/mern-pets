@@ -11,7 +11,7 @@ const Header = () => {
     const navigate = useNavigate();
 
     return (
-        <Box mt="20px" right={0} left={0}>
+        <Box pt="20px" right={0} left={0}>
             <LayoutContainer>
                 <Box display="flex" justifyContent="space-between" alignItems="center">
                     <Box maxWidth="150px">

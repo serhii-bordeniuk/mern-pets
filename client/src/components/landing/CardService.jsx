@@ -1,8 +1,10 @@
 import { Box, Typography } from "@mui/material";
 
-const CardService = ({ title, description, sx, imagePath }) => {
+const CardService = ({ title, description, sx, imagePath, cardRef }) => {
     return (
-        <Box
+        <Box 
+            ref={cardRef}
+            className
             sx={{...sx}}
             display="flex"
             flexDirection="column"
