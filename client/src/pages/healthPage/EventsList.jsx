@@ -4,7 +4,7 @@ import EventCard from "./EventCard";
 const EventsList = ({ events, handleDeleteEvent }) => {
     return (
             
-            <Box mt="10px" mb="100px" display="flex" flexWrap="wrap" gap="20px" justifyContent="center">
+            <Box mt="10px" pb="100px" display="flex" flexWrap="wrap" gap="20px" justifyContent="center">
             {events.map((event) => {
                 return (
                     <EventCard
