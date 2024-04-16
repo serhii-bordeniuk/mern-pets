@@ -8,7 +8,7 @@ import service3 from "../../resources/images/service3.svg";
 const Services = ({cardRefs}) => {
     const isMobile = useMediaQuery("(max-width: 1050px)");
     return (
-        <Box mt={isMobile ? "50px" : "150px"}>
+        <Box mt={isMobile ? "50px" : "150px"} >
             <LayoutContainer>
                 <Box textAlign="center">
                     <Typography className="servicesTitle" variant="h1" fontSize={isMobile ? "40px" : "70px"} fontWeight="700">
@@ -16,6 +16,7 @@ const Services = ({cardRefs}) => {
                     </Typography>
                 </Box>
                 <Box
+                    pb="50px"
                     display="grid"
                     gridTemplateColumns={isMobile ? "1fr" : "repeat(3, 320px)"}
                     justifyContent="center"
@@ -23,7 +24,6 @@ const Services = ({cardRefs}) => {
                     gap={isMobile ? "15px" : "30px"}
                     mt={isMobile ? "40px" : "80px"}
                     sx={isMobile ? { placeItems: "center" } : ""}
-                    overFlowX="hidden"
                 >
                     <CardService
                         cardRef={cardRefs.card1Ref}
