@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { setLogin } from "slices/authSlice";
 import { setNotification } from "slices/notificationSlice";
 import { useHttp } from "utils/useHttp";
+import { LoadingButton } from "@mui/lab";
 
 const AuthForm = () => {
     const [isLogin, setIsLogin] = useState(true);
@@ -57,8 +58,8 @@ const AuthForm = () => {
         } else {
             return {
                 email: "",
-                password: ""
-            }
+                password: "",
+            };
         }
     };
 
@@ -74,8 +75,8 @@ const AuthForm = () => {
     });
 
     useEffect(() => {
-        reset({...formDefaultValues()})
-      }, [isLogin])
+        reset({ ...formDefaultValues() });
+    }, [isLogin]);
 
     const login = async (data) => {
         const formData = new FormData();
@@ -224,16 +225,24 @@ const AuthForm = () => {
                         </FormControl>
                     </>
                 )}
-                <Button
-                    disabled={processing === "loading"}
-                    sx={{ ...buttonStyles }}
-                    size="large"
-                    type="submit"
-                    variant="contained"
-                    fullWidth
-                >
-                    {isLogin ? "Log In" : "Register"}
-                </Button>
+                {processing === "loading" ? (
+                    <LoadingButton
+                        loading
+                        loadingIndicator={<span style={{ color: "#fff" }}>Loading…</span>}
+                        sx={{ ...buttonStyles }}
+                    />
+                ) : (
+                    <Button
+                        disabled={processing === "loading"}
+                        sx={{ ...buttonStyles }}
+                        size="large"
+                        type="submit"
+                        variant="contained"
+                        fullWidth
+                    >
+                        {isLogin ? "Log In" : "Register"}
+                    </Button>
+                )}
             </form>
 
             <Typography sx={{ marginTop: "10px" }}>
