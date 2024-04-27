@@ -58,7 +58,7 @@ const AccountForm = ({ request, isMobile }) => {
         Object.keys(dirtyFields).forEach((key) => {
             formDataToSend.append(key, formData[key]);
         });
-        /////
+        
         if (selectedImage) {
             formDataToSend.append("image", selectedImage);
         }

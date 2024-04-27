@@ -4,6 +4,7 @@ import dayjs from "dayjs";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { useHttp } from "utils/useHttp";
 import { getCategoryIcon } from "utils/utils";
+
 const ExpensesList = ({ expenses, token, setExpenses }) => {
     const { request } = useHttp();
     const transformedExpenses = expenses.map((expense) => ({
@@ -11,7 +12,6 @@ const ExpensesList = ({ expenses, token, setExpenses }) => {
         id: expense._id,
         pet: expense.pet.name,
         date: dayjs(expense.date).format("MM/DD/YYYY"),
-        
     }));
 
     const handleDeleteExpense = async (id) => {

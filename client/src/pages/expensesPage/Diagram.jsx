@@ -4,17 +4,10 @@ import foodIcon from "../../resources/images/icons/food-icon.svg";
 import medicineIcon from "../../resources/images/icons/medicine-icon.svg";
 import entertainmentIcon from "../../resources/images/icons/entertainment-icon.svg";
 import othersIcon from "../../resources/images/icons/others-icon.svg";
-import styled from "@emotion/styled";
+import { CategoryStyled, CategoryTitle } from "styles/styles";
 import { useMemo } from "react";
 
-const CategoryStyled = styled(Box)`
-    width: 80px;
-    text-align: center;
-`;
 
-const CategoryTitle = styled(Typography)`
-    font-size: 16px;
-`;
 
 const Diagram = ({ expenses }) => {
     const isMobile = useMediaQuery("(max-width: 500px)");
@@ -32,7 +25,7 @@ const Diagram = ({ expenses }) => {
             entertainment: 0,
             others: 0,
         };
-
+        
         expenses?.forEach((expenses) => {
             const { category, price } = expenses;
             if (categoryExpenses.hasOwnProperty(category)) {

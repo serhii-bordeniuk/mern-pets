@@ -1,5 +1,6 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
+import { Box, Typography } from "@mui/material";
 
 export const inputStyles = css`
     width: 100%;
@@ -33,4 +34,31 @@ export const LayoutContainer = styled.div`
     margin: 0 auto;
     padding: 0 20px;
     overflow: hidden;
+`;
+
+export const FormWrapper = styled(Box)(({isNonMobile}) => ({
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    padding: '30px 0px',
+    height: '100%',
+    justifyContent: isNonMobile ? 'center' : 'normal'
+}));
+
+export const CategoryStyled = styled(Box)`
+    width: 80px;
+    text-align: center;
+`;
+
+export const CategoryTitle = styled(Typography)`
+    font-size: 16px;
+`;
+
+export const CategoryStyledModal = styled(Box)`
+    text-align: center;
+    width: 150px;
+    border: 2px solid ${(props) => (props.selected ? "#403128" : "transparent")};
+    cursor: pointer;
+    border-radius: 10px;
+    padding: 5px;
 `;

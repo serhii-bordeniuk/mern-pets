@@ -4,6 +4,7 @@ import MainBanner from "components/MainBanner";
 import { useMediaQuery } from "@mui/material";
 import styled from "@emotion/styled";
 import mainLogo from "../../resources/images/logo.svg";
+import { FormWrapper } from "styles/styles";
 
 const AuthPageContainer = styled(Box)`
     display: grid;
@@ -11,14 +12,7 @@ const AuthPageContainer = styled(Box)`
     height: 100vh;
 `;
 
-const FormWrapper = styled(Box)(({isNonMobile}) => ({
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    padding: '30px 0px',
-    height: '100%',
-    justifyContent: isNonMobile ? 'center' : 'normal'
-}));
+
 
 const AuthPage = () => {
     const isNonMobile = useMediaQuery("(min-width: 1300px)");

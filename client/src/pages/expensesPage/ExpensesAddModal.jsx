@@ -15,7 +15,7 @@ import medicineIcon from "../../resources/images/icons/medicine-icon.svg";
 import entertainmentIcon from "../../resources/images/icons/entertainment-icon.svg";
 import othersIcon from "../../resources/images/icons/others-icon.svg";
 import FormButton from "components/ui/FormButton";
-import styled from "@emotion/styled";
+import { CategoryStyledModal } from "styles/styles";
 import { inputStyles } from "styles/styles";
 import { Controller, useForm } from "react-hook-form";
 import { DatePicker } from "@mui/x-date-pickers";
@@ -26,14 +26,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect, useState } from "react";
 import { useHttp } from "utils/useHttp";
 
-const CategoryStyled = styled(Box)`
-    text-align: center;
-    width: 150px;
-    border: 2px solid ${(props) => (props.selected ? "#403128" : "transparent")};
-    cursor: pointer;
-    border-radius: 10px;
-    padding: 5px;
-`;
+
 
 const ExpensesAddModal = ({ onClose, isOpen, token, getExpenses }) => {
     const { request } = useHttp();
@@ -112,34 +105,34 @@ const ExpensesAddModal = ({ onClose, isOpen, token, getExpenses }) => {
             <form noValidate onSubmit={handleSubmit(onSubmit)} style={{ padding: "10px" }}>
                 <DialogContent>
                     <Box display="flex" flexDirection="row">
-                        <CategoryStyled
+                        <CategoryStyledModal
                             selected={expenseCategory === "food"}
                             onClick={() => handleCategorySelect("food")}
                         >
                             <img src={foodIcon} alt="food category" />
                             <Typography>Food</Typography>
-                        </CategoryStyled>
-                        <CategoryStyled
+                        </CategoryStyledModal>
+                        <CategoryStyledModal
                             selected={expenseCategory === "medicine"}
                             onClick={() => handleCategorySelect("medicine")}
                         >
                             <img src={medicineIcon} alt="medicine category" />
                             <Typography>Medicine</Typography>
-                        </CategoryStyled>
-                        <CategoryStyled
+                        </CategoryStyledModal>
+                        <CategoryStyledModal
                             selected={expenseCategory === "entertainment"}
                             onClick={() => handleCategorySelect("entertainment")}
                         >
                             <img src={entertainmentIcon} alt="entertainment category" />
                             <Typography>Fun</Typography>
-                        </CategoryStyled>
-                        <CategoryStyled
+                        </CategoryStyledModal>
+                        <CategoryStyledModal
                             selected={expenseCategory === "others"}
                             onClick={() => handleCategorySelect("others")}
                         >
                             <img src={othersIcon} alt="others category" />
                             <Typography>Others</Typography>
-                        </CategoryStyled>
+                        </CategoryStyledModal>
                     </Box>
                     <FormHelperText sx={{ textAlign: "center" }} error id="pet-type-select">
                         {errors.category?.message}
