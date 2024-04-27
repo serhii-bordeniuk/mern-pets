@@ -1,18 +1,15 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Typography, useTheme } from "@mui/material";
 import { inputStyles } from "styles/styles";
 import { TextField, FormControl } from "@mui/material";
 import FormButton from "components/ui/FormButton";
-import { setLogout } from "slices/authSlice";
 import { accountSchema } from "utils/validators";
 import ImagePicker from "components/ImagePicker";
 
-const AccountForm = ({ request, isMobile }) => {
-    const token = useSelector((state) => state.auth.token);
-    const dispatch = useDispatch();
+const AccountForm = ({ request, isMobile, userData, token }) => {
+    
     const { palette } = useTheme();
     const primary = palette.primary.main;
     const [selectedImage, setSelectedImage] = useState(null);
@@ -27,27 +24,15 @@ const AccountForm = ({ request, isMobile }) => {
     });
 
     useEffect(() => {
-        const fetchUserData = async () => {
-            const userData = await request(`${process.env.REACT_APP_BASE_URL}/user`, {
-                method: "get",
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-            if (userData) {
-                setValue("userName", userData?.userName || "");
-                setValue("email", userData?.email || "");
-                setValue("phoneNumber", userData?.phoneNumber || "");
-                if (userData.picturepath) {
-                    setSelectedImage(userData?.picturepath);
-                }
-            } else {
-                dispatch(setLogout());
+        if (userData) {
+            setValue("userName", userData.userName || "");
+            setValue("email", userData.email || "");
+            setValue("phoneNumber", userData.phoneNumber || "");
+            if (userData.picturePath) {
+                setValue("picturePath", userData.picturePath);
             }
-        };
-
-        fetchUserData(); //eslint-disable-next-line
-    }, [token, request, setValue]);
+        }
+    }, [userData, setValue]);
 
     const onSubmit = (data) => {
         updateUser(data);
@@ -58,7 +43,7 @@ const AccountForm = ({ request, isMobile }) => {
         Object.keys(dirtyFields).forEach((key) => {
             formDataToSend.append(key, formData[key]);
         });
-        
+
         if (selectedImage) {
             formDataToSend.append("image", selectedImage);
         }
