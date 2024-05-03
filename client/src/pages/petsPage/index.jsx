@@ -51,6 +51,7 @@ const PetsPage = () => {
                     <Box
                         // sx={(theme) => ({[theme.breakpoints.down("sm")]: {flexDirection: "column"}}) }
                         mt="50px"
+                        pb="80px"
                         display="flex"
                         flexWrap="wrap"
                         justifyContent="center"

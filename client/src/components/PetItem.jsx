@@ -1,4 +1,4 @@
-import { Box, useTheme } from "@mui/material";
+import { Card, CardActionArea, CardContent, CardMedia, Typography, useTheme } from "@mui/material";
 import catImage from "../resources/images/cat-imgae.png";
 import { useNavigate } from "react-router-dom";
 
@@ -7,42 +7,24 @@ const PetItem = ({ name, petId, picturepath }) => {
     const { palette } = useTheme();
     const primary = palette.primary.main;
 
-    return (
-        <Box
-            onClick={() => navigate(`/pets/${petId}`)}
-            sx={{
-                width: "400px",
-                height: "300px",
-                cursor: "pointer",
-                position: "relative",
-                borderRadius: "10px",
-                overflow: "hidden",
-            }}
-        >
-            <img
-                src={picturepath ? `${process.env.REACT_APP_BASE_URL}/${picturepath}` : catImage}
-                alt="your pet"
-                height="100%"
-                width="100%"
-                style={{ objectFit: "cover" }}
-            />
 
-            <Box
-                sx={{
-                    padding: "18px 20px",
-                    position: "absolute",
-                    bottom: "0",
-                    left: "0",
-                    right: "0",
-                    backgroundColor: primary,
-                    color: "#fff",
-                    borderBottomLeftRadius: "10px",
-                    borderBottomRightRadius: "10px",
-                }}
-            >
+    return (
+        <Card sx={{ width: 400, height: 300, backgroundColor: primary, color: "#fff" }} onClick={() => navigate(`/pets/${petId}`)}>
+          <CardActionArea >
+            <CardMedia
+              component="img"
+              height="250"
+              width="400"
+              image={picturepath ? `${process.env.REACT_APP_BASE_URL}/${picturepath}` : catImage}
+              alt="your pet"
+            />
+            <CardContent>
+              <Typography gutterBottom variant="h5" component="div">
                 {name}
-            </Box>
-        </Box>
-    );
+              </Typography>
+            </CardContent>
+          </CardActionArea>
+        </Card>
+      );
 };
 export default PetItem;

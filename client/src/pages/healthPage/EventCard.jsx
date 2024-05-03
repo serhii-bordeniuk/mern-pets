@@ -1,4 +1,4 @@
-import { Box, Typography, useTheme } from "@mui/material";
+import { Avatar, Box, Card, CardContent, CardHeader, Typography, useTheme } from "@mui/material";
 import dayjs from "dayjs";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import EditIcon from "@mui/icons-material/Edit";
@@ -12,72 +12,47 @@ const EventCard = ({
     reminder,
     date,
     eventId,
-    handleDeleteEvent
+    handleDeleteEvent,
 }) => {
     const { palette } = useTheme();
-    const primary = palette.primary.main;
     const secondary = palette.secondary.main;
     const navigate = useNavigate();
 
     return (
-        <Box
-            position="relative"
-            p="30px 20px"
-            border={`solid 1px ${primary}`}
-            borderRadius="10px"
-            bgcolor={secondary}
-            width="450px"
-        >
-            <Box display="flex" justifyContent="space-between">
-                <Typography variant="h3">{title}</Typography>
-                <Box>
-                    <EditIcon
-                        sx={{ cursor: "pointer" }}
-                        onClick={() => {
-                            navigate(`/health/${eventId}`);
-                        }}
-                    />
-                    <DeleteOutlineIcon sx={{ cursor: "pointer" }} onClick={() => handleDeleteEvent(eventId)}/>
-                </Box>
-            </Box>
-            <Box display="flex" justifyContent="space-between" mt="20px">
-                <Box display="flex" alignItems="center" gap="10px">
-                    <img
-                        style={{
-                            objectFit: "cover",
-                            width: "82px",
-                            height: "82px",
-                            borderRadius: "50%",
-                            border: `1px solid ${primary}`,
-                        }}
+        <Card sx={{ maxWidth: 345, backgroundColor: secondary }}>
+            <CardHeader 
+                avatar={
+                    <Avatar
+                        aria-label="your pet"
                         src={`${process.env.REACT_APP_BASE_URL}/${picturepath}`}
-                        alt={petName}
-                    />
-                    <Typography fontWeight="800">{petName}</Typography>
-                </Box>
-
-                <Box display="flex" flexDirection="column" gap="15px">
-                    <Box>
-                        <Typography variant="h5" fontWeight="800">
-                            Description:
-                        </Typography>
-                        <Typography>{description}</Typography>
+                    ></Avatar>
+                }
+                action={
+                    <Box sx={{ml: "10px"}}>
+                        <EditIcon
+                            sx={{ cursor: "pointer" }}
+                            onClick={() => {
+                                navigate(`/health/${eventId}`);
+                            }}
+                        />
+                        <DeleteOutlineIcon
+                            sx={{ cursor: "pointer" }}
+                            onClick={() => handleDeleteEvent(eventId)}
+                        />
                     </Box>
-                    <Box>
-                        <Typography variant="h5" fontWeight="800">
-                            Date and time:
-                        </Typography>
-                        <Typography>{dayjs(date).format("MMMM D, YYYY HH:mm ")}</Typography>
-                    </Box>
-                    <Box>
-                        <Typography variant="h5" fontWeight="800">
-                            Reminder:
-                        </Typography>
-                        <Typography>{reminder}</Typography>
-                    </Box>
-                </Box>
-            </Box>
-        </Box>
+                }
+                title={title}
+                subheader={dayjs(date).format("MMMM D, YYYY HH:mm ")}
+            />
+            <CardContent>
+                <Typography variant="body2" color="text.secondary">
+                    {description}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                    {reminder}
+                </Typography>
+            </CardContent>
+        </Card>
     );
 };
 export default EventCard;
